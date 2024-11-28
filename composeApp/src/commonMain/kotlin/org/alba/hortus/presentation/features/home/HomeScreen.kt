@@ -1,15 +1,35 @@
 package org.alba.hortus.presentation.features.home
 
-import androidx.compose.material.Text
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
+import androidx.compose.material.Scaffold
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
+import org.alba.hortus.presentation.features.new.AddPlantScreen
 
-class HomeScreen  : Screen {
+class HomeScreen : Screen {
     @Composable
     override fun Content() {
         val viewModel = getScreenModel<HomeScreenViewModel>()
-        Text("Home Screen")
+        val navigator = LocalNavigator.currentOrThrow
 
+        Scaffold(
+            floatingActionButton = {
+                FloatingActionButton(
+                    onClick = {
+                        navigator.push(AddPlantScreen())
+                    },
+                ) {
+                    Icon(Icons.Filled.Add, "Adding plant")
+                }
+            }
+        ) {
+
+        }
     }
 }
