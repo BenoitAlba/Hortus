@@ -1,0 +1,104 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "22f7952d7a8bdd1b606e10967afbe915",
+    "entities": [
+      {
+        "tableName": "plants",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `commonName` TEXT NOT NULL, `scientificName` TEXT, `description` TEXT, `floweringPeriod` TEXT, `fruitingPeriod` TEXT, `maxHeight` INTEGER, `maxWidth` INTEGER, `exposure` TEXT, `soilMoisture` TEXT, `pollination` TEXT, `harvestPeriod` TEXT, `hardiness` INTEGER NOT NULL, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "commonName",
+            "columnName": "commonName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "scientificName",
+            "columnName": "scientificName",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "floweringPeriod",
+            "columnName": "floweringPeriod",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "fruitingPeriod",
+            "columnName": "fruitingPeriod",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "maxHeight",
+            "columnName": "maxHeight",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "maxWidth",
+            "columnName": "maxWidth",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "exposure",
+            "columnName": "exposure",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "soilMoisture",
+            "columnName": "soilMoisture",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "pollination",
+            "columnName": "pollination",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "harvestPeriod",
+            "columnName": "harvestPeriod",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "hardiness",
+            "columnName": "hardiness",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "createdAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updatedAt",
+            "affinity": "INTEGER"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        }
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '22f7952d7a8bdd1b606e10967afbe915')"
+    ]
+  }
+}

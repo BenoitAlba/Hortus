@@ -3,11 +3,12 @@ package org.alba.hortus.presentation.components
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import io.ktor.websocket.Frame
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun ReadOnlyTextField(
@@ -25,7 +26,7 @@ fun ReadOnlyTextField(
             modifier = Modifier
                 .fillMaxWidth(),
             label = {
-                Frame.Text(
+                Text(
                     text = label,
                 )
             },
@@ -33,7 +34,7 @@ fun ReadOnlyTextField(
         Box(
             modifier = Modifier
                 .matchParentSize()
-                .alpha(0f)
+                .padding(top = 8.dp)
                 .clickable(
                     onClick = onClick,
                 ),
