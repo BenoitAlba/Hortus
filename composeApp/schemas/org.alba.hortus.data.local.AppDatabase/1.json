@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "22f7952d7a8bdd1b606e10967afbe915",
+    "identityHash": "e0f4252b58f38f9085cbfe065f57ef9a",
     "entities": [
       {
         "tableName": "plants",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `commonName` TEXT NOT NULL, `scientificName` TEXT, `description` TEXT, `floweringPeriod` TEXT, `fruitingPeriod` TEXT, `maxHeight` INTEGER, `maxWidth` INTEGER, `exposure` TEXT, `soilMoisture` TEXT, `pollination` TEXT, `harvestPeriod` TEXT, `hardiness` INTEGER NOT NULL, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `commonName` TEXT NOT NULL, `scientificName` TEXT, `description` TEXT, `floweringPeriod` TEXT, `fruitingPeriod` TEXT, `maxHeight` INTEGER, `maxWidth` INTEGER, `currentExposure` TEXT NOT NULL, `exposure` TEXT, `soilMoisture` TEXT, `pollination` TEXT, `harvestPeriod` TEXT, `hardiness` INTEGER NOT NULL, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER)",
         "fields": [
           {
             "fieldPath": "id",
@@ -49,6 +49,12 @@
             "fieldPath": "maxWidth",
             "columnName": "maxWidth",
             "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "currentExposure",
+            "columnName": "currentExposure",
+            "affinity": "TEXT",
+            "notNull": true
           },
           {
             "fieldPath": "exposure",
@@ -98,7 +104,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '22f7952d7a8bdd1b606e10967afbe915')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e0f4252b58f38f9085cbfe065f57ef9a')"
     ]
   }
 }

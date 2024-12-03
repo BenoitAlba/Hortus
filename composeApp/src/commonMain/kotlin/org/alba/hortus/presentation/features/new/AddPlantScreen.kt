@@ -42,6 +42,7 @@ import hortus.composeapp.generated.resources.baseline_cloud_24
 import hortus.composeapp.generated.resources.baseline_sunny_24
 import hortus.composeapp.generated.resources.baseline_sunny_snowing_24
 import kotlinx.coroutines.launch
+import org.alba.hortus.domain.model.Exposure
 import org.alba.hortus.presentation.components.BottomSheetValue
 import org.alba.hortus.presentation.components.ObserveAsEvents
 import org.alba.hortus.presentation.components.ReadOnlyTextField
@@ -166,16 +167,19 @@ class AddPlantScreen : Screen {
                                 title = "Exposure: ",
                                 values = listOf(
                                     BottomSheetValue(
-                                        label = "sun",
-                                        icon = painterResource(Res.drawable.baseline_sunny_24)
+                                        label = Exposure.SUN.value,
+                                        icon = painterResource(Res.drawable.baseline_sunny_24),
+                                        value = Exposure.SUN.value,
                                     ),
                                     BottomSheetValue(
-                                        label = "shade",
-                                        icon = painterResource(Res.drawable.baseline_cloud_24)
+                                        label = Exposure.SHADE.value,
+                                        icon = painterResource(Res.drawable.baseline_cloud_24),
+                                        value = Exposure.SHADE.value,
                                     ),
                                     BottomSheetValue(
-                                        label = "partial shade",
-                                        icon = painterResource(Res.drawable.baseline_sunny_snowing_24)
+                                        label = Exposure.PARTIAL_SHADE.value,
+                                        icon = painterResource(Res.drawable.baseline_sunny_snowing_24),
+                                        value = Exposure.PARTIAL_SHADE.value,
                                     ),
                                 ),
                                 onDismiss = {

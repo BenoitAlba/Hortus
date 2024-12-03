@@ -16,7 +16,7 @@ class AddPlantUseCase(
             commonName = commonName,
             scientificName = scientificName,
             description = description,
-            exposure = listOf(exposure),
+            currentExposure = exposure,
         )
 
         plantLocalDataSource.createPlant(plant)

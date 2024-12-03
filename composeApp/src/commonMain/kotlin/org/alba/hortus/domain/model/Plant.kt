@@ -4,9 +4,14 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
+import hortus.composeapp.generated.resources.Res
+import hortus.composeapp.generated.resources.baseline_cloud_24
+import hortus.composeapp.generated.resources.baseline_sunny_24
+import hortus.composeapp.generated.resources.baseline_sunny_snowing_24
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
+import org.jetbrains.compose.resources.DrawableResource
 
 @Entity(tableName = "plants")
 @TypeConverters(StringListConverters::class)
@@ -19,6 +24,7 @@ data class PlantDatabaseModel(
     val fruitingPeriod: List<String>? = null, // months number from 1 to 12
     val maxHeight: Int? = null, // cm
     val maxWidth: Int? = null, // cm
+    val currentExposure: String,
     val exposure: List<String>? = null, // list of exposure types (sun, shade, partial shade)
     val soilMoisture: String? = null,
     val pollination: String? = null, // if fruit tree
@@ -35,4 +41,11 @@ class StringListConverters {
 
     @TypeConverter
     fun toList(value: String) = Json.decodeFromString<List<String>>(value)
+}
+
+enum class Exposure(val value: String, val drawableRes: DrawableResource) {
+    SUN("Sun", Res.drawable.baseline_sunny_24),
+    SHADE("Shade", Res.drawable.baseline_cloud_24),
+    PARTIAL_SHADE("Partial shade", Res.drawable.baseline_sunny_snowing_24)
+
 }

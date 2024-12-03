@@ -51,7 +51,7 @@ fun ValuesBottomSheet(
                     Row(
                         modifier = Modifier
                             .clickable {
-                                onValueSelected(values[index].label)
+                                onValueSelected(values[index].value)
                                 onDismiss()
                             }
                             .fillMaxWidth()
@@ -75,5 +75,6 @@ fun ValuesBottomSheet(
 
 data class BottomSheetValue(
     val label: String,
+    val value: String,
     val icon: Painter? = null
 )

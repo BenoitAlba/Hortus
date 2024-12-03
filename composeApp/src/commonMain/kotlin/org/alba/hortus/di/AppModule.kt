@@ -5,6 +5,7 @@ import org.alba.hortus.presentation.features.home.HomeScreenViewModel
 import org.alba.hortus.presentation.features.new.AddPlantScreenViewModel
 import org.alba.hortus.data.local.PlantLocalDataSource
 import org.alba.hortus.presentation.features.new.usecases.AddPlantUseCase
+import org.alba.hortus.presentation.features.home.usecases.GetPlantsUseCase
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.factoryOf
@@ -16,6 +17,7 @@ expect fun platformModule(): Module
 
 val appModule = module {
     factoryOf(::HomeScreenViewModel)
+    factoryOf(::GetPlantsUseCase)
     factoryOf(::AddPlantScreenViewModel)
     singleOf(::PlantsApiService)
     singleOf(::PlantLocalDataSource)
