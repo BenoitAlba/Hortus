@@ -17,7 +17,8 @@ class HomeScreenViewModel(
     var _uiState: MutableStateFlow<HomeScreenUIState> = MutableStateFlow(HomeScreenUIState.Loading)
     val uiState: StateFlow<HomeScreenUIState> = _uiState
 
-    init {
+    // todo check how to handle errors with room
+    fun getPlant() {
         screenModelScope.launch(Dispatchers.IO) {
             try {
                 _uiState.value = HomeScreenUIState.Success(getPlantsUseCase())

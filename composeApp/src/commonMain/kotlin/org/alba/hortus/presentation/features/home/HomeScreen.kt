@@ -1,20 +1,26 @@
 package org.alba.hortus.presentation.features.home
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
@@ -27,9 +33,11 @@ import org.alba.hortus.presentation.features.new.AddPlantScreen
 class HomeScreen(
     val message: String? = null
 ) : Screen {
+    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
         val viewModel = getScreenModel<HomeScreenViewModel>()
+        viewModel.getPlant() // instead of using the init of the VM because of Voyager
         val navigator = LocalNavigator.currentOrThrow
         val snackBarHostState = remember { SnackbarHostState() }
         val scope = rememberCoroutineScope()
@@ -50,6 +58,18 @@ class HomeScreen(
                 ) {
                     Icon(Icons.Filled.Add, "Adding plant")
                 }
+            },
+            topBar = {
+                TopAppBar(
+                    title = {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            style = MaterialTheme.typography.headlineMedium,
+                            text = "Plants",
+                            textAlign = TextAlign.Center,
+                        )
+                    },
+                )
             },
             snackbarHost = {
                 SnackbarHost(hostState = snackBarHostState)
