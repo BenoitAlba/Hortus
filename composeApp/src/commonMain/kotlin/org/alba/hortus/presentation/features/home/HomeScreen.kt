@@ -1,8 +1,13 @@
 package org.alba.hortus.presentation.features.home
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -19,16 +24,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import hortus.composeapp.generated.resources.Res
+import hortus.composeapp.generated.resources.background
+import hortus.composeapp.generated.resources.baseline_cloud_24
 import kotlinx.coroutines.launch
 import org.alba.hortus.presentation.components.PlantCard
 import org.alba.hortus.presentation.features.new.AddPlantScreen
+import org.jetbrains.compose.resources.painterResource
 
 class HomeScreen(
     val message: String? = null
@@ -85,20 +97,33 @@ class HomeScreen(
                 }
 
                 is HomeScreenViewModel.HomeScreenUIState.Success -> {
-                    LazyColumn(
-                        modifier = Modifier.padding(
-                            top = it.calculateTopPadding() + 16.dp,
-                            bottom = it.calculateBottomPadding(),
-                            start = 16.dp,
-                            end = 16.dp
-                        ),
-                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                    if (state.plants.isEmpty()) {
+                        Box {
+                            Image(
+                                modifier = Modifier.align(Alignment.Center).fillMaxSize(),
+                                painter = painterResource(Res.drawable.background),
+                                contentDescription = null,
+                                contentScale = ContentScale.FillWidth
+                            )
+                        }
 
-                        ) {
-                        items(state.plants.size) { index ->
-                            PlantCard(state.plants[index])
+                    } else {
+                        LazyColumn(
+                            modifier = Modifier.padding(
+                                top = it.calculateTopPadding() + 16.dp,
+                                bottom = it.calculateBottomPadding(),
+                                start = 16.dp,
+                                end = 16.dp
+                            ),
+                            verticalArrangement = Arrangement.spacedBy(4.dp),
+
+                            ) {
+                            items(state.plants.size) { index ->
+                                PlantCard(state.plants[index])
+                            }
                         }
                     }
+
                 }
             }
         }
