@@ -2,8 +2,6 @@ package org.alba.hortus.presentation.features.home
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -19,7 +17,7 @@ class HomeScreenViewModel(
 
     // todo check how to handle errors with room
     fun getPlant() {
-        screenModelScope.launch(Dispatchers.IO) {
+        screenModelScope.launch {
             try {
                 _uiState.value = HomeScreenUIState.Success(getPlantsUseCase())
             } catch (e: Exception) {

@@ -1,5 +1,7 @@
 package org.alba.hortus.presentation.features.new.usecases
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import org.alba.hortus.data.local.PlantLocalDataSource
 import org.alba.hortus.domain.model.PlantDatabaseModel
 
@@ -12,15 +14,15 @@ class AddPlantUseCase(
         description: String?,
         exposure: String
     ) {
-        val plant = PlantDatabaseModel(
-            commonName = commonName,
-            scientificName = scientificName,
-            description = description,
-            currentExposure = exposure,
-        )
+        with(Dispatchers.IO) {
+            val plant = PlantDatabaseModel(
+                commonName = commonName,
+                scientificName = scientificName,
+                description = description,
+                currentExposure = exposure,
+            )
 
-        plantLocalDataSource.createPlant(plant)
-        val plants = plantLocalDataSource.getAllPlants()
-        println("---> $plants")
+            plantLocalDataSource.createPlant(plant)
+        }
     }
 }

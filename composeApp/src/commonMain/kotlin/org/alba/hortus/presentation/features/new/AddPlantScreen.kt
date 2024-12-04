@@ -72,6 +72,7 @@ class AddPlantScreen : Screen {
 
                 is AddPlantScreenUIEffect.ShowToast -> {
                     scope.launch {
+                        showLoading = false
                         snackBarHostState.showSnackbar(message = event.message)
                     }
                 }
@@ -170,16 +171,19 @@ class AddPlantScreen : Screen {
                                 values = listOf(
                                     BottomSheetValue(
                                         label = Exposure.SUN.value,
+                                        description = Exposure.SUN.description,
                                         icon = painterResource(Res.drawable.baseline_sunny_24),
                                         value = Exposure.SUN.value,
                                     ),
                                     BottomSheetValue(
                                         label = Exposure.SHADE.value,
+                                        description = Exposure.SHADE.description,
                                         icon = painterResource(Res.drawable.baseline_cloud_24),
                                         value = Exposure.SHADE.value,
                                     ),
                                     BottomSheetValue(
                                         label = Exposure.PARTIAL_SHADE.value,
+                                        description = Exposure.PARTIAL_SHADE.description,
                                         icon = painterResource(Res.drawable.baseline_sunny_snowing_24),
                                         value = Exposure.PARTIAL_SHADE.value,
                                     ),
@@ -199,19 +203,15 @@ class AddPlantScreen : Screen {
                             .padding(vertical = 8.dp)
                             .fillMaxWidth(),
                         onClick = {
-                            if (commonName.isBlank() && exposure.isBlank()) {
-                                viewModel.sendEvent(AddUIEvent.MissingInfo)
-                            } else {
-                                showLoading = true
-                                viewModel.sendEvent(
-                                    AddUIEvent.AddClicked(
-                                        commonName = commonName,
-                                        scientificName = scientificName,
-                                        description = description,
-                                        exposure = exposure
-                                    )
+                            showLoading = true
+                            viewModel.sendEvent(
+                                AddUIEvent.AddClicked(
+                                    commonName = commonName,
+                                    scientificName = scientificName,
+                                    description = description,
+                                    exposure = exposure
                                 )
-                            }
+                            )
                         },
                     ) {
                         Text("Add")

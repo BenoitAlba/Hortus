@@ -234,7 +234,7 @@ private val highContrastDarkColorScheme = darkColorScheme(
 
 @Composable
 expect fun AppTheme(
-    darkTheme: Boolean,
-    dynamicColor: Boolean,
+    darkTheme: Boolean = false,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 )

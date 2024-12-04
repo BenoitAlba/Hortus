@@ -15,14 +15,19 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
+import hortus.composeapp.generated.resources.Res
+import hortus.composeapp.generated.resources.baseline_cloud_24
+import org.alba.hortus.ui.theme.AppTheme
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ValuesBottomSheet(
-    modifier: Modifier = Modifier,
     onDismiss: () -> Unit,
     values: List<BottomSheetValue>,
     onValueSelected: (String) -> Unit,
@@ -54,27 +59,79 @@ fun ValuesBottomSheet(
                                 onValueSelected(values[index].value)
                                 onDismiss()
                             }
+                            .align(Alignment.CenterHorizontally)
                             .fillMaxWidth()
                             .padding(vertical = 8.dp),
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
                         values[index].icon?.let {
-                            Image(painter = it, contentDescription = null)
+                            Image(
+                                modifier = Modifier.align(Alignment.CenterVertically),
+                                painter = it,
+                                contentDescription = null
+                            )
                         }
-                        Text(
-                            values[index].label,
-                            style = MaterialTheme.typography.bodyLarge
-                        )
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(4.dp)
+
+                        ) {
+                            Text(
+                                values[index].label,
+                                style = MaterialTheme.typography.bodyLarge
+                            )
+                            values[index].description?.let {
+                                Text(
+                                    it,
+                                    style = MaterialTheme.typography.labelMedium
+                                )
+                            }
+                        }
                     }
                 }
             }
         }
+    }
+}
 
+@Preview
+@Composable
+fun PreviewValuesBottomSheet() {
+    AppTheme {
+        ValuesBottomSheet(
+            onDismiss = {
+
+            },
+            values = listOf(
+                BottomSheetValue(
+                    label = "Test 1",
+                    value = "Test 1",
+                    description = "lorem ipsum dolor sit amet",
+                    icon = painterResource(Res.drawable.baseline_cloud_24)
+                ),
+                BottomSheetValue(
+                    label = "Test 2",
+                    value = "Test 2",
+                    description = "lorem ipsum dolor sit amet",
+                    icon = painterResource(Res.drawable.baseline_cloud_24)
+                ),
+                BottomSheetValue(
+                    label = "Test 3",
+                    value = "Test 3",
+                    description = "lorem ipsum dolor sit amet",
+                    icon = painterResource(Res.drawable.baseline_cloud_24)
+                )
+            ),
+            onValueSelected = {
+
+            },
+            title = "Test"
+        )
     }
 }
 
 data class BottomSheetValue(
     val label: String,
+    val description: String? = null,
     val value: String,
     val icon: Painter? = null
 )
