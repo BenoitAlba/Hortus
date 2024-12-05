@@ -45,6 +45,7 @@ import hortus.composeapp.generated.resources.baseline_sunny_snowing_24
 import kotlinx.coroutines.launch
 import org.alba.hortus.domain.model.Exposure
 import org.alba.hortus.presentation.components.BottomSheetValue
+import org.alba.hortus.presentation.components.ImagePicker
 import org.alba.hortus.presentation.components.ObserveAsEvents
 import org.alba.hortus.presentation.components.ReadOnlyTextField
 import org.alba.hortus.presentation.components.ValuesBottomSheet
@@ -133,6 +134,8 @@ class AddPlantScreen : Screen {
                             .weight(1f, false),
                         verticalArrangement = Arrangement.spacedBy(4.dp),
                     ) {
+
+                        ImagePicker(modifier = Modifier.padding(bottom = 16.dp))
 
                         OutlinedTextField(
                             value = commonName,
