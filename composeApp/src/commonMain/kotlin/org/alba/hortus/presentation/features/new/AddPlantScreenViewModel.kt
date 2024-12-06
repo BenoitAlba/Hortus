@@ -42,13 +42,11 @@ class AddPlantScreenViewModel(
             if (commonName.isBlank() && exposure.isBlank()) {
                 _uiEffect.send(AddPlantScreenUIEffect.ShowToast("Missing information, Common name and exposure are required"))
             } else {
-                println("---> imageByteArray $imageByteArray")
-                imageByteArray?.let {
-                    var fileName = createPlantImageFileUseCase(it, commonName)
-                    println("---> fileName $fileName")
+                var fileName = imageByteArray?.let {
+                     createPlantImageFileUseCase(it, commonName)
                 }
 
-                addPlantUseCase(commonName, scientificName, description, exposure)
+                addPlantUseCase.invoke(commonName, scientificName, description, exposure, fileName)
                 _uiEffect.send(AddPlantScreenUIEffect.NavigateToHome("Plant added successfully !"))
             }
         }

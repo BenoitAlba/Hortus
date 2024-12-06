@@ -67,6 +67,11 @@ kotlin {
             implementation(libs.peekaboo.ui)
 
             implementation(libs.peekaboo.image.picker)
+
+            implementation(libs.coil.compose.core)
+            implementation(libs.coil.compose)
+            implementation(libs.coil.mp)
+
         }
 
         iosMain.dependencies {

@@ -32,6 +32,7 @@ data class PlantDatabaseModel(
     val hardiness: Int = 0,
     val createdAt: Long = 0,
     val updatedAt: Long? = 0,
+    val image: String? = null
 )
 
 class StringListConverters {

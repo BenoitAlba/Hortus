@@ -14,12 +14,18 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.PlatformContext
+import coil3.Uri
+import coil3.compose.AsyncImage
+import coil3.request.ImageRequest
 import hortus.composeapp.generated.resources.Res
 import hortus.composeapp.generated.resources.baseline_cloud_24
 import hortus.composeapp.generated.resources.default_plant
@@ -30,7 +36,6 @@ import org.jetbrains.compose.resources.painterResource
 @Composable
 fun PlantCard(
     plant: PlantDatabaseModel,
-    plantImage: Painter? = null,
 ) {
     Card(
         modifier = Modifier
@@ -41,13 +46,14 @@ fun PlantCard(
             modifier = Modifier.padding(16.dp)
 
         ) {
-
-            Image(
-                painter = plantImage ?: painterResource(Res.drawable.default_plant),
+            AsyncImage(
+                model = plant.image ?: Res.drawable.default_plant,
+                placeholder = painterResource(Res.drawable.default_plant),
+                error = painterResource(Res.drawable.default_plant),
+                fallback = painterResource(Res.drawable.default_plant),
                 contentDescription = "Image de la plante",
-                modifier = Modifier
-                    .size(80.dp)
-                    .clip(CircleShape)
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.clip(CircleShape).size(80.dp)
             )
             Spacer(modifier = Modifier.width(16.dp))
             Column {

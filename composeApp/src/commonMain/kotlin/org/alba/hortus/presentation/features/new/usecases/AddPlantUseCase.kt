@@ -12,7 +12,8 @@ class AddPlantUseCase(
         commonName: String,
         scientificName: String?,
         description: String?,
-        exposure: String
+        exposure: String,
+        fileName: String?
     ) {
         with(Dispatchers.IO) {
             val plant = PlantDatabaseModel(
@@ -20,8 +21,8 @@ class AddPlantUseCase(
                 scientificName = scientificName,
                 description = description,
                 currentExposure = exposure,
+                image = fileName,
             )
-
             plantLocalDataSource.createPlant(plant)
         }
     }
