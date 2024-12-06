@@ -6,14 +6,18 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import org.alba.hortus.presentation.features.new.usecases.AddPlantUseCase
+import org.alba.hortus.presentation.features.new.usecases.CreatePlantImageFileUseCase
 
 class AddPlantScreenViewModel(
-    private val addPlantUseCase: AddPlantUseCase
+    private val addPlantUseCase: AddPlantUseCase,
+    private val createPlantImageFileUseCase: CreatePlantImageFileUseCase
 ) : ScreenModel {
 
     // channel for one-time events
     private var _uiEffect = Channel<AddPlantScreenUIEffect>()
     val uiEffect = _uiEffect.receiveAsFlow()
+
+    var imageByteArray: ByteArray? = null
 
     fun sendEvent(event: AddUIEvent) {
         when (event) {
@@ -38,6 +42,12 @@ class AddPlantScreenViewModel(
             if (commonName.isBlank() && exposure.isBlank()) {
                 _uiEffect.send(AddPlantScreenUIEffect.ShowToast("Missing information, Common name and exposure are required"))
             } else {
+                println("---> imageByteArray $imageByteArray")
+                imageByteArray?.let {
+                    var fileName = createPlantImageFileUseCase(it, commonName)
+                    println("---> fileName $fileName")
+                }
+
                 addPlantUseCase(commonName, scientificName, description, exposure)
                 _uiEffect.send(AddPlantScreenUIEffect.NavigateToHome("Plant added successfully !"))
             }

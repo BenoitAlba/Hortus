@@ -37,7 +37,7 @@ fun ImagePicker(
     modifier: Modifier = Modifier,
     image: ImageBitmap? = null,
     onStartCamera: (isLaunchCamera: Boolean) -> Unit,
-    onImageSelected: (image: ImageBitmap) -> Unit
+    onImageSelected: (image: ImageBitmap, byteArrayImage: ByteArray) -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
 
@@ -71,11 +71,12 @@ fun ImagePicker(
     val galleryManager = rememberGalleryManager { image ->
         showLoader = true
         coroutineScope.launch {
-            val bitmap = withContext(Dispatchers.Default) {
-                image?.toImageBitmap()
+            withContext(Dispatchers.Default) {
+                val bitmap = image?.toImageBitmap()
+                val byteArray = image?.toByteArray()
+                showLoader = false
+                onImageSelected(bitmap!!, byteArray!!)
             }
-            showLoader = false
-            onImageSelected(bitmap!!)
         }
     }
 
@@ -137,7 +138,6 @@ fun ImagePicker(
         contentAlignment = Alignment.Center
     ) {
         if (image != null) {
-            Box {  }
             Image(
                 bitmap = image,
                 contentDescription = "Profile",

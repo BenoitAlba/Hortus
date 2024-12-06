@@ -94,8 +94,8 @@ class AddPlantScreen : Screen {
                 onCapture = { byteArray ->
                     byteArray?.let {
                         imageBitmap = it.toImageBitmap()
+                        viewModel.imageByteArray = it
                     }
-
                     showCamera = false
                 }
             )
@@ -159,8 +159,9 @@ class AddPlantScreen : Screen {
                                 onStartCamera = {
                                     showCamera = true
                                 },
-                                onImageSelected = {
-                                    imageBitmap = it
+                                onImageSelected = { image, byteArrayImage ->
+                                    imageBitmap = image
+                                    viewModel.imageByteArray = byteArrayImage
                                 }
                             )
 
