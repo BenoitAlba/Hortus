@@ -1,4 +1,4 @@
-package org.alba.hortus.presentation.managers.camera
+package org.alba.hortus.presentation.managers.images
 
 import androidx.compose.runtime.Composable
 

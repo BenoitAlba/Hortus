@@ -1,4 +1,4 @@
-package org.alba.hortus.presentation.managers.camera
+package org.alba.hortus.presentation.managers.images
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -27,7 +27,7 @@ actual fun rememberGalleryManager(onResult: (SharedImage?) -> Unit): GalleryMana
                 ) as? UIImage ?: didFinishPickingMediaWithInfo.getValue(
                     UIImagePickerControllerOriginalImage
                 ) as? UIImage
-                onResult.invoke(org.alba.hortus.presentation.managers.camera.SharedImage(image))
+                onResult.invoke(SharedImage(image))
                 picker.dismissViewControllerAnimated(true, null)
             }
         }

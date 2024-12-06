@@ -1,4 +1,4 @@
-package org.alba.hortus.presentation.managers.camera
+package org.alba.hortus.presentation.managers.images
 
 import android.Manifest
 import android.content.Intent

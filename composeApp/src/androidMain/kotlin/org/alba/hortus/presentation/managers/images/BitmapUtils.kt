@@ -1,4 +1,4 @@
-package org.alba.hortus.presentation.managers.camera
+package org.alba.hortus.presentation.managers.images
 
 import android.content.ContentResolver
 import android.graphics.BitmapFactory

@@ -31,12 +31,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import com.preat.peekaboo.image.picker.toImageBitmap
 import hortus.composeapp.generated.resources.Res
 import hortus.composeapp.generated.resources.baseline_arrow_back_ios_24
 import hortus.composeapp.generated.resources.baseline_cloud_24
@@ -45,6 +47,7 @@ import hortus.composeapp.generated.resources.baseline_sunny_snowing_24
 import kotlinx.coroutines.launch
 import org.alba.hortus.domain.model.Exposure
 import org.alba.hortus.presentation.components.BottomSheetValue
+import org.alba.hortus.presentation.components.CameraView
 import org.alba.hortus.presentation.components.ImagePicker
 import org.alba.hortus.presentation.components.ObserveAsEvents
 import org.alba.hortus.presentation.components.ReadOnlyTextField
@@ -80,152 +83,176 @@ class AddPlantScreen : Screen {
             }
         }
 
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = {
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = "Add a Plant",
-                            style = MaterialTheme.typography.headlineMedium,
-                            textAlign = TextAlign.Center,
-                        )
-                    },
-                    navigationIcon = {
-                        Icon(
-                            modifier = Modifier
-                                .padding(start = 16.dp)
-                                .clickable {
-                                    navigator.push(HomeScreen())
-                                },
-                            painter = painterResource(Res.drawable.baseline_arrow_back_ios_24),
-                            contentDescription = "close"
-                        )
-                    },
-                )
-            },
-            snackbarHost = {
-                SnackbarHost(hostState = snackBarHostState)
-            },
-        ) { it ->
+        var showCamera by remember { mutableStateOf(false) }
+        var imageBitmap by remember { mutableStateOf<ImageBitmap?>(null) }
 
-            var commonName by remember { mutableStateOf("") }
-            var scientificName by remember { mutableStateOf("") }
-            var exposure by remember { mutableStateOf("") }
-            var description by remember { mutableStateOf("") }
-
-            Box(
-                modifier = Modifier.fillMaxSize()
-            ) {
-
-                Column(
-                    modifier = Modifier.padding(
-                        top = it.calculateTopPadding() + 16.dp,
-                        bottom = it.calculateBottomPadding(),
-                        start = 16.dp,
-                        end = 16.dp,
-                    )
-                        .fillMaxHeight(),
-                    verticalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .verticalScroll(rememberScrollState())
-                            .weight(1f, false),
-                        verticalArrangement = Arrangement.spacedBy(4.dp),
-                    ) {
-
-                        ImagePicker(modifier = Modifier.padding(bottom = 16.dp))
-
-                        OutlinedTextField(
-                            value = commonName,
-                            onValueChange = { commonName = it },
-                            label = { Text("Common Name") },
-                            modifier = Modifier.fillMaxWidth(),
-                        )
-
-                        OutlinedTextField(
-                            value = scientificName,
-                            onValueChange = { scientificName = it },
-                            label = { Text("Scientific Name") },
-                            modifier = Modifier.fillMaxWidth()
-                        )
-
-                        var showBottomSheet by remember { mutableStateOf(false) }
-
-                        ReadOnlyTextField(
-                            value = exposure,
-                            label = "Exposure",
-                            onClick = {
-                                showBottomSheet = true
-                            }
-                        )
-
-                        OutlinedTextField(
-                            modifier = Modifier.height(200.dp).fillMaxWidth(),
-                            value = description,
-                            onValueChange = { description = it },
-                            label = { Text("Description") },
-                        )
-
-                        if (showBottomSheet) {
-                            ValuesBottomSheet(
-                                title = "Exposure: ",
-                                values = listOf(
-                                    BottomSheetValue(
-                                        label = Exposure.SUN.value,
-                                        description = Exposure.SUN.description,
-                                        icon = painterResource(Res.drawable.baseline_sunny_24),
-                                        value = Exposure.SUN.value,
-                                    ),
-                                    BottomSheetValue(
-                                        label = Exposure.SHADE.value,
-                                        description = Exposure.SHADE.description,
-                                        icon = painterResource(Res.drawable.baseline_cloud_24),
-                                        value = Exposure.SHADE.value,
-                                    ),
-                                    BottomSheetValue(
-                                        label = Exposure.PARTIAL_SHADE.value,
-                                        description = Exposure.PARTIAL_SHADE.description,
-                                        icon = painterResource(Res.drawable.baseline_sunny_snowing_24),
-                                        value = Exposure.PARTIAL_SHADE.value,
-                                    ),
-                                ),
-                                onDismiss = {
-                                    showBottomSheet = false
-                                },
-                                onValueSelected = {
-                                    exposure = it
-                                }
-                            )
-                        }
+        if (showCamera) {
+            CameraView(
+                onBack = {
+                    showCamera = false
+                },
+                onCapture = { byteArray ->
+                    byteArray?.let {
+                        imageBitmap = it.toImageBitmap()
                     }
 
-                    Button(
-                        modifier = Modifier
-                            .padding(vertical = 8.dp)
-                            .fillMaxWidth(),
-                        onClick = {
-                            showLoading = true
-                            viewModel.sendEvent(
-                                AddUIEvent.AddClicked(
-                                    commonName = commonName,
-                                    scientificName = scientificName,
-                                    description = description,
-                                    exposure = exposure
-                                )
+                    showCamera = false
+                }
+            )
+        } else {
+            Scaffold(
+                topBar = {
+                    TopAppBar(
+                        title = {
+                            Text(
+                                modifier = Modifier.fillMaxWidth(),
+                                text = "Add a Plant",
+                                style = MaterialTheme.typography.headlineMedium,
+                                textAlign = TextAlign.Center,
                             )
                         },
-                    ) {
-                        Text("Add")
-                    }
-                }
-
-                if (showLoading) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(64.dp).align(Alignment.Center),
+                        navigationIcon = {
+                            Icon(
+                                modifier = Modifier
+                                    .padding(start = 16.dp)
+                                    .clickable {
+                                        navigator.push(HomeScreen())
+                                    },
+                                painter = painterResource(Res.drawable.baseline_arrow_back_ios_24),
+                                contentDescription = "close"
+                            )
+                        },
                     )
+                },
+                snackbarHost = {
+                    SnackbarHost(hostState = snackBarHostState)
+                },
+            ) { it ->
+                var commonName by remember { mutableStateOf("") }
+                var scientificName by remember { mutableStateOf("") }
+                var exposure by remember { mutableStateOf("") }
+                var description by remember { mutableStateOf("") }
 
+                Box(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    Column(
+                        modifier = Modifier.padding(
+                            top = it.calculateTopPadding() + 16.dp,
+                            bottom = it.calculateBottomPadding(),
+                            start = 16.dp,
+                            end = 16.dp,
+                        )
+                            .fillMaxHeight(),
+                        verticalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .verticalScroll(rememberScrollState())
+                                .weight(1f, false),
+                            verticalArrangement = Arrangement.spacedBy(4.dp),
+                        ) {
+
+                            ImagePicker(
+                                modifier = Modifier.padding(bottom = 16.dp),
+                                image = imageBitmap,
+                                onStartCamera = {
+                                    showCamera = true
+                                },
+                                onImageSelected = {
+                                    imageBitmap = it
+                                }
+                            )
+
+                            OutlinedTextField(
+                                value = commonName,
+                                onValueChange = { commonName = it },
+                                label = { Text("Common Name") },
+                                modifier = Modifier.fillMaxWidth(),
+                            )
+
+                            OutlinedTextField(
+                                value = scientificName,
+                                onValueChange = { scientificName = it },
+                                label = { Text("Scientific Name") },
+                                modifier = Modifier.fillMaxWidth()
+                            )
+
+                            var showBottomSheet by remember { mutableStateOf(false) }
+
+                            ReadOnlyTextField(
+                                value = exposure,
+                                label = "Exposure",
+                                onClick = {
+                                    showBottomSheet = true
+                                }
+                            )
+
+                            OutlinedTextField(
+                                modifier = Modifier.height(200.dp).fillMaxWidth(),
+                                value = description,
+                                onValueChange = { description = it },
+                                label = { Text("Description") },
+                            )
+
+                            if (showBottomSheet) {
+                                ValuesBottomSheet(
+                                    title = "Exposure: ",
+                                    values = listOf(
+                                        BottomSheetValue(
+                                            label = Exposure.SUN.value,
+                                            description = Exposure.SUN.description,
+                                            icon = painterResource(Res.drawable.baseline_sunny_24),
+                                            value = Exposure.SUN.value,
+                                        ),
+                                        BottomSheetValue(
+                                            label = Exposure.SHADE.value,
+                                            description = Exposure.SHADE.description,
+                                            icon = painterResource(Res.drawable.baseline_cloud_24),
+                                            value = Exposure.SHADE.value,
+                                        ),
+                                        BottomSheetValue(
+                                            label = Exposure.PARTIAL_SHADE.value,
+                                            description = Exposure.PARTIAL_SHADE.description,
+                                            icon = painterResource(Res.drawable.baseline_sunny_snowing_24),
+                                            value = Exposure.PARTIAL_SHADE.value,
+                                        ),
+                                    ),
+                                    onDismiss = {
+                                        showBottomSheet = false
+                                    },
+                                    onValueSelected = {
+                                        exposure = it
+                                    }
+                                )
+                            }
+                        }
+
+                        Button(
+                            modifier = Modifier
+                                .padding(vertical = 8.dp)
+                                .fillMaxWidth(),
+                            onClick = {
+                                showLoading = true
+                                viewModel.sendEvent(
+                                    AddUIEvent.AddClicked(
+                                        commonName = commonName,
+                                        scientificName = scientificName,
+                                        description = description,
+                                        exposure = exposure
+                                    )
+                                )
+                            },
+                        ) {
+                            Text("Add")
+                        }
+                    }
+                    if (showLoading) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(64.dp).align(Alignment.Center),
+                        )
+
+                    }
                 }
             }
         }
