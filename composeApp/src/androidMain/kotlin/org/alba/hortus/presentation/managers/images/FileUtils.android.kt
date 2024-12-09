@@ -11,6 +11,12 @@ actual fun saveByteArrayToFile(byteArray: ByteArray, fileName: String): String {
     return file.absolutePath
 }
 
-actual fun deleteFile(fileName: String): Boolean {
-    return true
+actual fun deleteFile(filePath: String): Boolean {
+    val file = File(filePath)
+    return if (file.exists()) {
+        file.delete()
+        true
+    } else {
+        false
+    }
 }

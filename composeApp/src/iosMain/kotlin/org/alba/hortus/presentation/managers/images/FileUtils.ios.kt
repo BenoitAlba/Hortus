@@ -22,6 +22,14 @@ fun ByteArray.toNSData(): NSData = memScoped {
     NSData.create(bytes = allocArrayOf(this@toNSData), length = this@toNSData.size.toULong())
 }
 
-actual fun deleteFile(fileName: String): Boolean {
-    return true
+@OptIn(ExperimentalForeignApi::class)
+actual fun deleteFile(filePath: String): Boolean {
+    val fileManager = NSFileManager.defaultManager()
+    val fileUrl = NSURL.fileURLWithPath(filePath)
+    try {
+        fileManager.removeItemAtURL(fileUrl, error = null)
+        return true
+    } catch (e: Throwable) {
+        return false
+    }
 }
