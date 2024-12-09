@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.kspCompose)
     alias(libs.plugins.room)
+    alias(libs.plugins.googleServices)
 }
 
 kotlin {
@@ -38,6 +39,9 @@ kotlin {
             implementation(libs.koin.android)
             implementation(libs.ktor.client.android)
             implementation(libs.accompanist.permissions)
+
+            implementation(project.dependencies.platform(libs.firebase.bom))
+            implementation(libs.firebase.vertexai)
         }
         commonMain.dependencies {
             implementation(compose.runtime)

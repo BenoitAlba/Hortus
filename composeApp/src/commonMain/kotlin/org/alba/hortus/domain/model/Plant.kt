@@ -8,11 +8,13 @@ import hortus.composeapp.generated.resources.Res
 import hortus.composeapp.generated.resources.baseline_cloud_24
 import hortus.composeapp.generated.resources.baseline_sunny_24
 import hortus.composeapp.generated.resources.baseline_sunny_snowing_24
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
 import org.jetbrains.compose.resources.DrawableResource
 
+@Serializable
 @Entity(tableName = "plants")
 @TypeConverters(StringListConverters::class)
 data class PlantDatabaseModel(
@@ -20,16 +22,18 @@ data class PlantDatabaseModel(
     val commonName: String,
     val scientificName: String? = null,
     val description: String? = null,
-    val floweringPeriod: List<String>? = null, // months number from 1 to 12
-    val fruitingPeriod: List<String>? = null, // months number from 1 to 12
+    val floweringMonths: List<String>? = null, // months number from 1 to 12
+    val fruitingMonths: List<String>? = null, // months number from 1 to 12
+    val isAFruitPlant: Boolean? = false,
+    val isAnAnnualPlant: Boolean? = false,
     val maxHeight: Int? = null, // cm
     val maxWidth: Int? = null, // cm
-    val currentExposure: String,
+    val currentExposure: String = "",
     val exposure: List<String>? = null, // list of exposure types (sun, shade, partial shade)
     val soilMoisture: String? = null,
     val pollination: String? = null, // if fruit tree
-    val harvestPeriod: List<String>? = null, // if fruit tree months number from 1 to 12
-    val hardiness: Int = 0,
+    val harvestMonths: List<String>? = null, // if fruit tree months number from 1 to 12
+    val hardiness: Float? = 0.0f,
     val createdAt: Long = 0,
     val updatedAt: Long? = 0,
     val image: String? = null
