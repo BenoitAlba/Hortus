@@ -129,8 +129,8 @@ fun ImagePicker(
             },
             onNegativeClick = {
                 permissionRationalDialog = false
-            })
-
+            }
+        )
     }
 
     Box(

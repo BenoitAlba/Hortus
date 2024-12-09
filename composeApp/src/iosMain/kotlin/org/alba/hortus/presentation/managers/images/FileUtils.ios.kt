@@ -21,3 +21,7 @@ actual fun saveByteArrayToFile(byteArray: ByteArray, fileName: String): String {
 fun ByteArray.toNSData(): NSData = memScoped {
     NSData.create(bytes = allocArrayOf(this@toNSData), length = this@toNSData.size.toULong())
 }
+
+actual fun deleteFile(fileName: String): Boolean {
+    return true
+}

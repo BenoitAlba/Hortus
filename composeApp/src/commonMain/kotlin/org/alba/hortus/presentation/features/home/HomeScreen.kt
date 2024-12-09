@@ -22,8 +22,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,6 +41,8 @@ import hortus.composeapp.generated.resources.Res
 import hortus.composeapp.generated.resources.background
 import hortus.composeapp.generated.resources.baseline_cloud_24
 import kotlinx.coroutines.launch
+import org.alba.hortus.domain.model.PlantDatabaseModel
+import org.alba.hortus.presentation.components.AlertMessageDialog
 import org.alba.hortus.presentation.components.PlantCard
 import org.alba.hortus.presentation.features.new.AddPlantScreen
 import org.jetbrains.compose.resources.painterResource
@@ -53,6 +58,8 @@ class HomeScreen(
         val navigator = LocalNavigator.currentOrThrow
         val snackBarHostState = remember { SnackbarHostState() }
         val scope = rememberCoroutineScope()
+
+        var showDeleteDialog by remember { mutableStateOf<PlantDatabaseModel?>(null) }
 
         val uiState = viewModel.uiState.collectAsState()
         message?.let {
@@ -108,6 +115,27 @@ class HomeScreen(
                         }
 
                     } else {
+                        if (showDeleteDialog != null) {
+                            AlertMessageDialog(
+                                title = "Delete the plant",
+                                message = "${showDeleteDialog?.commonName} ?",
+                                positiveButtonText = "Yes",
+                                negativeButtonText = "No",
+                                onPositiveClick = {
+                                    viewModel.sendEvent(
+                                        HomeScreenViewModel.HomeUIEvent.DeletePlantClicked(
+                                            showDeleteDialog!!.id,
+                                            showDeleteDialog!!.image
+                                        )
+                                    )
+                                    showDeleteDialog = null
+                                },
+                                onNegativeClick = {
+                                    showDeleteDialog = null
+                                }
+                            )
+                        }
+
                         LazyColumn(
                             modifier = Modifier.padding(
                                 top = it.calculateTopPadding() + 16.dp,
@@ -119,7 +147,15 @@ class HomeScreen(
 
                             ) {
                             items(state.plants.size) { index ->
-                                PlantCard(state.plants[index])
+                                PlantCard(
+                                    state.plants[index],
+                                    onClick = {
+                                        //navigator.push(PlantDetailScreen(state.plants[index]))
+                                    },
+                                    onLongClick = {
+                                        showDeleteDialog = state.plants[index]
+                                    }
+                                )
                             }
                         }
                     }

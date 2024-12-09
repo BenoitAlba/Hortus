@@ -131,8 +131,8 @@ fun AlertMessageDialog(
                 message?.let {
                     Text(
                         text = it,
-                        fontWeight = FontWeight.Medium,
-                        textAlign = TextAlign.Center
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
                     )
                 }
                 Spacer(modifier = Modifier.height(15.dp))

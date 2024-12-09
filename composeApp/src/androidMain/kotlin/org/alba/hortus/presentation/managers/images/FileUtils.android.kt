@@ -10,3 +10,7 @@ actual fun saveByteArrayToFile(byteArray: ByteArray, fileName: String): String {
     file.writeBytes(byteArray)
     return file.absolutePath
 }
+
+actual fun deleteFile(fileName: String): Boolean {
+    return true
+}

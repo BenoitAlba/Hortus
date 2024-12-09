@@ -7,6 +7,7 @@ import org.alba.hortus.data.local.PlantLocalDataSource
 import org.alba.hortus.presentation.features.new.usecases.AddPlantUseCase
 import org.alba.hortus.presentation.features.home.usecases.GetPlantsUseCase
 import org.alba.hortus.presentation.features.new.usecases.CreatePlantImageFileUseCase
+import org.alba.hortus.presentation.features.usecases.DeletePlantUseCase
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.factoryOf
@@ -23,6 +24,7 @@ val appModule = module {
     // feature home
     factoryOf(::HomeScreenViewModel)
     factoryOf(::GetPlantsUseCase)
+    factoryOf(::DeletePlantUseCase)
 
     // feature add
     factoryOf(::AddPlantScreenViewModel)
