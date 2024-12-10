@@ -14,7 +14,7 @@ class HomeScreenViewModel(
     private val deletePlantUseCase: DeletePlantUseCase
 ) : ScreenModel {
 
-    var _uiState: MutableStateFlow<HomeScreenUIState> = MutableStateFlow(HomeScreenUIState.Loading)
+    private var _uiState: MutableStateFlow<HomeScreenUIState> = MutableStateFlow(HomeScreenUIState.Loading)
     val uiState: StateFlow<HomeScreenUIState> = _uiState
 
     // todo check how to handle errors with room

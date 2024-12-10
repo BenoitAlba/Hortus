@@ -44,6 +44,7 @@ import kotlinx.coroutines.launch
 import org.alba.hortus.domain.model.PlantDatabaseModel
 import org.alba.hortus.presentation.components.AlertMessageDialog
 import org.alba.hortus.presentation.components.PlantCard
+import org.alba.hortus.presentation.features.details.PlantDetailsScreen
 import org.alba.hortus.presentation.features.new.AddPlantScreen
 import org.jetbrains.compose.resources.painterResource
 
@@ -150,7 +151,7 @@ class HomeScreen(
                                 PlantCard(
                                     state.plants[index],
                                     onClick = {
-                                        //navigator.push(PlantDetailScreen(state.plants[index]))
+                                        navigator.push(PlantDetailsScreen(state.plants[index].id))
                                     },
                                     onLongClick = {
                                         showDeleteDialog = state.plants[index]
@@ -159,7 +160,6 @@ class HomeScreen(
                             }
                         }
                     }
-
                 }
             }
         }

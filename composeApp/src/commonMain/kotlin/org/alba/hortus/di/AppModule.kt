@@ -8,6 +8,8 @@ import org.alba.hortus.presentation.features.new.usecases.AddPlantUseCase
 import org.alba.hortus.presentation.features.home.usecases.GetPlantsUseCase
 import org.alba.hortus.presentation.features.new.usecases.CreatePlantImageFileUseCase
 import org.alba.hortus.presentation.features.usecases.DeletePlantUseCase
+import org.alba.hortus.presentation.features.details.PlantDetailsScreenViewModel
+import org.alba.hortus.presentation.features.details.GetPlantUseCase
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.factoryOf
@@ -30,6 +32,10 @@ val appModule = module {
     factoryOf(::AddPlantScreenViewModel)
     factoryOf(::AddPlantUseCase)
     factoryOf(::CreatePlantImageFileUseCase)
+
+    // feature details
+    factoryOf(::PlantDetailsScreenViewModel)
+    factoryOf(::GetPlantUseCase)
 }
 
 fun initKoin(config: KoinAppDeclaration? = null) =
