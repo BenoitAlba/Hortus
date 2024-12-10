@@ -5,6 +5,7 @@ import kotlinx.coroutines.IO
 import kotlinx.serialization.json.Json
 import org.alba.hortus.data.local.PlantLocalDataSource
 import org.alba.hortus.data.remote.GenerativeModel
+import org.alba.hortus.domain.model.Exposure
 import org.alba.hortus.domain.model.PlantDatabaseModel
 
 class AddPlantUseCase(
@@ -21,10 +22,9 @@ class AddPlantUseCase(
         with(Dispatchers.IO) {
             var entities = listOf<PlantDatabaseModel>()
             try {
-                val response = generativeModel.generateJsonContent("$AI_GEN_TEXT ($commonName)")
+                val response = generativeModel.generateJsonContent(buildQuery(commonName))
                 if (response != null) {
                     entities = Json.decodeFromString<List<PlantDatabaseModel>>(response)
-
                 }
             } catch (e: Exception) {
                 println("---> error $e")
@@ -55,18 +55,17 @@ class AddPlantUseCase(
     }
 }
 
-val ENUM =
-    "enum class Exposure(val value: String, val description: String, val drawableRes: DrawableResource) {\n" +
-            "    SUN(\"Sun\", \"My plant is in full sun situation\", Res.drawable.baseline_sunny_24),\n" +
-            "    SHADE(\"Shade\", \"My plant is in shade situation\", Res.drawable.baseline_cloud_24),\n" +
-            "    PARTIAL_SHADE(\"Partial shade\", \"My plant is in partial shade situation\", Res.drawable.baseline_sunny_snowing_24)\n" +
-            "}"
+private fun buildQuery(commonName: String) =
+    QUERY_TEXT.addStringAtIndex(commonName, QUERY_TEXT.indexOf(':') + 1)
 
-val AI_GEN_TEXT =
-    "Provide me with information about the following plant (the one in parentheses). " +
+private fun String.addStringAtIndex(string: String, index: Int) =
+    StringBuilder(this).apply { insert(index, string) }.toString()
+
+val QUERY_TEXT =
+    "Provide me with information about the following plant: ." +
             "I would like to know its scientific name, a detailed description, " +
             "its flowering and fruiting periods (listed by month numbers), " +
             "its maximum height and width at maturity (in metric units), " +
-            "its ideal exposure, (base on $ENUM" +
-            "soil type, hardiness: What is the lowest temperature this plant can survive (e.g., -20°C)," +
+            "its ideal exposure, (base on: ${Exposure.getAllNames()}) " +
+            "soil type (like Sandy soil, Loamy soil, Clay soil, etc.), hardiness: What is the lowest temperature this plant can survive (e.g., -20°C)," +
             " and its harvest period if it is a fruit tree."
