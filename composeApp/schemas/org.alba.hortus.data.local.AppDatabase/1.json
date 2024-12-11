@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "6a15307c949f49cf751a229f706ab3b9",
+    "identityHash": "fe8e627e7cfc1aa08a83d2ca52145377",
     "entities": [
       {
         "tableName": "plants",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `commonName` TEXT NOT NULL, `scientificName` TEXT, `description` TEXT, `floweringMonths` TEXT, `fruitingMonths` TEXT, `isAFruitPlant` INTEGER, `isAnAnnualPlant` INTEGER, `maxHeight` INTEGER, `maxWidth` INTEGER, `currentExposure` TEXT NOT NULL, `exposure` TEXT, `soilMoisture` TEXT, `pollination` TEXT, `harvestMonths` TEXT, `hardiness` REAL, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER, `image` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `commonName` TEXT NOT NULL, `scientificName` TEXT, `description` TEXT, `floweringMonths` TEXT, `fruitingMonths` TEXT, `isAFruitPlant` INTEGER, `isAnAnnualPlant` INTEGER, `maxHeight` INTEGER, `maxWidth` INTEGER, `currentExposure` TEXT NOT NULL, `exposure` TEXT, `exposureAdvise` TEXT, `soilMoisture` TEXT, `pollination` TEXT, `harvestMonths` TEXT, `hardiness` REAL, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER, `image` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -72,6 +72,11 @@
             "affinity": "TEXT"
           },
           {
+            "fieldPath": "exposureAdvise",
+            "columnName": "exposureAdvise",
+            "affinity": "TEXT"
+          },
+          {
             "fieldPath": "soilMoisture",
             "columnName": "soilMoisture",
             "affinity": "TEXT"
@@ -118,7 +123,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '6a15307c949f49cf751a229f706ab3b9')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'fe8e627e7cfc1aa08a83d2ca52145377')"
     ]
   }
 }

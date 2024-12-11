@@ -7,7 +7,6 @@ import androidx.room.TypeConverters
 import hortus.composeapp.generated.resources.Res
 import hortus.composeapp.generated.resources.baseline_cloud_24
 import hortus.composeapp.generated.resources.baseline_sunny_24
-import hortus.composeapp.generated.resources.baseline_sunny_snowing_24
 import hortus.composeapp.generated.resources.partly_cloudy_day_24dp
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
@@ -31,6 +30,7 @@ data class PlantDatabaseModel(
     val maxWidth: Int? = null, // cm
     val currentExposure: String = "",
     val exposure: List<String>? = null, // list of exposure types (sun, shade, partial shade)
+    val exposureAdvise: String? = null,
     val soilMoisture: String? = null,
     val pollination: String? = null, // if fruit tree
     val harvestMonths: List<String>? = null, // if fruit tree months number from 1 to 12
@@ -62,5 +62,4 @@ enum class Exposure(val value: String, val description: String, val drawableRes:
         fun getAllNames() =  entries.map { it.name }.joinToString(", ")
         fun getEnumForName(name: String) = entries.find { it.name == name }
     }
-
 }

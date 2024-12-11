@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -40,7 +39,6 @@ import hortus.composeapp.generated.resources.baseline_arrow_back_ios_24
 import hortus.composeapp.generated.resources.baseline_cloud_24
 import hortus.composeapp.generated.resources.baseline_height_24
 import hortus.composeapp.generated.resources.default_plant
-import io.ktor.http.LinkHeader.Parameters.Title
 import org.alba.hortus.domain.model.Exposure
 import org.alba.hortus.domain.model.PlantDatabaseModel
 import org.alba.hortus.presentation.components.MonthsView
@@ -134,7 +132,11 @@ class PlantDetailsScreen(
 
                         state.plant.exposure?.let {
                             item {
-                                Exposures(it, state.plant.currentExposure)
+                                Exposures(
+                                    it,
+                                    state.plant.currentExposure,
+                                    state.plant.exposureAdvise ?: ""
+                                )
                             }
                         }
                     }
@@ -246,7 +248,7 @@ fun Size(maxHeight: Int, maxWidth: Int) {
 }
 
 @Composable
-fun Exposures(exposures: List<String>, currentExposure: String) {
+fun Exposures(exposures: List<String>, currentExposure: String, advises: String) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(32.dp),
         verticalAlignment = Alignment.Top
@@ -278,7 +280,7 @@ fun Exposures(exposures: List<String>, currentExposure: String) {
                 } else {
                     MaterialTheme.colorScheme.onErrorContainer
                 },
-                text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                text = advises
             )
         }
     }
@@ -331,4 +333,3 @@ fun ExposureRow(exposures: List<String>) {
         }
     }
 }
-

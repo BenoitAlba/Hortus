@@ -77,16 +77,21 @@ fun PlantCard(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
                         painter = when (plant.currentExposure) {
-                            Exposure.SUN.value -> painterResource(Exposure.SUN.drawableRes)
-                            Exposure.SHADE.value -> painterResource(Exposure.SHADE.drawableRes)
-                            Exposure.PARTIAL_SHADE.value -> painterResource(Exposure.PARTIAL_SHADE.drawableRes)
+                            Exposure.SUN.name -> painterResource(Exposure.SUN.drawableRes)
+                            Exposure.SHADE.name -> painterResource(Exposure.SHADE.drawableRes)
+                            Exposure.PARTIAL_SHADE.name -> painterResource(Exposure.PARTIAL_SHADE.drawableRes)
                             else -> painterResource(Res.drawable.baseline_cloud_24)
                         },
                         contentDescription = "Exposition",
                         modifier = Modifier.size(24.dp)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text(text = "Soleil")
+                    Text(text = when (plant.currentExposure) {
+                        Exposure.SUN.name -> Exposure.SUN.value
+                        Exposure.SHADE.name -> Exposure.SHADE.value
+                        Exposure.PARTIAL_SHADE.name -> Exposure.PARTIAL_SHADE.value
+                        else -> ""
+                    })
                 }
             }
         }
