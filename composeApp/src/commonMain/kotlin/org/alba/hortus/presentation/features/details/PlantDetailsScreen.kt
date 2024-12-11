@@ -40,6 +40,7 @@ import hortus.composeapp.generated.resources.arrow_range_24dp
 import hortus.composeapp.generated.resources.baseline_arrow_back_ios_24
 import hortus.composeapp.generated.resources.baseline_height_24
 import hortus.composeapp.generated.resources.default_plant
+import hortus.composeapp.generated.resources.device_thermostat_24dp
 import org.alba.hortus.domain.model.Exposure
 import org.alba.hortus.domain.model.PlantDatabaseModel
 import org.alba.hortus.presentation.components.MonthsView
@@ -136,7 +137,8 @@ class PlantDetailsScreen(
                                 Exposures(
                                     it,
                                     state.plant.currentExposure,
-                                    state.plant.exposureAdvise ?: ""
+                                    state.plant.exposureAdvise ?: "",
+                                    state.plant.hardiness ?: 0.0f
                                 )
                             }
                         }
@@ -253,7 +255,7 @@ fun Size(maxHeight: Int, maxWidth: Int) {
 }
 
 @Composable
-fun Exposures(exposures: List<String>, currentExposure: String, advises: String) {
+fun Exposures(exposures: List<String>, currentExposure: String, advises: String, hardiness: Float) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(32.dp),
         verticalAlignment = Alignment.Top
@@ -263,6 +265,9 @@ fun Exposures(exposures: List<String>, currentExposure: String, advises: String)
         ) {
             ExposureColumn(title = "Recommended Exposures:", exposures = exposures)
             ExposureColumn(title = "Current Exposures:", exposures = listOf(currentExposure))
+            HardinessView(
+                hardiness
+            )
         }
 
         val isExposureCorrect = exposures.contains(currentExposure)
@@ -335,6 +340,32 @@ fun ExposureRow(exposures: List<String>) {
                 modifier = Modifier.size(32.dp),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
+        }
+    }
+}
+
+@Composable
+fun HardinessView(value: Float) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        Title(text = "Hardiness:")
+        Row(
+            modifier = Modifier
+                .padding(start = 16.dp)
+                .clip(RoundedCornerShape(16.dp))
+                .background(MaterialTheme.colorScheme.surfaceVariant)
+                .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                painter = painterResource(Res.drawable.device_thermostat_24dp),
+                contentDescription = "Température"
+            )
+            Column {
+                Text("util")
+                Text("$value °C")
+            }
         }
     }
 }
