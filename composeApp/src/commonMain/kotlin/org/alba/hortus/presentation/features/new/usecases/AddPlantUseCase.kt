@@ -32,10 +32,16 @@ class AddPlantUseCase(
 
             val plant = PlantDatabaseModel(
                 commonName = commonName,
-                scientificName = scientificName
-                    ?: if (entities.isNotEmpty()) entities[0].scientificName else null,
-                description = description
-                    ?: if (entities.isNotEmpty()) entities[0].description else null,
+                scientificName = if (scientificName.isNullOrBlank()) {
+                    entities[0].scientificName
+                } else {
+                    scientificName
+                },
+                description = if (description.isNullOrBlank()) {
+                    entities[0].description
+                } else {
+                    description
+                },
                 floweringMonths = if (entities.isNotEmpty()) entities[0].floweringMonths else null,
                 fruitingMonths = if (entities.isNotEmpty()) entities[0].fruitingMonths else null,
                 isAFruitPlant = if (entities.isNotEmpty()) entities[0].isAFruitPlant else null,

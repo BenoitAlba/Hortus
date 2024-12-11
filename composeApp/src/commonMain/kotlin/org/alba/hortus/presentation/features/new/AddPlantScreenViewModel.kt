@@ -39,7 +39,7 @@ class AddPlantScreenViewModel(
         exposure: String
     ) {
         screenModelScope.launch {
-            if (commonName.isBlank() && exposure.isBlank()) {
+            if (commonName.isBlank() || exposure.isBlank()) {
                 _uiEffect.send(AddPlantScreenUIEffect.ShowToast("Missing information, Common name and exposure are required"))
             } else {
                 var fileName = imageByteArray?.let {

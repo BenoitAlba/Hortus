@@ -1,15 +1,44 @@
 package org.alba.hortus.presentation.features.details
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
+import coil3.compose.AsyncImage
+import hortus.composeapp.generated.resources.Res
+import hortus.composeapp.generated.resources.baseline_arrow_back_ios_24
+import hortus.composeapp.generated.resources.default_plant
+import org.alba.hortus.domain.model.PlantDatabaseModel
+import org.alba.hortus.presentation.components.MonthsView
+import org.alba.hortus.presentation.features.home.HomeScreen
+import org.jetbrains.compose.resources.painterResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 class PlantDetailsScreen(
@@ -17,7 +46,7 @@ class PlantDetailsScreen(
 ) : Screen {
     @Composable
     override fun Content() {
-
+        val navigator = LocalNavigator.currentOrThrow
         val viewModel = getScreenModel<PlantDetailsScreenViewModel>()
         viewModel.getPlantDetails(id)
         val uiState = viewModel.uiState.collectAsState()
@@ -30,6 +59,17 @@ class PlantDetailsScreen(
                             modifier = Modifier.fillMaxWidth(),
                             text = "Plant Details",
                         )
+                    },
+                    navigationIcon = {
+                        Icon(
+                            modifier = Modifier
+                                .padding(start = 16.dp)
+                                .clickable {
+                                    navigator.push(HomeScreen())
+                                },
+                            painter = painterResource(Res.drawable.baseline_arrow_back_ios_24),
+                            contentDescription = "close"
+                        )
                     }
                 )
             }
@@ -38,13 +78,127 @@ class PlantDetailsScreen(
                 is PlantDetailsScreenViewModel.PlantDetailsUIState.Error -> {
 
                 }
+
                 PlantDetailsScreenViewModel.PlantDetailsUIState.Loading -> {
 
                 }
+
                 is PlantDetailsScreenViewModel.PlantDetailsUIState.Success -> {
 
+                    LazyColumn(
+                        modifier = Modifier.padding(
+                            top = it.calculateTopPadding() + 16.dp,
+                            bottom = it.calculateBottomPadding(),
+                            start = 16.dp,
+                            end = 16.dp,
+                        ).fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        item {
+                            AsyncImage(
+                                model = state.plant.image ?: Res.drawable.default_plant,
+                                placeholder = painterResource(Res.drawable.default_plant),
+                                error = painterResource(Res.drawable.default_plant),
+                                fallback = painterResource(Res.drawable.default_plant),
+                                contentDescription = "Image de la plante",
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier.clip(CircleShape).size(200.dp)
+                            )
+                        }
+
+                        item {
+                            PlantDescription(state.plant)
+                        }
+
+                        state.plant.floweringMonths?.let {
+                            item {
+                                MonthsView(title = "Flowering Months:", months = it)
+                            }
+                        }
+
+                        if (state.plant.isAFruitPlant == true) {
+                            state.plant.fruitingMonths?.let {
+                                item {
+                                    MonthsView(title = "Fruiting Months:", months = it)
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
     }
 }
+
+@Composable
+fun PlantDescription(plant: PlantDatabaseModel) {
+    Box(
+        modifier = Modifier
+            .clip(RoundedCornerShape(8.dp))
+            .background(MaterialTheme.colorScheme.surfaceVariant)
+            .padding(16.dp)
+    ) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            TextRow(title = "Common Name:", value = plant.commonName)
+
+            plant.scientificName?.let {
+                TextRow(title = "Scientific Name:", value = it)
+            }
+
+            plant.description?.let {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                ) {
+                    Title(text = "Description:")
+                    TextView(text = it)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun MonthsView(title: String, months: List<String>) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        Title(text = title)
+        MonthsView(
+            modifier = Modifier.padding(horizontal = 16.dp),
+            selectedIndexes = months.map { it.toInt() }
+        )
+    }
+}
+
+@Composable
+fun TextRow(title: String, value: String) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Title(text = title)
+        TextView(text = value)
+    }
+}
+
+@Composable
+fun Title(text: String) {
+    Text(
+        text = text,
+        fontWeight = FontWeight.Bold,
+        style = MaterialTheme.typography.labelLarge
+    )
+}
+
+@Composable
+fun TextView(text: String) {
+    Text(
+        text = text,
+        style = MaterialTheme.typography.bodyMedium
+    )
+}
+
+
