@@ -29,7 +29,7 @@ class AddPlantUseCase(
                     exposureAdvise =
                         generativeModel.generateTextContent(
                             buildExposureQuery(entities[0], commonName, exposure)
-                        )
+                        )?.trimEnd()
                 }
             } catch (e: Exception) {
                 println("---> error $e")
@@ -43,7 +43,7 @@ class AddPlantUseCase(
                     scientificName
                 },
                 description = if (description.isNullOrBlank()) {
-                    entities[0].description
+                    entities[0].description?.trimEnd()
                 } else {
                     description
                 },

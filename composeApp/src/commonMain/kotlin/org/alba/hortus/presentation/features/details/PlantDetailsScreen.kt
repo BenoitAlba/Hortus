@@ -6,8 +6,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -36,7 +38,6 @@ import coil3.compose.AsyncImage
 import hortus.composeapp.generated.resources.Res
 import hortus.composeapp.generated.resources.arrow_range_24dp
 import hortus.composeapp.generated.resources.baseline_arrow_back_ios_24
-import hortus.composeapp.generated.resources.baseline_cloud_24
 import hortus.composeapp.generated.resources.baseline_height_24
 import hortus.composeapp.generated.resources.default_plant
 import org.alba.hortus.domain.model.Exposure
@@ -138,6 +139,10 @@ class PlantDetailsScreen(
                                     state.plant.exposureAdvise ?: ""
                                 )
                             }
+                        }
+
+                        item {
+                            Spacer(Modifier.height(16.dp))
                         }
                     }
                 }
@@ -256,8 +261,8 @@ fun Exposures(exposures: List<String>, currentExposure: String, advises: String)
         Column(
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
-            ExposureColumn(title = "Recommended Exposures", exposures = exposures)
-            ExposureColumn(title = "Current Exposures", exposures = listOf(currentExposure))
+            ExposureColumn(title = "Recommended Exposures:", exposures = exposures)
+            ExposureColumn(title = "Current Exposures:", exposures = listOf(currentExposure))
         }
 
         val isExposureCorrect = exposures.contains(currentExposure)
