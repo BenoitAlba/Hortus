@@ -71,7 +71,7 @@ val QUERY_TEXT =
     "Provide me with information about the following plant: ." +
             "I would like to know its scientific name, a detailed description, " +
             "its flowering and fruiting periods (listed by month numbers), " +
-            "its maximum height and width at maturity (in metric units), " +
+            "its maximum height and width at maturity (in metric units in cm), " +
             "its ideal exposure, (base on: ${Exposure.getAllNames()}) " +
             "soil type (like Sandy soil, Loamy soil, Clay soil, etc.), hardiness: What is the lowest temperature this plant can survive (e.g., -20°C)," +
             " and its harvest period if it is a fruit tree."

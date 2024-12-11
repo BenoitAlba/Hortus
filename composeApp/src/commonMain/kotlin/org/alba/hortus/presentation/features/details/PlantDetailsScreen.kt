@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,6 +25,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -33,8 +35,13 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import coil3.compose.AsyncImage
 import hortus.composeapp.generated.resources.Res
+import hortus.composeapp.generated.resources.arrow_range_24dp
 import hortus.composeapp.generated.resources.baseline_arrow_back_ios_24
+import hortus.composeapp.generated.resources.baseline_cloud_24
+import hortus.composeapp.generated.resources.baseline_height_24
 import hortus.composeapp.generated.resources.default_plant
+import io.ktor.http.LinkHeader.Parameters.Title
+import org.alba.hortus.domain.model.Exposure
 import org.alba.hortus.domain.model.PlantDatabaseModel
 import org.alba.hortus.presentation.components.MonthsView
 import org.alba.hortus.presentation.features.home.HomeScreen
@@ -124,6 +131,12 @@ class PlantDetailsScreen(
                                 }
                             }
                         }
+
+                        state.plant.exposure?.let {
+                            item {
+                                Exposures(it, state.plant.currentExposure)
+                            }
+                        }
                     }
                 }
             }
@@ -155,6 +168,10 @@ fun PlantDescription(plant: PlantDatabaseModel) {
                     Title(text = "Description:")
                     TextView(text = it)
                 }
+            }
+
+            if (plant.maxHeight != null && plant.maxWidth != null) {
+                Size(maxHeight = plant.maxHeight, maxWidth = plant.maxWidth)
             }
         }
     }
@@ -194,11 +211,124 @@ fun Title(text: String) {
 }
 
 @Composable
-fun TextView(text: String) {
+fun TextView(text: String, color: Color = Color.Unspecified) {
     Text(
         text = text,
+        color = color,
         style = MaterialTheme.typography.bodyMedium
     )
 }
 
+@Composable
+fun Size(maxHeight: Int, maxWidth: Int) {
+    Row(
+        Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            painter = painterResource(Res.drawable.baseline_height_24),
+            contentDescription = "Height"
+        )
+        Text(
+            modifier = Modifier.padding(end = 8.dp),
+            text = "$maxHeight cm",
+        )
+
+        Icon(
+            painter = painterResource(Res.drawable.arrow_range_24dp),
+            contentDescription = "Width"
+        )
+        Text(
+            text = "$maxWidth cm",
+        )
+    }
+}
+
+@Composable
+fun Exposures(exposures: List<String>, currentExposure: String) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(32.dp),
+        verticalAlignment = Alignment.Top
+    ) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+        ) {
+            ExposureColumn(title = "Recommended Exposures", exposures = exposures)
+            ExposureColumn(title = "Current Exposures", exposures = listOf(currentExposure))
+        }
+
+        val isExposureCorrect = exposures.contains(currentExposure)
+        Box(
+            Modifier
+                .padding(top = 24.dp)
+                .clip(RoundedCornerShape(8.dp))
+                .then(
+                    if (isExposureCorrect) {
+                        Modifier.background(MaterialTheme.colorScheme.surfaceVariant)
+                    } else {
+                        Modifier.background(MaterialTheme.colorScheme.errorContainer)
+                    }
+                )
+                .padding(8.dp)
+        ) {
+            TextView(
+                color = if (isExposureCorrect) {
+                    MaterialTheme.colorScheme.onSurfaceVariant
+                } else {
+                    MaterialTheme.colorScheme.onErrorContainer
+                },
+                text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+            )
+        }
+    }
+
+}
+
+@Composable
+fun ExposureColumn(title: String, exposures: List<String>) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        Title(text = title)
+        Row(
+            modifier = Modifier
+                .padding(start = 16.dp)
+                .clip(RoundedCornerShape(16.dp))
+                .background(MaterialTheme.colorScheme.surfaceVariant)
+                .padding(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            ExposureRow(exposures)
+        }
+    }
+}
+
+@Composable
+fun ExposureRow(exposures: List<String>) {
+    exposures.forEach {
+        val icons = when (it) {
+            Exposure.SUN.name -> painterResource(Exposure.SUN.drawableRes)
+            Exposure.SHADE.name -> painterResource(Exposure.SHADE.drawableRes)
+            Exposure.PARTIAL_SHADE.name -> painterResource(Exposure.PARTIAL_SHADE.drawableRes)
+            else -> null
+        }
+        val contentDescription = when (it) {
+            Exposure.SUN.name -> Exposure.SUN.value
+            Exposure.SHADE.name -> Exposure.SHADE.value
+            Exposure.PARTIAL_SHADE.name -> Exposure.PARTIAL_SHADE.value
+            else -> null
+        }
+
+        icons?.let {
+            Icon(
+                painter = icons,
+                contentDescription = contentDescription,
+                modifier = Modifier.size(32.dp),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+    }
+}
 

@@ -8,6 +8,7 @@ import hortus.composeapp.generated.resources.Res
 import hortus.composeapp.generated.resources.baseline_cloud_24
 import hortus.composeapp.generated.resources.baseline_sunny_24
 import hortus.composeapp.generated.resources.baseline_sunny_snowing_24
+import hortus.composeapp.generated.resources.partly_cloudy_day_24dp
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
@@ -54,11 +55,12 @@ enum class Exposure(val value: String, val description: String, val drawableRes:
     PARTIAL_SHADE(
         "Partial shade",
         "My plant is in partial shade situation",
-        Res.drawable.baseline_sunny_snowing_24
+        Res.drawable.partly_cloudy_day_24dp
     );
 
     companion object {
         fun getAllNames() =  entries.map { it.name }.joinToString(", ")
+        fun getEnumForName(name: String) = entries.find { it.name == name }
     }
 
 }
