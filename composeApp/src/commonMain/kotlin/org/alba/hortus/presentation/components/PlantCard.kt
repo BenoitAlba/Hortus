@@ -71,9 +71,16 @@ fun PlantCard(
             Column {
                 Text(
                     text = plant.commonName,
-                    fontSize = 18.sp,
-                    style = MaterialTheme.typography.headlineSmall
+                    style = MaterialTheme.typography.titleMedium
                 )
+                plant.scientificName?.let {
+                    Text(
+                        text = plant.scientificName,
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                    )
+                }
+
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
                         painter = when (plant.currentExposure) {
@@ -86,12 +93,15 @@ fun PlantCard(
                         modifier = Modifier.size(24.dp)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text(text = when (plant.currentExposure) {
-                        Exposure.SUN.name -> Exposure.SUN.value
-                        Exposure.SHADE.name -> Exposure.SHADE.value
-                        Exposure.PARTIAL_SHADE.name -> Exposure.PARTIAL_SHADE.value
-                        else -> ""
-                    })
+                    Text(
+                        text = when (plant.currentExposure) {
+                            Exposure.SUN.name -> Exposure.SUN.value
+                            Exposure.SHADE.name -> Exposure.SHADE.value
+                            Exposure.PARTIAL_SHADE.name -> Exposure.PARTIAL_SHADE.value
+                            else -> ""
+                        },
+                        style = MaterialTheme.typography.labelLarge
+                    )
                 }
             }
         }
