@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -143,6 +144,13 @@ class PlantDetailsScreen(
                             }
                         }
 
+                        state.plant.soilMoisture?.let {
+                            item {
+                                SoilMoistureView(it)
+                            }
+                        }
+
+                        // end of the view
                         item {
                             Spacer(Modifier.height(16.dp))
                         }
@@ -155,33 +163,28 @@ class PlantDetailsScreen(
 
 @Composable
 fun PlantDescription(plant: PlantDatabaseModel) {
-    Box(
-        modifier = Modifier
-            .clip(RoundedCornerShape(8.dp))
-            .background(MaterialTheme.colorScheme.surfaceVariant)
-            .padding(16.dp)
-    ) {
-        Column(
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            TextRow(title = "Common Name:", value = plant.commonName)
+    Container {
+        TextRow(title = "Common Name:", value = plant.commonName)
 
-            plant.scientificName?.let {
-                TextRow(title = "Scientific Name:", value = it)
-            }
+        plant.scientificName?.let {
+            TextRow(title = "Scientific Name:", value = it)
+        }
 
-            plant.description?.let {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(4.dp),
-                ) {
-                    Title(text = "Description:")
-                    TextView(text = it)
-                }
+        plant.description?.let {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
+                Title(text = "Description:")
+                TextView(text = it)
             }
+        }
 
-            if (plant.maxHeight != null && plant.maxWidth != null) {
-                Size(maxHeight = plant.maxHeight, maxWidth = plant.maxWidth)
-            }
+        if (plant.maxHeight != null && plant.maxWidth != null) {
+            Size(maxHeight = plant.maxHeight, maxWidth = plant.maxWidth)
+        }
+
+        plant.pollination?.let {
+            TextRow(title = "Pollination:", value = it)
         }
     }
 }
@@ -294,7 +297,6 @@ fun Exposures(exposures: List<String>, currentExposure: String, advises: String,
             )
         }
     }
-
 }
 
 @Composable
@@ -305,7 +307,6 @@ fun ExposureColumn(title: String, exposures: List<String>) {
         Title(text = title)
         Row(
             modifier = Modifier
-                .padding(start = 16.dp)
                 .clip(RoundedCornerShape(16.dp))
                 .background(MaterialTheme.colorScheme.surfaceVariant)
                 .padding(8.dp),
@@ -352,7 +353,6 @@ fun HardinessView(value: Float) {
         Title(text = "Hardiness:")
         Row(
             modifier = Modifier
-                .padding(start = 16.dp)
                 .clip(RoundedCornerShape(16.dp))
                 .background(MaterialTheme.colorScheme.surfaceVariant)
                 .padding(8.dp),
@@ -363,9 +363,34 @@ fun HardinessView(value: Float) {
                 contentDescription = "Température"
             )
             Column {
-                Text("util")
-                Text("$value °C")
+                TextView("util")
+                TextView("$value °C")
             }
+        }
+    }
+}
+
+@Composable
+fun SoilMoistureView(value: String) {
+    Container {
+        Title(text = "Soil Moisture:")
+        TextView(text = value)
+    }
+}
+
+@Composable
+fun Container(content: @Composable () -> Unit) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(8.dp))
+            .background(MaterialTheme.colorScheme.surfaceVariant)
+            .padding(16.dp)
+    ) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            content()
         }
     }
 }
