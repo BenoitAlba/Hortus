@@ -42,12 +42,23 @@ class AddPlantScreenViewModel(
             if (commonName.isBlank() || exposure.isBlank()) {
                 _uiEffect.send(AddPlantScreenUIEffect.ShowToast("Missing information, Common name and exposure are required"))
             } else {
-                var fileName = imageByteArray?.let {
-                     createPlantImageFileUseCase(it, commonName)
-                }
+                try {
+                    var fileName = imageByteArray?.let {
+                        createPlantImageFileUseCase(it, commonName)
+                    }
+                    addPlantUseCase.invoke(
+                        commonName,
+                        scientificName,
+                        description,
+                        exposure,
+                        fileName
+                    )
+                    _uiEffect.send(AddPlantScreenUIEffect.NavigateToHome("Plant added successfully !"))
 
-                addPlantUseCase.invoke(commonName, scientificName, description, exposure, fileName)
-                _uiEffect.send(AddPlantScreenUIEffect.NavigateToHome("Plant added successfully !"))
+                } catch (e: Exception) {
+                    println("Error while adding plant: $e")
+                    _uiEffect.send(AddPlantScreenUIEffect.NavigateToHome("Error while adding plant"))
+                }
             }
         }
     }

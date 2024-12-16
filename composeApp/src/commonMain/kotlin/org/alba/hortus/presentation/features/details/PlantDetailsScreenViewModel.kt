@@ -17,10 +17,16 @@ class PlantDetailsScreenViewModel(
 
     fun getPlantDetails(plantId: Long) {
         screenModelScope.launch {
-            getPlantDetailsUseCase.invoke(plantId)?.let {
-                _uiState.value = PlantDetailsUIState.Success(it)
-            } ?: run {
-                _uiState.value = PlantDetailsUIState.Error("Plant not found")
+            try {
+                getPlantDetailsUseCase.invoke(plantId)?.let {
+                    _uiState.value = PlantDetailsUIState.Success(it)
+                } ?: run {
+                    _uiState.value = PlantDetailsUIState.Error("Plant not found")
+                }
+            } catch (e: Exception) {
+                _uiState.value = PlantDetailsUIState.Error(
+                    "An error occurred while fetching plant details"
+                )
             }
         }
     }

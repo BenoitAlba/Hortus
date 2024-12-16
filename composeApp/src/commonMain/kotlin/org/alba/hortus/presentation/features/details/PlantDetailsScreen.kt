@@ -5,7 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -44,6 +44,7 @@ import hortus.composeapp.generated.resources.default_plant
 import hortus.composeapp.generated.resources.device_thermostat_24dp
 import org.alba.hortus.domain.model.Exposure
 import org.alba.hortus.domain.model.PlantDatabaseModel
+import org.alba.hortus.presentation.components.ErrorView
 import org.alba.hortus.presentation.components.MonthsView
 import org.alba.hortus.presentation.features.home.HomeScreen
 import org.jetbrains.compose.resources.painterResource
@@ -84,11 +85,15 @@ class PlantDetailsScreen(
         ) {
             when (val state = uiState.value) {
                 is PlantDetailsScreenViewModel.PlantDetailsUIState.Error -> {
-
+                    ErrorView(state.message)
                 }
 
                 PlantDetailsScreenViewModel.PlantDetailsUIState.Loading -> {
-
+                    Box(Modifier.fillMaxSize()) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(64.dp).align(Alignment.Center),
+                        )
+                    }
                 }
 
                 is PlantDetailsScreenViewModel.PlantDetailsUIState.Success -> {

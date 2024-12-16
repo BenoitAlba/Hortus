@@ -1,7 +1,6 @@
 package org.alba.hortus.presentation.features.home
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,6 +10,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -29,7 +29,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -39,10 +38,10 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import hortus.composeapp.generated.resources.Res
 import hortus.composeapp.generated.resources.background
-import hortus.composeapp.generated.resources.baseline_cloud_24
 import kotlinx.coroutines.launch
 import org.alba.hortus.domain.model.PlantDatabaseModel
 import org.alba.hortus.presentation.components.AlertMessageDialog
+import org.alba.hortus.presentation.components.ErrorView
 import org.alba.hortus.presentation.components.PlantCard
 import org.alba.hortus.presentation.features.details.PlantDetailsScreen
 import org.alba.hortus.presentation.features.new.AddPlantScreen
@@ -97,11 +96,17 @@ class HomeScreen(
         ) {
             when (val state = uiState.value) {
                 is HomeScreenViewModel.HomeScreenUIState.Error -> {
-
+                    ErrorView(state.message) {
+                        viewModel.getPlant()
+                    }
                 }
 
                 HomeScreenViewModel.HomeScreenUIState.Loading -> {
-
+                    Box(Modifier.fillMaxSize()) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(64.dp).align(Alignment.Center),
+                        )
+                    }
                 }
 
                 is HomeScreenViewModel.HomeScreenUIState.Success -> {
