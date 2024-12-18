@@ -10,6 +10,13 @@ import platform.AVFoundation.AVCaptureDevice
 import platform.AVFoundation.AVMediaTypeVideo
 import platform.AVFoundation.authorizationStatusForMediaType
 import platform.AVFoundation.requestAccessForMediaType
+import platform.CoreLocation.CLAuthorizationStatus
+import platform.CoreLocation.CLLocationManager
+import platform.CoreLocation.kCLAuthorizationStatusAuthorizedAlways
+import platform.CoreLocation.kCLAuthorizationStatusAuthorizedWhenInUse
+import platform.CoreLocation.kCLAuthorizationStatusDenied
+import platform.CoreLocation.kCLAuthorizationStatusNotDetermined
+import platform.CoreLocation.kCLAuthorizationStatusRestricted
 import platform.Foundation.NSURL
 import platform.Photos.PHAuthorizationStatus
 import platform.Photos.PHAuthorizationStatusAuthorized
@@ -41,6 +48,33 @@ actual class PermissionsManager actual constructor(private val callback: Permiss
                 askGalleryPermission(status, permission, callback)
             }
 
+            PermissionType.ACCESS_FINE_LOCATION, PermissionType.ACCESS_COARSE_LOCATION -> {
+                println("ask permission")
+                val status: CLAuthorizationStatus =
+                    remember { CLLocationManager.authorizationStatus() }
+                askLocationPermission(status, permission, callback)
+            }
+        }
+    }
+
+    private var locationManager = CLLocationManager()
+    private fun askLocationPermission(
+        status: CLAuthorizationStatus,
+        permission: PermissionType,
+        callback: PermissionCallback
+    ) {
+        when (status) {
+            kCLAuthorizationStatusNotDetermined -> {
+                locationManager.requestWhenInUseAuthorization()
+            }
+
+            kCLAuthorizationStatusRestricted, kCLAuthorizationStatusDenied -> {
+                callback.onPermissionStatus(permission, PermissionStatus.DENIED)
+            }
+
+            kCLAuthorizationStatusAuthorizedWhenInUse, kCLAuthorizationStatusAuthorizedAlways -> {
+                callback.onPermissionStatus(permission, PermissionStatus.GRANTED)
+            }
         }
     }
 
@@ -107,6 +141,12 @@ actual class PermissionsManager actual constructor(private val callback: Permiss
                 val status: PHAuthorizationStatus =
                     remember { PHPhotoLibrary.authorizationStatus() }
                 status == PHAuthorizationStatusAuthorized
+            }
+
+            PermissionType.ACCESS_FINE_LOCATION, PermissionType.ACCESS_COARSE_LOCATION -> {
+                val status: CLAuthorizationStatus =
+                    remember { CLLocationManager.authorizationStatus() }
+                status == kCLAuthorizationStatusAuthorizedAlways || status == kCLAuthorizationStatusAuthorizedWhenInUse
             }
         }
     }

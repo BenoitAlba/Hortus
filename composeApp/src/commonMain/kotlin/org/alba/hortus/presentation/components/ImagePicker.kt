@@ -58,6 +58,9 @@ fun ImagePicker(
                     when (permissionType) {
                         PermissionType.CAMERA -> launchCamera = true
                         PermissionType.GALLERY -> launchGallery = true
+                        else -> {
+                            // nothing to do
+                        }
                     }
                 }
 

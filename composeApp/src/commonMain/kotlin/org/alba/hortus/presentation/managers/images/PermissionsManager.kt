@@ -25,7 +25,9 @@ interface PermissionHandler {
 
 enum class PermissionType {
     CAMERA,
-    GALLERY
+    GALLERY,
+    ACCESS_FINE_LOCATION,
+    ACCESS_COARSE_LOCATION,
 }
 
 enum class PermissionStatus {

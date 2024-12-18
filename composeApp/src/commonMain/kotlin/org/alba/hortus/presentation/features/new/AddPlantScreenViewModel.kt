@@ -43,7 +43,7 @@ class AddPlantScreenViewModel(
                 _uiEffect.send(AddPlantScreenUIEffect.ShowToast("Missing information, Common name and exposure are required"))
             } else {
                 try {
-                    var fileName = imageByteArray?.let {
+                    val fileName = imageByteArray?.let {
                         createPlantImageFileUseCase(it, commonName)
                     }
                     addPlantUseCase.invoke(
