@@ -76,6 +76,14 @@ kotlin {
             implementation(libs.coil.compose)
             implementation(libs.coil.mp)
 
+            // Geocoding
+            implementation(libs.compass.geocoder)
+            implementation(libs.compass.geocoder.mobile)
+
+            // Geolocation
+            implementation(libs.compass.geolocation)
+            implementation(libs.compass.geolocation.mobile)
+
         }
 
         iosMain.dependencies {

@@ -6,12 +6,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.alba.hortus.domain.model.PlantDatabaseModel
+import org.alba.hortus.presentation.features.home.usecases.GetForeCastUseCase
 import org.alba.hortus.presentation.features.home.usecases.GetPlantsUseCase
 import org.alba.hortus.presentation.features.usecases.DeletePlantUseCase
 
 class HomeScreenViewModel(
     private val getPlantsUseCase: GetPlantsUseCase,
-    private val deletePlantUseCase: DeletePlantUseCase
+    private val deletePlantUseCase: DeletePlantUseCase,
+    private val getForeCastUseCase: GetForeCastUseCase
 ) : ScreenModel {
 
     private var _uiState: MutableStateFlow<HomeScreenUIState> = MutableStateFlow(HomeScreenUIState.Loading)
@@ -20,6 +22,7 @@ class HomeScreenViewModel(
     fun getPlant() {
         screenModelScope.launch {
             try {
+                getForeCastUseCase()
                 _uiState.value = HomeScreenUIState.Success(getPlantsUseCase())
             } catch (e: Exception) {
                 _uiState.value = HomeScreenUIState.Error(e.message ?: "Unknown error")
