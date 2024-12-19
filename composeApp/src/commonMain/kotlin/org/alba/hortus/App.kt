@@ -6,10 +6,10 @@ import cafe.adriel.voyager.navigator.NavigatorDisposeBehavior
 import org.alba.hortus.presentation.components.AlertMessageDialog
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.alba.hortus.presentation.features.home.HomeScreen
-import org.alba.hortus.presentation.managers.images.PermissionCallback
-import org.alba.hortus.presentation.managers.images.PermissionStatus
-import org.alba.hortus.presentation.managers.images.PermissionType
-import org.alba.hortus.presentation.managers.images.createPermissionsManager
+import org.alba.hortus.presentation.managers.permissions.PermissionCallback
+import org.alba.hortus.presentation.managers.permissions.PermissionStatus
+import org.alba.hortus.presentation.managers.permissions.PermissionType
+import org.alba.hortus.presentation.managers.permissions.createPermissionsManager
 import org.alba.hortus.ui.theme.AppTheme
 
 @Composable

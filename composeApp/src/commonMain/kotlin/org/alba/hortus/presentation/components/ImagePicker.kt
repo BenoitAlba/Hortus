@@ -25,10 +25,10 @@ import hortus.composeapp.generated.resources.default_plant
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.alba.hortus.presentation.managers.images.PermissionCallback
-import org.alba.hortus.presentation.managers.images.PermissionStatus
-import org.alba.hortus.presentation.managers.images.PermissionType
-import org.alba.hortus.presentation.managers.images.createPermissionsManager
+import org.alba.hortus.presentation.managers.permissions.PermissionCallback
+import org.alba.hortus.presentation.managers.permissions.PermissionStatus
+import org.alba.hortus.presentation.managers.permissions.PermissionType
+import org.alba.hortus.presentation.managers.permissions.createPermissionsManager
 import org.alba.hortus.presentation.managers.images.rememberGalleryManager
 import org.jetbrains.compose.resources.painterResource
 
