@@ -3,19 +3,42 @@ package org.alba.hortus.presentation.features.home.usecases
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import org.alba.hortus.data.LocationRepository
+import org.alba.hortus.data.remote.ForecastApiService
+import org.alba.hortus.domain.model.Forecast
 import org.alba.hortus.domain.model.LocationResult
+import org.alba.hortus.domain.model.RequestState
+import org.alba.hortus.presentation.features.home.transformers.ForecastTransformer
 
 class GetForeCastUseCase(
-    private val locationRepository: LocationRepository
+    private val locationRepository: LocationRepository,
+    private val forecastApiService: ForecastApiService,
+    private val transformer: ForecastTransformer,
 ) {
-    suspend operator fun invoke() = with(Dispatchers.IO) {
+    suspend operator fun invoke(): RequestState<Forecast> = with(Dispatchers.IO) {
         when (val location = locationRepository()) {
             is LocationResult.Error -> {
-                println("Error: ${location.message}")
+                RequestState.Error(location.message)
             }
 
             is LocationResult.Location -> {
-                println("Location: ${location.latitude}, ${location.longitude}, ${location.country}, ${location.locality}")
+                val response = forecastApiService.getForecast(location.latitude, location.longitude)
+                when (response) {
+                    is RequestState.Error -> {
+                        RequestState.Error(response.message)
+                    }
+
+                    RequestState.Idle -> {
+                        RequestState.Idle
+                    }
+
+                    RequestState.Loading -> {
+                        RequestState.Loading
+                    }
+
+                    is RequestState.Success -> {
+                        RequestState.Success(transformer(location, response.data))
+                    }
+                }
             }
         }
     }

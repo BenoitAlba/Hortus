@@ -4,12 +4,14 @@ import org.alba.hortus.data.remote.PlantsApiService
 import org.alba.hortus.presentation.features.home.HomeScreenViewModel
 import org.alba.hortus.presentation.features.new.AddPlantScreenViewModel
 import org.alba.hortus.data.local.PlantLocalDataSource
+import org.alba.hortus.data.remote.ForecastApiService
 import org.alba.hortus.presentation.features.new.usecases.AddPlantUseCase
 import org.alba.hortus.presentation.features.home.usecases.GetPlantsUseCase
 import org.alba.hortus.presentation.features.new.usecases.CreatePlantImageFileUseCase
 import org.alba.hortus.presentation.features.usecases.DeletePlantUseCase
 import org.alba.hortus.presentation.features.details.PlantDetailsScreenViewModel
 import org.alba.hortus.presentation.features.details.GetPlantUseCase
+import org.alba.hortus.presentation.features.home.transformers.ForecastTransformer
 import org.alba.hortus.presentation.features.home.usecases.GetForeCastUseCase
 import org.alba.hortus.data.LocationRepository
 import org.koin.core.context.startKoin
@@ -23,6 +25,7 @@ expect fun platformModule(): Module
 
 val appModule = module {
     singleOf(::PlantsApiService)
+    singleOf(::ForecastApiService)
     singleOf(::PlantLocalDataSource)
     singleOf(::LocationRepository)
 
@@ -31,6 +34,7 @@ val appModule = module {
     factoryOf(::GetPlantsUseCase)
     factoryOf(::DeletePlantUseCase)
     factoryOf(::GetForeCastUseCase)
+    factoryOf(::ForecastTransformer)
 
     // feature add
     factoryOf(::AddPlantScreenViewModel)

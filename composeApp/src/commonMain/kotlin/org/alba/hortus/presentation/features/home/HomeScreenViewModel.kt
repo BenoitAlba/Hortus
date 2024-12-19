@@ -16,7 +16,8 @@ class HomeScreenViewModel(
     private val getForeCastUseCase: GetForeCastUseCase
 ) : ScreenModel {
 
-    private var _uiState: MutableStateFlow<HomeScreenUIState> = MutableStateFlow(HomeScreenUIState.Loading)
+    private var _uiState: MutableStateFlow<HomeScreenUIState> =
+        MutableStateFlow(HomeScreenUIState.Loading)
     val uiState: StateFlow<HomeScreenUIState> = _uiState
 
     fun getPlant() {
