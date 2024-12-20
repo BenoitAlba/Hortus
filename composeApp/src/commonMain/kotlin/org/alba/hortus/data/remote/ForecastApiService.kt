@@ -28,8 +28,7 @@ class ForecastApiService {
 
     suspend fun getForecast(latitude: Double, longitude: Double): RequestState<ForecastItem> {
         return try {
-            val query = "$ENDPOINT&latlng=$latitude, $longitude"
-            val response = httpClient.get(query)
+            val response = httpClient.get("$ENDPOINT&latlng=$latitude,$longitude&world=true")
             if (response.status.value == 200) {
                 val apiResponse = Json.decodeFromString<WeatherResponse>(response.body()).forecast
                 RequestState.Success(data = apiResponse)

@@ -14,8 +14,8 @@ import org.jetbrains.compose.resources.DrawableResource
 
 @Serializable
 data class City(
-    val insee: String,
-    val cp: Int,
+    val country: Int,
+    val city: String,
     val name: String,
     val latitude: Double,
     val longitude: Double,
@@ -24,8 +24,8 @@ data class City(
 
 @Serializable
 data class ForecastItem(
-    val insee: String,
-    val cp: Int,
+    val country: Int,
+    val city: String,
     val latitude: Double,
     val longitude: Double,
     val day: Int,

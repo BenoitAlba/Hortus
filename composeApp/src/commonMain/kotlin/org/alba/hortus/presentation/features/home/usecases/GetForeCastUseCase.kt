@@ -21,21 +21,28 @@ class GetForeCastUseCase(
             }
 
             is LocationResult.Location -> {
-                val response = forecastApiService.getForecast(location.latitude, location.longitude)
-                when (response) {
-                    is RequestState.Error -> {
-                        RequestState.Error(response.message)
-                    }
+                if (AVAILABLE_COUNTRIES.contains(location.country.toString())) {
+                    val response =
+                        forecastApiService.getForecast(location.latitude, location.longitude)
+                    when (response) {
+                        is RequestState.Error -> {
+                            RequestState.Error(response.message)
+                        }
 
-                    RequestState.Loading -> {
-                        RequestState.Loading
-                    }
+                        RequestState.Loading -> {
+                            RequestState.Loading
+                        }
 
-                    is RequestState.Success -> {
-                        RequestState.Success(transformer(location, response.data))
+                        is RequestState.Success -> {
+                            RequestState.Success(transformer(location, response.data))
+                        }
                     }
+                } else {
+                    RequestState.Error("The forecast API is only available in France, Belgium and Luxembourg")
                 }
             }
         }
     }
 }
+
+const val AVAILABLE_COUNTRIES = "France, Belgium, Luxembourg, Belgique"
