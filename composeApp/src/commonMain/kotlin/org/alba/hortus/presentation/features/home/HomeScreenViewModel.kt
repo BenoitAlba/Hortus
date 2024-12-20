@@ -5,7 +5,9 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import org.alba.hortus.domain.model.Forecast
 import org.alba.hortus.domain.model.PlantDatabaseModel
+import org.alba.hortus.domain.model.RequestState
 import org.alba.hortus.presentation.features.home.usecases.GetForeCastUseCase
 import org.alba.hortus.presentation.features.home.usecases.GetPlantsUseCase
 import org.alba.hortus.presentation.features.usecases.DeletePlantUseCase
@@ -16,38 +18,54 @@ class HomeScreenViewModel(
     private val getForeCastUseCase: GetForeCastUseCase
 ) : ScreenModel {
 
-    private var _uiState: MutableStateFlow<HomeScreenUIState> =
-        MutableStateFlow(HomeScreenUIState.Loading)
-    val uiState: StateFlow<HomeScreenUIState> = _uiState
+    private var _plantUiState: MutableStateFlow<PlantUIState> =
+        MutableStateFlow(PlantUIState.Loading)
+    val plantUiState: StateFlow<PlantUIState> = _plantUiState
 
-    fun getPlant() {
+    private var _forecastUiState: MutableStateFlow<RequestState<Forecast>> =
+        MutableStateFlow(RequestState.Loading)
+    val forecastUiState: StateFlow<RequestState<Forecast>> = _forecastUiState
+
+    fun initScreen() {
+        getForecast()
+        getPlants()
+    }
+
+    private fun getPlants() {
         screenModelScope.launch {
             try {
-                getForeCastUseCase()
-                _uiState.value = HomeScreenUIState.Success(getPlantsUseCase())
+                _plantUiState.value = PlantUIState.Success(getPlantsUseCase())
             } catch (e: Exception) {
-                _uiState.value = HomeScreenUIState.Error(e.message ?: "Unknown error")
+                _plantUiState.value = PlantUIState.Error(e.message ?: "Unknown error")
             }
+        }
+    }
+
+    private fun getForecast() {
+        _forecastUiState.value = RequestState.Loading
+        screenModelScope.launch {
+            _forecastUiState.value = getForeCastUseCase()
         }
     }
 
     fun sendEvent(event: HomeUIEvent) {
         when (event) {
             is HomeUIEvent.DeletePlantClicked -> deletePlant(event.id, event.fileName)
+            HomeUIEvent.RetryForecast -> getForecast()
         }
     }
 
     private fun deletePlant(id: Long, fileName: String?) {
         screenModelScope.launch {
             deletePlantUseCase(id, fileName)
-            getPlant()
+            initScreen()
         }
     }
 
-    sealed class HomeScreenUIState {
-        object Loading : HomeScreenUIState()
-        data class Success(val plants: List<PlantDatabaseModel>) : HomeScreenUIState()
-        data class Error(val message: String) : HomeScreenUIState()
+    sealed class PlantUIState {
+        object Loading : PlantUIState()
+        data class Success(val plants: List<PlantDatabaseModel>) : PlantUIState()
+        data class Error(val message: String) : PlantUIState()
     }
 
     sealed class HomeUIEvent {
@@ -55,5 +73,7 @@ class HomeScreenViewModel(
             val id: Long,
             val fileName: String?
         ) : HomeUIEvent()
+
+        data object RetryForecast : HomeUIEvent()
     }
 }

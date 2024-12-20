@@ -27,10 +27,6 @@ class GetForeCastUseCase(
                         RequestState.Error(response.message)
                     }
 
-                    RequestState.Idle -> {
-                        RequestState.Idle
-                    }
-
                     RequestState.Loading -> {
                         RequestState.Loading
                     }

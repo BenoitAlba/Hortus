@@ -84,6 +84,8 @@ kotlin {
             implementation(libs.compass.geolocation)
             implementation(libs.compass.geolocation.mobile)
 
+            implementation(libs.compose.shimmer)
+
         }
 
         iosMain.dependencies {
