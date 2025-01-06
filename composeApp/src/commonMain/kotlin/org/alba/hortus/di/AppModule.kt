@@ -1,6 +1,5 @@
 package org.alba.hortus.di
 
-import org.alba.hortus.data.remote.PlantsApiService
 import org.alba.hortus.presentation.features.home.HomeScreenViewModel
 import org.alba.hortus.presentation.features.new.AddPlantScreenViewModel
 import org.alba.hortus.data.local.PlantLocalDataSource
@@ -24,7 +23,6 @@ import org.koin.dsl.module
 expect fun platformModule(): Module
 
 val appModule = module {
-    singleOf(::PlantsApiService)
     singleOf(::ForecastApiService)
     singleOf(::PlantLocalDataSource)
     singleOf(::LocationRepository)
