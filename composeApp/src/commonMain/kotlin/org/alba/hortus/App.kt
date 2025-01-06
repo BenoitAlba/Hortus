@@ -25,7 +25,7 @@ fun App(
     ) {
         StartupAuthorisations()
         Navigator(
-            disposeBehavior = NavigatorDisposeBehavior(disposeSteps = false),
+            disposeBehavior = NavigatorDisposeBehavior(disposeSteps = true),
             screen = HomeScreen()
         )
     }
