@@ -19,6 +19,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -26,6 +27,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,11 +46,9 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.preat.peekaboo.image.picker.toImageBitmap
 import hortus.composeapp.generated.resources.Res
 import hortus.composeapp.generated.resources.baseline_arrow_back_ios_24
-import hortus.composeapp.generated.resources.baseline_cloud_24
-import hortus.composeapp.generated.resources.baseline_sunny_24
-import hortus.composeapp.generated.resources.baseline_sunny_snowing_24
 import kotlinx.coroutines.launch
 import org.alba.hortus.domain.model.Exposure
+import org.alba.hortus.domain.model.PlantDatabaseModel
 import org.alba.hortus.presentation.components.BottomSheetValue
 import org.alba.hortus.presentation.components.CameraView
 import org.alba.hortus.presentation.components.ImagePicker
@@ -71,6 +71,8 @@ class AddPlantScreen : Screen {
         val uiEffect = viewModel.uiEffect
         var showLoading by remember { mutableStateOf(false) }
 
+        val uiState = viewModel.uiState.collectAsState()
+
         ObserveAsEvents(uiEffect) { event ->
             when (event) {
                 is AddPlantScreenUIEffect.NavigateToHome -> {
@@ -86,6 +88,10 @@ class AddPlantScreen : Screen {
             }
         }
 
+        var isSearchMode by remember { mutableStateOf(true) }
+        var plantName by remember { mutableStateOf("") }
+        var description by remember { mutableStateOf("") }
+        var exposure by remember { mutableStateOf("") }
         var showCamera by remember { mutableStateOf(false) }
         var imageBitmap by remember { mutableStateOf<ImageBitmap?>(null) }
 
@@ -130,11 +136,7 @@ class AddPlantScreen : Screen {
                 snackbarHost = {
                     SnackbarHost(hostState = snackBarHostState)
                 },
-            ) { it ->
-                var commonName by remember { mutableStateOf("") }
-                var scientificName by remember { mutableStateOf("") }
-                var exposure by remember { mutableStateOf("") }
-                var description by remember { mutableStateOf("") }
+            ) {
 
                 Box(
                     modifier = Modifier.fillMaxSize()
@@ -168,100 +170,86 @@ class AddPlantScreen : Screen {
                                 }
                             )
 
-                            Box(
-                                modifier = Modifier
-                                    .clip(RoundedCornerShape(8.dp))
-                                    .background(MaterialTheme.colorScheme.surfaceVariant)
-                                    .padding(16.dp)
-                            ) {
-                                Text(
-                                    style = MaterialTheme.typography.labelMedium,
-                                    text = "'common name' and 'exposure' fields are required. All other empty fields will be auto-completed by AI."
-                                )
-                            }
-
-                            OutlinedTextField(
-                                value = commonName,
-                                onValueChange = { commonName = it },
-                                label = { Text("Common Name") },
-                                modifier = Modifier.fillMaxWidth(),
-                            )
-
-                            OutlinedTextField(
-                                value = scientificName,
-                                onValueChange = { scientificName = it },
-                                label = { Text("Scientific Name") },
-                                modifier = Modifier.fillMaxWidth()
-                            )
-
-                            var showBottomSheet by remember { mutableStateOf(false) }
-
-                            ReadOnlyTextField(
-                                value = Exposure.getEnumForName(exposure)?.value ?: "",
-                                label = "Exposure",
-                                onClick = {
-                                    showBottomSheet = true
+                            when (val state = uiState.value) {
+                                AddPlantScreenUIState.Loading -> {
+                                    showLoading = true
                                 }
-                            )
 
-                            OutlinedTextField(
-                                modifier = Modifier.height(200.dp).fillMaxWidth(),
-                                value = description,
-                                onValueChange = { description = it },
-                                label = { Text("Description") },
-                            )
+                                AddPlantScreenUIState.NoSearch -> {
+                                    showLoading = false
+                                    isSearchMode = true
+                                    SearchView(
+                                        plantName = plantName,
+                                        onPlantNameChanged = {
+                                            plantName = it
+                                        },
+                                        description = description,
+                                        onDescriptionChanged = {
+                                            description = it
+                                        }
+                                    )
+                                }
 
-                            if (showBottomSheet) {
-                                ValuesBottomSheet(
-                                    title = "Exposure: ",
-                                    values = listOf(
-                                        BottomSheetValue(
-                                            label = Exposure.SUN.value,
-                                            description = Exposure.SUN.description,
-                                            icon = painterResource(Exposure.SUN.drawableRes),
-                                            value = Exposure.SUN.name,
-                                        ),
-                                        BottomSheetValue(
-                                            label = Exposure.SHADE.value,
-                                            description = Exposure.SHADE.description,
-                                            icon = painterResource(Exposure.SHADE.drawableRes),
-                                            value = Exposure.SHADE.name,
-                                        ),
-                                        BottomSheetValue(
-                                            label = Exposure.PARTIAL_SHADE.value,
-                                            description = Exposure.PARTIAL_SHADE.description,
-                                            icon = painterResource(Exposure.PARTIAL_SHADE.drawableRes),
-                                            value = Exposure.PARTIAL_SHADE.name,
-                                        ),
-                                    ),
-                                    onDismiss = {
-                                        showBottomSheet = false
-                                    },
-                                    onValueSelected = {
-                                        exposure = it
-                                    }
-                                )
+                                is AddPlantScreenUIState.SearchSuccess -> {
+                                    showLoading = false
+                                    isSearchMode = false
+                                    AddView(
+                                        exposure = exposure,
+                                        onExposureChanged = {
+                                            exposure = it
+                                        },
+                                        plants = state.plants,
+                                        showPlantsSelection = viewModel.selectedPlant == null,
+                                        onPlantSelected = {
+                                            viewModel.selectedPlant = it
+                                            plantName = it.scientificName ?: it.commonName
+                                        },
+                                        plantName = plantName,
+
+                                        )
+                                }
                             }
                         }
 
-                        Button(
-                            modifier = Modifier
-                                .padding(vertical = 8.dp)
-                                .fillMaxWidth(),
-                            onClick = {
-                                showLoading = true
-                                viewModel.sendEvent(
-                                    AddUIEvent.AddClicked(
-                                        commonName = commonName,
-                                        scientificName = scientificName,
-                                        description = description,
-                                        exposure = exposure
+                        Column {
+                            if (!isSearchMode) {
+                                OutlinedButton(
+                                    modifier = Modifier
+                                        .fillMaxWidth(),
+                                    onClick = {
+                                        showLoading = true
+                                        viewModel.sendEvent(
+                                            AddUIEvent.Clear
+                                        )
+                                    },
+                                ) {
+                                    Text("Clear")
+                                }
+                            }
+                            Button(
+                                modifier = Modifier
+                                    .padding(bottom = 8.dp, top = 4.dp)
+                                    .fillMaxWidth(),
+                                onClick = {
+                                    showLoading = true
+                                    viewModel.sendEvent(
+                                        if (isSearchMode) {
+                                            AddUIEvent.SearchClicked(
+                                                plantName = plantName,
+                                                description = description,
+                                            )
+                                        } else {
+                                            AddUIEvent.AddClicked(
+                                                exposure
+                                            )
+                                        }
                                     )
-                                )
-                            },
-                        ) {
-                            Text("Add")
+                                },
+                            ) {
+                                Text(if (isSearchMode) "Search" else "Add")
+                            }
                         }
+
                     }
                     if (showLoading) {
                         CircularProgressIndicator(
@@ -273,4 +261,158 @@ class AddPlantScreen : Screen {
             }
         }
     }
+}
+
+@Composable
+private fun SearchView(
+    plantName: String,
+    onPlantNameChanged: (String) -> Unit,
+    description: String,
+    onDescriptionChanged: (String) -> Unit,
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(8.dp))
+                .background(MaterialTheme.colorScheme.surfaceVariant)
+                .padding(16.dp)
+        ) {
+            Text(
+                style = MaterialTheme.typography.labelMedium,
+                text = "'plant name' is required. \n" +
+                        "The description may help the AI to find the right plants."
+            )
+        }
+
+        OutlinedTextField(
+            value = plantName,
+            onValueChange = { onPlantNameChanged(it) },
+            label = { Text("Plant name") },
+            modifier = Modifier.fillMaxWidth(),
+        )
+
+        OutlinedTextField(
+            modifier = Modifier.height(200.dp).fillMaxWidth(),
+            value = description,
+            onValueChange = { onDescriptionChanged(it) },
+            label = { Text("Description") },
+        )
+    }
+}
+
+@Composable
+private fun AddView(
+    exposure: String,
+    onExposureChanged: (String) -> Unit,
+    plantName: String,
+    plants: List<PlantDatabaseModel> = emptyList(),
+    onPlantSelected: (PlantDatabaseModel) -> Unit,
+    showPlantsSelection: Boolean = false,
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        var showExposureBottomSheet by remember { mutableStateOf(false) }
+        var showPlantsSelectionBottomSheet by remember { mutableStateOf(showPlantsSelection) }
+
+        ReadOnlyTextField(
+            value = plantName,
+            label = "Plant",
+            onClick = {
+                showPlantsSelectionBottomSheet = true
+            }
+        )
+
+        ReadOnlyTextField(
+            value = Exposure.getEnumForName(exposure)?.value ?: "",
+            label = "Exposure",
+            onClick = {
+                showExposureBottomSheet = true
+            }
+        )
+        if (showExposureBottomSheet) {
+            ExposureBottomSheet(
+                onExposureChanged = {
+                    onExposureChanged(it)
+                }, onDismiss = {
+                    showExposureBottomSheet = false
+                })
+        }
+        if (showPlantsSelectionBottomSheet) {
+            PlantsBottomSheet(
+                plants = plants,
+                onDismiss = {
+                    showPlantsSelectionBottomSheet = false
+                },
+                onPlantSelected = {
+                    onPlantSelected(it)
+                }
+            )
+        }
+    }
+}
+
+@Composable
+private fun ExposureBottomSheet(onExposureChanged: (String) -> Unit, onDismiss: () -> Unit) {
+    ValuesBottomSheet(
+        title = "Exposure: ",
+        values = listOf(
+            BottomSheetValue(
+                label = Exposure.SUN.value,
+                description = Exposure.SUN.description,
+                icon = painterResource(Exposure.SUN.drawableRes),
+                value = Exposure.SUN.name,
+            ),
+            BottomSheetValue(
+                label = Exposure.SHADE.value,
+                description = Exposure.SHADE.description,
+                icon = painterResource(Exposure.SHADE.drawableRes),
+                value = Exposure.SHADE.name,
+            ),
+            BottomSheetValue(
+                label = Exposure.PARTIAL_SHADE.value,
+                description = Exposure.PARTIAL_SHADE.description,
+                icon = painterResource(Exposure.PARTIAL_SHADE.drawableRes),
+                value = Exposure.PARTIAL_SHADE.name,
+            ),
+        ),
+        onDismiss = {
+            onDismiss()
+        },
+        onValueSelected = {
+            onExposureChanged(it)
+        }
+    )
+}
+
+@Composable
+private fun PlantsBottomSheet(
+    plants: List<PlantDatabaseModel>,
+    onPlantSelected: (PlantDatabaseModel) -> Unit,
+    onDismiss: () -> Unit
+) {
+    ValuesBottomSheet(
+        isCard = true,
+        skipPartiallyExpanded = true,
+        title = "Recognized plants:",
+        values = plants.map {
+            BottomSheetValue(
+                label = it.scientificName ?: "",
+                description = it.description,
+                value = it.id.toString()
+            )
+        },
+        onDismiss = {
+            onDismiss()
+        },
+        onValueSelected = {
+            onPlantSelected(
+                plants.find { plant -> plant.id == it.toLong() }!!
+            )
+        }
+    )
 }

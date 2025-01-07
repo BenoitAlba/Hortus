@@ -1,14 +1,15 @@
 package org.alba.hortus.presentation.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -19,12 +20,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import hortus.composeapp.generated.resources.Res
-import hortus.composeapp.generated.resources.baseline_cloud_24
-import org.alba.hortus.ui.theme.AppTheme
-import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -32,9 +29,11 @@ fun ValuesBottomSheet(
     onDismiss: () -> Unit,
     values: List<BottomSheetValue>,
     onValueSelected: (String) -> Unit,
-    title: String? = null
+    title: String? = null,
+    skipPartiallyExpanded: Boolean = false,
+    isCard: Boolean = false
 ) {
-    val sheetState = rememberModalBottomSheetState()
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = skipPartiallyExpanded)
 
     ModalBottomSheet(
         onDismissRequest = {
@@ -54,38 +53,25 @@ fun ValuesBottomSheet(
                 contentPadding = PaddingValues(16.dp)
             ) {
                 items(values.size) { index ->
-                    Row(
-                        modifier = Modifier
-                            .clickable {
-                                onValueSelected(values[index].value)
-                                onDismiss()
-                            }
-                            .align(Alignment.CenterHorizontally)
-                            .fillMaxWidth()
-                            .padding(vertical = 8.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    ) {
-                        values[index].icon?.let {
-                            Icon(
-                                modifier = Modifier.align(Alignment.CenterVertically),
-                                painter = it,
-                                contentDescription = null
-                            )
-                        }
-                        Column(
-                            verticalArrangement = Arrangement.spacedBy(4.dp)
-
+                    if (isCard) {
+                        CardBottomSheetItem(
+                            index = index,
+                            onValueSelected = {
+                                onValueSelected(it)
+                            },
+                            values = values
                         ) {
-                            Text(
-                                values[index].label,
-                                style = MaterialTheme.typography.bodyLarge
-                            )
-                            values[index].description?.let {
-                                Text(
-                                    it,
-                                    style = MaterialTheme.typography.labelMedium
-                                )
-                            }
+                            onDismiss()
+                        }
+                    } else {
+                        SimpleBottomSheetItem(
+                            index = index,
+                            onValueSelected = {
+                                onValueSelected(it)
+                            },
+                            values = values
+                        ) {
+                            onDismiss()
                         }
                     }
                 }
@@ -94,39 +80,93 @@ fun ValuesBottomSheet(
     }
 }
 
-@Preview
 @Composable
-fun PreviewValuesBottomSheet() {
-    AppTheme {
-        ValuesBottomSheet(
-            onDismiss = {
+private fun ColumnScope.SimpleBottomSheetItem(
+    index: Int,
+    onValueSelected: (String) -> Unit,
+    values: List<BottomSheetValue>,
+    onDismiss: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .clickable {
+                onValueSelected(values[index].value)
+                onDismiss()
+            }
+            .align(Alignment.CenterHorizontally)
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        values[index].icon?.let {
+            Icon(
+                modifier = Modifier.align(Alignment.CenterVertically),
+                painter = it,
+                contentDescription = null
+            )
+        }
+        Column(
+            verticalArrangement = Arrangement.spacedBy(4.dp)
 
-            },
-            values = listOf(
-                BottomSheetValue(
-                    label = "Test 1",
-                    value = "Test 1",
-                    description = "lorem ipsum dolor sit amet",
-                    icon = painterResource(Res.drawable.baseline_cloud_24)
-                ),
-                BottomSheetValue(
-                    label = "Test 2",
-                    value = "Test 2",
-                    description = "lorem ipsum dolor sit amet",
-                    icon = painterResource(Res.drawable.baseline_cloud_24)
-                ),
-                BottomSheetValue(
-                    label = "Test 3",
-                    value = "Test 3",
-                    description = "lorem ipsum dolor sit amet",
-                    icon = painterResource(Res.drawable.baseline_cloud_24)
+        ) {
+            Text(
+                values[index].label,
+                style = MaterialTheme.typography.bodyLarge
+            )
+            values[index].description?.let {
+                Text(
+                    it,
+                    style = MaterialTheme.typography.labelMedium
                 )
-            ),
-            onValueSelected = {
+            }
+        }
+    }
+}
 
-            },
-            title = "Test"
-        )
+@Composable
+fun CardBottomSheetItem(
+    index: Int,
+    onValueSelected: (String) -> Unit,
+    values: List<BottomSheetValue>,
+    onDismiss: () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .clickable {
+                onValueSelected(values[index].value)
+                onDismiss()
+            }
+            .padding(vertical = 4.dp)
+            .fillMaxWidth()
+    ) {
+        Row(
+            modifier = Modifier.padding(8.dp)
+        ) {
+            values[index].icon?.let {
+                Icon(
+                    modifier = Modifier.align(Alignment.CenterVertically),
+                    painter = it,
+                    contentDescription = null
+                )
+            }
+
+            Column(
+                verticalArrangement = Arrangement.spacedBy(4.dp)
+
+            ) {
+                Text(
+                    values[index].label,
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.bodyLarge
+                )
+                values[index].description?.let {
+                    Text(
+                        it,
+                        style = MaterialTheme.typography.labelMedium
+                    )
+                }
+            }
+        }
     }
 }
 

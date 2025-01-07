@@ -5,6 +5,7 @@ import org.alba.hortus.presentation.features.new.AddPlantScreenViewModel
 import org.alba.hortus.data.local.PlantLocalDataSource
 import org.alba.hortus.data.remote.ForecastApiService
 import org.alba.hortus.presentation.features.new.usecases.AddPlantUseCase
+import org.alba.hortus.presentation.features.new.usecases.SearchCultivarUseCase
 import org.alba.hortus.presentation.features.home.usecases.GetPlantsUseCase
 import org.alba.hortus.presentation.features.new.usecases.CreatePlantImageFileUseCase
 import org.alba.hortus.presentation.features.usecases.DeletePlantUseCase
@@ -37,6 +38,7 @@ val appModule = module {
     // feature add
     factoryOf(::AddPlantScreenViewModel)
     factoryOf(::AddPlantUseCase)
+    factoryOf(::SearchCultivarUseCase)
     factoryOf(::CreatePlantImageFileUseCase)
 
     // feature details
