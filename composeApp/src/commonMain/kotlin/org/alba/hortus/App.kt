@@ -1,8 +1,10 @@
 package org.alba.hortus
 
 import androidx.compose.runtime.*
+import cafe.adriel.voyager.core.annotation.ExperimentalVoyagerApi
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.NavigatorDisposeBehavior
+import cafe.adriel.voyager.transitions.SlideTransition
 import org.alba.hortus.presentation.components.AlertMessageDialog
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.alba.hortus.presentation.features.home.HomeScreen
@@ -12,6 +14,7 @@ import org.alba.hortus.presentation.managers.permissions.PermissionType
 import org.alba.hortus.presentation.managers.permissions.createPermissionsManager
 import org.alba.hortus.ui.theme.AppTheme
 
+@OptIn(ExperimentalVoyagerApi::class)
 @Composable
 @Preview
 fun App(
@@ -25,9 +28,14 @@ fun App(
     ) {
         StartupAuthorisations()
         Navigator(
-            disposeBehavior = NavigatorDisposeBehavior(disposeSteps = true),
+            disposeBehavior = NavigatorDisposeBehavior(disposeSteps = false),
             screen = HomeScreen()
-        )
+        ) {
+            SlideTransition(
+                navigator = it,
+                disposeScreenAfterTransitionEnd = true
+            )
+        }
     }
 }
 

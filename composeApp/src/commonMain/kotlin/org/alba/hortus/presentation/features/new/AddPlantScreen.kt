@@ -1,9 +1,14 @@
 package org.alba.hortus.presentation.features.new
 
+import KottieAnimation
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,7 +20,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -27,6 +31,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,13 +45,16 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.preat.peekaboo.image.picker.toImageBitmap
 import hortus.composeapp.generated.resources.Res
 import hortus.composeapp.generated.resources.baseline_arrow_back_ios_24
 import kotlinx.coroutines.launch
+import kottieComposition.KottieCompositionSpec
+import kottieComposition.animateKottieCompositionAsState
+import kottieComposition.rememberKottieComposition
 import org.alba.hortus.domain.model.Exposure
 import org.alba.hortus.domain.model.PlantDatabaseModel
 import org.alba.hortus.presentation.components.BottomSheetValue
@@ -56,6 +64,8 @@ import org.alba.hortus.presentation.components.ObserveAsEvents
 import org.alba.hortus.presentation.components.ReadOnlyTextField
 import org.alba.hortus.presentation.components.ValuesBottomSheet
 import org.alba.hortus.presentation.features.home.HomeScreen
+import org.alba.hortus.presentation.utils.safeNavigate
+import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
 class AddPlantScreen : Screen {
@@ -64,7 +74,7 @@ class AddPlantScreen : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        val viewModel = getScreenModel<AddPlantScreenViewModel>()
+        val viewModel = koinScreenModel<AddPlantScreenViewModel>()
         val snackBarHostState = remember { SnackbarHostState() }
         val scope = rememberCoroutineScope()
 
@@ -72,11 +82,12 @@ class AddPlantScreen : Screen {
         var showLoading by remember { mutableStateOf(false) }
 
         val uiState = viewModel.uiState.collectAsState()
+        val coroutineScope = rememberCoroutineScope()
 
         ObserveAsEvents(uiEffect) { event ->
             when (event) {
                 is AddPlantScreenUIEffect.NavigateToHome -> {
-                    navigator.replaceAll(HomeScreen(event.message))
+                    navigator.safeNavigate(coroutineScope, HomeScreen())
                 }
 
                 is AddPlantScreenUIEffect.ShowToast -> {
@@ -125,7 +136,7 @@ class AddPlantScreen : Screen {
                                 modifier = Modifier
                                     .padding(start = 16.dp)
                                     .clickable {
-                                        navigator.push(HomeScreen())
+                                        navigator.pop()
                                     },
                                 painter = painterResource(Res.drawable.baseline_arrow_back_ios_24),
                                 contentDescription = "close"
@@ -142,12 +153,13 @@ class AddPlantScreen : Screen {
                     modifier = Modifier.fillMaxSize()
                 ) {
                     Column(
-                        modifier = Modifier.padding(
-                            top = it.calculateTopPadding() + 16.dp,
-                            bottom = it.calculateBottomPadding(),
-                            start = 16.dp,
-                            end = 16.dp,
-                        )
+                        modifier = Modifier
+                            .padding(
+                                top = it.calculateTopPadding() + 16.dp,
+                                bottom = it.calculateBottomPadding(),
+                                start = 16.dp,
+                                end = 16.dp,
+                            )
                             .fillMaxHeight(),
                         verticalArrangement = Arrangement.SpaceBetween
                     ) {
@@ -158,17 +170,24 @@ class AddPlantScreen : Screen {
                             verticalArrangement = Arrangement.spacedBy(4.dp),
                         ) {
 
-                            ImagePicker(
-                                modifier = Modifier.padding(bottom = 16.dp),
-                                image = imageBitmap,
-                                onStartCamera = {
-                                    showCamera = true
-                                },
-                                onImageSelected = { image, byteArrayImage ->
-                                    imageBitmap = image
-                                    viewModel.imageByteArray = byteArrayImage
-                                }
-                            )
+                            AnimatedVisibility(
+                                !showLoading,
+                                enter = fadeIn(),
+                                exit = fadeOut()
+                            ) {
+                                ImagePicker(
+                                    modifier = Modifier.padding(bottom = 16.dp),
+                                    image = imageBitmap,
+                                    onStartCamera = {
+                                        showCamera = true
+                                    },
+                                    onImageSelected = { image, byteArrayImage ->
+                                        imageBitmap = image
+                                        viewModel.imageByteArray = byteArrayImage
+                                    }
+                                )
+                            }
+
 
                             when (val state = uiState.value) {
                                 AddPlantScreenUIState.Loading -> {
@@ -204,9 +223,8 @@ class AddPlantScreen : Screen {
                                             viewModel.selectedPlant = it
                                             plantName = it.scientificName ?: it.commonName
                                         },
-                                        plantName = plantName,
-
-                                        )
+                                        plantName = plantName
+                                    )
                                 }
                             }
                         }
@@ -217,7 +235,6 @@ class AddPlantScreen : Screen {
                                     modifier = Modifier
                                         .fillMaxWidth(),
                                     onClick = {
-                                        showLoading = true
                                         viewModel.sendEvent(
                                             AddUIEvent.Clear
                                         )
@@ -230,6 +247,7 @@ class AddPlantScreen : Screen {
                                 modifier = Modifier
                                     .padding(bottom = 8.dp, top = 4.dp)
                                     .fillMaxWidth(),
+                                enabled = showLoading.not(),
                                 onClick = {
                                     showLoading = true
                                     viewModel.sendEvent(
@@ -246,16 +264,27 @@ class AddPlantScreen : Screen {
                                     )
                                 },
                             ) {
-                                Text(if (isSearchMode) "Search" else "Add")
+                                Text(
+                                    when {
+                                        showLoading -> {
+                                            "Loading..."
+                                        }
+
+                                        isSearchMode -> {
+                                            "Search"
+                                        }
+
+                                        else -> {
+                                            "Add"
+                                        }
+                                    }
+                                )
                             }
                         }
-
                     }
-                    if (showLoading) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(64.dp).align(Alignment.Center),
-                        )
 
+                    if (showLoading) {
+                        Loading()
                     }
                 }
             }
@@ -273,7 +302,6 @@ private fun SearchView(
     Column(
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
-
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -416,3 +444,29 @@ private fun PlantsBottomSheet(
         }
     )
 }
+
+@OptIn(ExperimentalResourceApi::class)
+@Composable
+private fun BoxScope.Loading() {
+    var animation by remember { mutableStateOf("") }
+    LaunchedEffect(Unit) {
+        animation = Res.readBytes(LOADING_ANIMATION_FILE).decodeToString()
+    }
+    val composition = rememberKottieComposition(
+        spec = KottieCompositionSpec.File(animation)
+    )
+
+    val animationState by animateKottieCompositionAsState(
+        composition = composition,
+        isPlaying = true
+    )
+
+    KottieAnimation(
+        composition = composition,
+        progress = { animationState.progress },
+        modifier = Modifier.size(400.dp).align(Alignment.Center)
+            .padding(top = 60.dp),
+    )
+}
+
+private const val LOADING_ANIMATION_FILE = "files/growing.json"

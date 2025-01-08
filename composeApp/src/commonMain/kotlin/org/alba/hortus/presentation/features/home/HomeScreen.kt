@@ -16,34 +16,27 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import kotlinx.coroutines.launch
 import org.alba.hortus.presentation.features.new.AddPlantScreen
+import org.alba.hortus.presentation.utils.safeNavigate
 
 class HomeScreen(
-    val message: String? = null
 ) : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        val viewModel = getScreenModel<HomeScreenViewModel>()
+        val viewModel = koinScreenModel<HomeScreenViewModel>()
         viewModel.initScreen() // instead of using the init of the VM because of Voyager
         val snackBarHostState = remember { SnackbarHostState() }
-        val scope = rememberCoroutineScope()
-
-        message?.let {
-            scope.launch {
-                snackBarHostState.showSnackbar(message = it)
-            }
-        }
+        val coroutineScope = rememberCoroutineScope()
 
         Scaffold(
             floatingActionButton = {
                 FloatingActionButton(
                     onClick = {
-                        navigator.push(AddPlantScreen())
+                        navigator.safeNavigate(coroutineScope, AddPlantScreen())
                     },
                 ) {
                     Icon(Icons.Filled.Add, "Adding plant")

@@ -32,7 +32,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import coil3.compose.AsyncImage
@@ -56,7 +56,7 @@ class PlantDetailsScreen(
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        val viewModel = getScreenModel<PlantDetailsScreenViewModel>()
+        val viewModel = koinScreenModel<PlantDetailsScreenViewModel>()
         viewModel.getPlantDetails(id)
         val uiState = viewModel.uiState.collectAsState()
 
@@ -74,7 +74,7 @@ class PlantDetailsScreen(
                             modifier = Modifier
                                 .padding(start = 16.dp)
                                 .clickable {
-                                    navigator.push(HomeScreen())
+                                    navigator.pop()
                                 },
                             painter = painterResource(Res.drawable.baseline_arrow_back_ios_24),
                             contentDescription = "close"
