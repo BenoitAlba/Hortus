@@ -24,6 +24,7 @@ actual fun createPermissionsManager(callback: PermissionCallback): PermissionsMa
     return remember { PermissionsManager(callback) }
 }
 
+@Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 actual class PermissionsManager actual constructor(private val callback: PermissionCallback) :
     PermissionHandler {
     @OptIn(ExperimentalPermissionsApi::class)

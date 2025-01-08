@@ -46,7 +46,6 @@ import org.alba.hortus.domain.model.Exposure
 import org.alba.hortus.domain.model.PlantDatabaseModel
 import org.alba.hortus.presentation.components.ErrorView
 import org.alba.hortus.presentation.components.MonthsView
-import org.alba.hortus.presentation.features.home.HomeScreen
 import org.jetbrains.compose.resources.painterResource
 
 @OptIn(ExperimentalMaterial3Api::class)

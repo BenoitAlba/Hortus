@@ -86,7 +86,7 @@ kotlin {
 
             implementation(libs.compose.shimmer)
 
-            implementation("io.github.ismai117:kottie:2.0.1")
+            implementation(libs.kottie)
 
 
         }

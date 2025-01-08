@@ -71,12 +71,12 @@ fun ImagePicker(
         }
     })
 
-    val galleryManager = rememberGalleryManager { image ->
+    val galleryManager = rememberGalleryManager { imageGallery ->
         showLoader = true
         coroutineScope.launch {
             withContext(Dispatchers.Default) {
-                val bitmap = image?.toImageBitmap()
-                val byteArray = image?.toByteArray()
+                val bitmap = imageGallery?.toImageBitmap()
+                val byteArray = imageGallery?.toByteArray()
                 showLoader = false
                 onImageSelected(bitmap!!, byteArray!!)
             }
