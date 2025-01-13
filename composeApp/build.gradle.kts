@@ -86,9 +86,11 @@ kotlin {
 
             implementation(libs.compose.shimmer)
 
-            implementation(libs.kottie)
+            //implementation(libs.kottie)
 
-
+            implementation(libs.compottie)
+            implementation(libs.compottie.dot)
+            implementation(libs.compottie.resources)
         }
 
         iosMain.dependencies {

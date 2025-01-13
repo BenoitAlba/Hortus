@@ -1,9 +1,9 @@
 package org.alba.hortus.presentation.features.new
 
-import KottieAnimation
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -31,7 +31,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -51,10 +50,11 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.preat.peekaboo.image.picker.toImageBitmap
 import hortus.composeapp.generated.resources.Res
 import hortus.composeapp.generated.resources.baseline_arrow_back_ios_24
+import io.github.alexzhirkevich.compottie.LottieCompositionSpec
+import io.github.alexzhirkevich.compottie.animateLottieCompositionAsState
+import io.github.alexzhirkevich.compottie.rememberLottieComposition
+import io.github.alexzhirkevich.compottie.rememberLottiePainter
 import kotlinx.coroutines.launch
-import kottieComposition.KottieCompositionSpec
-import kottieComposition.animateKottieCompositionAsState
-import kottieComposition.rememberKottieComposition
 import org.alba.hortus.domain.model.Exposure
 import org.alba.hortus.domain.model.PlantDatabaseModel
 import org.alba.hortus.presentation.components.BottomSheetValue
@@ -448,24 +448,21 @@ private fun PlantsBottomSheet(
 @OptIn(ExperimentalResourceApi::class)
 @Composable
 private fun BoxScope.Loading() {
-    var animation by remember { mutableStateOf("") }
-    LaunchedEffect(Unit) {
-        animation = Res.readBytes(LOADING_ANIMATION_FILE).decodeToString()
+    val composition by rememberLottieComposition {
+        LottieCompositionSpec.JsonString(
+            Res.readBytes(LOADING_ANIMATION_FILE).decodeToString()
+        )
     }
-    val composition = rememberKottieComposition(
-        spec = KottieCompositionSpec.File(animation)
-    )
+    val progress by animateLottieCompositionAsState(composition)
 
-    val animationState by animateKottieCompositionAsState(
-        composition = composition,
-        isPlaying = true
-    )
-
-    KottieAnimation(
-        composition = composition,
-        progress = { animationState.progress },
+    Image(
         modifier = Modifier.size(400.dp).align(Alignment.Center)
             .padding(top = 60.dp),
+        painter = rememberLottiePainter(
+            composition = composition,
+            progress = { progress },
+        ),
+        contentDescription = "Lottie animation"
     )
 }
 
