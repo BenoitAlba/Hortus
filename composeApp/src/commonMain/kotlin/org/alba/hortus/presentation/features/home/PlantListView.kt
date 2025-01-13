@@ -35,7 +35,10 @@ import org.alba.hortus.presentation.features.details.PlantDetailsScreen
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 @Composable
-fun PlantListView(viewModel: HomeScreenViewModel) {
+fun PlantListView(
+    viewModel: HomeScreenViewModel,
+    onNoPlants: (Boolean) -> Unit,
+) {
     val navigator = LocalNavigator.currentOrThrow
     var showDeleteDialog by remember { mutableStateOf<PlantDatabaseModel?>(null) }
     val uiState = viewModel.plantUiState.collectAsState()
@@ -43,7 +46,6 @@ fun PlantListView(viewModel: HomeScreenViewModel) {
     when (val state = uiState.value) {
         is HomeScreenViewModel.PlantUIState.Error -> {
             ErrorView(state.message) {
-                viewModel.initScreen()
             }
         }
 
@@ -57,11 +59,15 @@ fun PlantListView(viewModel: HomeScreenViewModel) {
 
         is HomeScreenViewModel.PlantUIState.Success -> {
             if (state.plants.isEmpty()) {
-                Box {
+                Box(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    onNoPlants(true)
                     Empty()
                 }
 
             } else {
+                onNoPlants(false)
                 if (showDeleteDialog != null) {
                     AlertMessageDialog(
                         title = "Delete the plant",

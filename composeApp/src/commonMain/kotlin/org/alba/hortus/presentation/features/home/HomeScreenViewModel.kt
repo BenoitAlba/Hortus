@@ -58,7 +58,7 @@ class HomeScreenViewModel(
     private fun deletePlant(id: Long, fileName: String?) {
         screenModelScope.launch {
             deletePlantUseCase(id, fileName)
-            initScreen()
+            getPlants()
         }
     }
 

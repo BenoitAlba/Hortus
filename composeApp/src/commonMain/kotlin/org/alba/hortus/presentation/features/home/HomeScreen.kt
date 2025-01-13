@@ -1,5 +1,12 @@
 package org.alba.hortus.presentation.features.home
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -11,8 +18,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
@@ -55,8 +65,26 @@ class HomeScreen(
                 ),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                ForecastView(viewModel)
-                PlantListView(viewModel)
+                var showForecast by remember { mutableStateOf(true) }
+                AnimatedVisibility(
+                    visible = showForecast,
+                    enter = fadeIn() + expandVertically(
+                        spring(
+                            stiffness = Spring.StiffnessVeryLow,
+                        )
+                    ),
+                    exit = fadeOut() + shrinkVertically(
+                        spring(
+                            stiffness = Spring.StiffnessVeryLow,
+                        )
+                    ),
+                ) {
+                    ForecastView(viewModel)
+                }
+
+                PlantListView(viewModel) { noPlants ->
+                    showForecast = !noPlants
+                }
             }
 
         }
