@@ -30,6 +30,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -58,6 +59,7 @@ import kotlinx.coroutines.launch
 import org.alba.hortus.domain.model.Exposure
 import org.alba.hortus.domain.model.PlantDatabaseModel
 import org.alba.hortus.presentation.components.BottomSheetValue
+import org.alba.hortus.presentation.components.BottomSheetVisibility
 import org.alba.hortus.presentation.components.CameraView
 import org.alba.hortus.presentation.components.ImagePicker
 import org.alba.hortus.presentation.components.ObserveAsEvents
@@ -332,6 +334,7 @@ private fun SearchView(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AddView(
     exposure: String,
@@ -362,7 +365,9 @@ private fun AddView(
                 showExposureBottomSheet = true
             }
         )
-        if (showExposureBottomSheet) {
+        BottomSheetVisibility(
+            visible = showExposureBottomSheet,
+        ) {
             ExposureBottomSheet(
                 onExposureChanged = {
                     onExposureChanged(it)
@@ -370,7 +375,9 @@ private fun AddView(
                     showExposureBottomSheet = false
                 })
         }
-        if (showPlantsSelectionBottomSheet) {
+        BottomSheetVisibility(
+            visible = showPlantsSelectionBottomSheet,
+        ) {
             PlantsBottomSheet(
                 plants = plants,
                 onDismiss = {
