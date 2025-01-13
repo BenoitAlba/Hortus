@@ -33,9 +33,8 @@ class AddPlantUseCase(
             val copyPlant = plant.copy(
                 currentExposure = exposure,
                 image = fileName,
-                exposureAdvise = exposureAdvise
+                exposureAdvise = exposureAdvise,
             )
-            println("---> copyPlant $copyPlant")
             plantLocalDataSource.createPlant(copyPlant)
         }
     }

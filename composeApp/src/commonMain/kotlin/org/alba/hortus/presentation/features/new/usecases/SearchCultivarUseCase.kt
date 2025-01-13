@@ -2,6 +2,7 @@ package org.alba.hortus.presentation.features.new.usecases
 
 import kotlinx.serialization.json.Json
 import org.alba.hortus.data.remote.GenerativeModel
+import org.alba.hortus.domain.model.Exposure
 import org.alba.hortus.domain.model.PlantDatabaseModel
 import kotlin.random.Random
 
@@ -52,11 +53,12 @@ private fun buildQuery(name: String, description: String?) =
 private const val PLANT_NAME_QUERY_PARAM = "#plant"
 private const val PLANT_DESCRIPTION_PARAM = "#description"
 
-private const val QUERY_TEXT =
-    "give me the most exhaustive list of plant cultivars and varieties the plant: $PLANT_NAME_QUERY_PARAM and whose description is $PLANT_DESCRIPTION_PARAM"+
+private val QUERY_TEXT =
+    "give me the most exhaustive list of plant cultivars and varieties the plant: $PLANT_NAME_QUERY_PARAM and whose description is $PLANT_DESCRIPTION_PARAM" +
             "I would like to know its scientific name, a detailed description, " +
             "its flowering and fruiting periods (listed by month numbers), " +
             "its maximum height and width at maturity (in metric units in cm), " +
             "soil type (like Sandy soil, Loamy soil, Clay soil, etc.), hardiness: What is the lowest temperature this plant can survive (e.g., -20°C)," +
-            " and its harvest period if it is a fruit tree. my garden is in Belgium"
+            " its harvest period if it is a fruit tree. my garden is in Belgium" +
+            "and its exposure which could be one of the following ${Exposure.getAllNames()}"
 

@@ -52,11 +52,7 @@ class StringListConverters {
 enum class Exposure(val value: String, val description: String, val drawableRes: DrawableResource) {
     SUN("Sun", "My plant is in full sun situation", Res.drawable.baseline_sunny_24),
     SHADE("Shade", "My plant is in shade situation", Res.drawable.baseline_cloud_24),
-    PARTIAL_SHADE(
-        "Partial shade",
-        "My plant is in partial shade situation",
-        Res.drawable.partly_cloudy_day_24dp
-    );
+    PARTIAL_SHADE("Partial shade", "My plant is in partial shade situation", Res.drawable.partly_cloudy_day_24dp);
 
     companion object {
         fun getAllNames() =  entries.map { it.name }.joinToString(", ")
