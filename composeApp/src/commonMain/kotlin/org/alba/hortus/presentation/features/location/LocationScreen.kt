@@ -11,22 +11,31 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.koinScreenModel
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import hortus.composeapp.generated.resources.Res
 import hortus.composeapp.generated.resources.baseline_close_24
 import hortus.composeapp.generated.resources.baseline_location_pin_24
@@ -38,10 +47,33 @@ import org.alba.hortus.presentation.features.location.component.SearchInputField
 import org.jetbrains.compose.resources.painterResource
 
 class LocationScreen : Screen {
+    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
+        val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
         val viewModel = koinScreenModel<LocationScreenViewModel>()
-        Scaffold {
+        val navigator = LocalNavigator.currentOrThrow
+
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = Color.Transparent,
+                    ),
+                    title = {
+                    },
+                    navigationIcon = {
+                        IconButton(onClick = { navigator.pop() }) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = "Localized description"
+                            )
+                        }
+                    },
+                    scrollBehavior = scrollBehavior
+                )
+            }
+        ) {
             Column {
                 Image(
                     modifier = Modifier
@@ -196,7 +228,7 @@ private fun LocationView(viewModel: LocationScreenViewModel, location: LocationR
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = location.locality ?: "",
-                    style = MaterialTheme.typography.headlineMedium,
+                    style = MaterialTheme.typography.headlineSmall,
                     textAlign = TextAlign.Center,
                 )
             }
