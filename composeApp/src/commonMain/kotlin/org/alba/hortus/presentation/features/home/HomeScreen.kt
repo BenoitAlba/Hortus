@@ -58,7 +58,14 @@ class HomeScreen : Screen {
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         val viewModel = koinScreenModel<HomeScreenViewModel>()
-        viewModel.initScreen() // instead of using the init of the VM because of Voyager
+        var shouldInit by remember { mutableStateOf(true) }
+
+        // instead of using the init of the VM because of Voyager issue
+        if (shouldInit) {
+            viewModel.initScreen()
+            shouldInit = false
+        }
+
         val snackBarHostState = remember { SnackbarHostState() }
         val coroutineScope = rememberCoroutineScope()
 
@@ -167,7 +174,6 @@ class HomeScreen : Screen {
                         showForecast = !noPlants
                     }
                 }
-
             }
         }
     }

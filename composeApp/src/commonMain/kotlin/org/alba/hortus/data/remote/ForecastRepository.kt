@@ -47,8 +47,6 @@ class ForecastRepository(
                 } else {
                     RequestState.Error("No remote forecast found")
                 }
-            } else {
-                println("---> local forecast is not outdated")
             }
         }
         return if (forecast == null) {

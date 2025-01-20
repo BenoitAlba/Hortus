@@ -51,7 +51,9 @@ class HomeScreenViewModel(
     fun sendEvent(event: HomeUIEvent) {
         when (event) {
             is HomeUIEvent.DeletePlantClicked -> deletePlant(event.id, event.fileName)
-            HomeUIEvent.RetryForecast -> getForecast(true)
+            HomeUIEvent.RetryForecast -> {
+                getForecast(true)
+            }
         }
     }
 
