@@ -40,4 +40,15 @@
     <string name="permission_dialog_message">Pour utiliser cette fonctionnalité, veuillez autoriser l'accès.</string>
     <string name="permission_dialog_positive_button">Paramètres</string>
     <string name="permission_dialog_negative_button">Annuler</string>
+    <string name="error_message_plant_not_found">Plante introuvable</string>
+    <string name="error_message_fetching_plant_details">Une erreur s'est produite lors de la récupération des détails de la plante</string>
+    <string name="delete_plant_dialog_title">Supprimer la plante</string>
+    <string name="delete_plant_dialog_positive_button">Oui</string>
+    <string name="delete_plant_dialog_negative_button">Non</string>
+    <string name="exposure_sun_description">Ma plante est exposée en plein soleil.</string>
+    <string name="exposure_shade_description">Ma plante est à l'ombre.</string>
+    <string name="exposure_partial_shade_description">Ma plante est à mi-ombre.</string>
+    <string name="exposure_sun">Soleil</string>
+    <string name="exposure_shade">Ombre</string>
+    <string name="exposure_partial_shade">Mi-ombre</string>
 </resources>

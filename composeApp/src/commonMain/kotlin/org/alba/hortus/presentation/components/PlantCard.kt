@@ -30,6 +30,7 @@ import hortus.composeapp.generated.resources.default_plant
 import org.alba.hortus.domain.model.Exposure
 import org.alba.hortus.domain.model.PlantDatabaseModel
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -99,9 +100,9 @@ fun PlantCard(
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
                         text = when (plant.currentExposure) {
-                            Exposure.SUN.name -> Exposure.SUN.value
-                            Exposure.SHADE.name -> Exposure.SHADE.value
-                            Exposure.PARTIAL_SHADE.name -> Exposure.PARTIAL_SHADE.value
+                            Exposure.SUN.name -> stringResource(Exposure.SUN.value)
+                            Exposure.SHADE.name -> stringResource(Exposure.SHADE.value)
+                            Exposure.PARTIAL_SHADE.name -> stringResource(Exposure.PARTIAL_SHADE.value)
                             else -> ""
                         },
                         style = MaterialTheme.typography.labelLarge

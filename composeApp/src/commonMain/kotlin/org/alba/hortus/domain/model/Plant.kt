@@ -7,12 +7,19 @@ import androidx.room.TypeConverters
 import hortus.composeapp.generated.resources.Res
 import hortus.composeapp.generated.resources.baseline_cloud_24
 import hortus.composeapp.generated.resources.baseline_sunny_24
+import hortus.composeapp.generated.resources.exposure_partial_shade
+import hortus.composeapp.generated.resources.exposure_partial_shade_description
+import hortus.composeapp.generated.resources.exposure_shade
+import hortus.composeapp.generated.resources.exposure_shade_description
+import hortus.composeapp.generated.resources.exposure_sun
+import hortus.composeapp.generated.resources.exposure_sun_description
 import hortus.composeapp.generated.resources.partly_cloudy_day_24dp
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
 import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.StringResource
 
 @Serializable
 @Entity(tableName = "plants")
@@ -49,13 +56,29 @@ class StringListConverters {
     fun toList(value: String) = Json.decodeFromString<List<String>>(value)
 }
 
-enum class Exposure(val value: String, val description: String, val drawableRes: DrawableResource) {
-    SUN("Sun", "My plant is in full sun situation", Res.drawable.baseline_sunny_24),
-    SHADE("Shade", "My plant is in shade situation", Res.drawable.baseline_cloud_24),
-    PARTIAL_SHADE("Partial shade", "My plant is in partial shade situation", Res.drawable.partly_cloudy_day_24dp);
+enum class Exposure(
+    val value: StringResource,
+    val description: StringResource,
+    val drawableRes: DrawableResource
+) {
+    SUN(
+        Res.string.exposure_sun,
+        Res.string.exposure_sun_description,
+        Res.drawable.baseline_sunny_24
+    ),
+    SHADE(
+        Res.string.exposure_shade,
+        Res.string.exposure_shade_description,
+        Res.drawable.baseline_cloud_24
+    ),
+    PARTIAL_SHADE(
+        Res.string.exposure_partial_shade,
+        Res.string.exposure_partial_shade_description,
+        Res.drawable.partly_cloudy_day_24dp
+    );
 
     companion object {
-        fun getAllNames() =  entries.map { it.name }.joinToString(", ")
+        fun getAllNames() = entries.map { it.name }.joinToString(", ")
         fun getEnumForName(name: String) = entries.find { it.name == name }
     }
 }

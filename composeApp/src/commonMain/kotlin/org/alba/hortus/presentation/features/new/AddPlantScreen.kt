@@ -369,9 +369,10 @@ private fun AddView(
                 showPlantsSelectionBottomSheet = true
             }
         )
-
         ReadOnlyTextField(
-            value = Exposure.getEnumForName(exposure)?.value ?: "",
+            value = Exposure.getEnumForName(exposure)?.value?.let {
+                stringResource(it)
+            } ?: "",
             label = stringResource(Res.string.exposure_label),
             onClick = {
                 showExposureBottomSheet = true
@@ -409,20 +410,20 @@ private fun ExposureBottomSheet(onExposureChanged: (String) -> Unit, onDismiss: 
         title = stringResource(Res.string.exposure_bottom_sheet_title),
         values = listOf(
             BottomSheetValue(
-                label = Exposure.SUN.value,
-                description = Exposure.SUN.description,
+                label = stringResource(Exposure.SUN.value) ,
+                description = stringResource(Exposure.SUN.description),
                 icon = painterResource(Exposure.SUN.drawableRes),
                 value = Exposure.SUN.name,
             ),
             BottomSheetValue(
-                label = Exposure.SHADE.value,
-                description = Exposure.SHADE.description,
+                label =  stringResource(Exposure.SHADE.value),
+                description = stringResource(Exposure.SHADE.description),
                 icon = painterResource(Exposure.SHADE.drawableRes),
                 value = Exposure.SHADE.name,
             ),
             BottomSheetValue(
-                label = Exposure.PARTIAL_SHADE.value,
-                description = Exposure.PARTIAL_SHADE.description,
+                label =  stringResource(Exposure.PARTIAL_SHADE.value),
+                description = stringResource(Exposure.PARTIAL_SHADE.description),
                 icon = painterResource(Exposure.PARTIAL_SHADE.drawableRes),
                 value = Exposure.PARTIAL_SHADE.name,
             ),

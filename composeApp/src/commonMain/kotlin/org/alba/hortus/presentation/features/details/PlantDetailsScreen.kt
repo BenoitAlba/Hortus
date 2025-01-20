@@ -102,7 +102,7 @@ class PlantDetailsScreen(
         ) {
             when (val state = uiState.value) {
                 is PlantDetailsScreenViewModel.PlantDetailsUIState.Error -> {
-                    ErrorView(state.message)
+                    ErrorView(stringResource(state.message))
                 }
 
                 PlantDetailsScreenViewModel.PlantDetailsUIState.Loading -> {
@@ -274,7 +274,7 @@ fun Size(maxHeight: Int, maxWidth: Int) {
     ) {
         Icon(
             painter = painterResource(Res.drawable.baseline_height_24),
-            contentDescription =  stringResource(Res.string.height_title)
+            contentDescription = stringResource(Res.string.height_title)
         )
         Text(
             modifier = Modifier.padding(end = 8.dp),
@@ -283,7 +283,7 @@ fun Size(maxHeight: Int, maxWidth: Int) {
 
         Icon(
             painter = painterResource(Res.drawable.arrow_range_24dp),
-            contentDescription =  stringResource(Res.string.width_title)
+            contentDescription = stringResource(Res.string.width_title)
         )
         Text(
             text = "$maxWidth ${stringResource(Res.string.cm_label)}",
@@ -301,11 +301,11 @@ fun Exposures(exposures: List<String>, currentExposure: String, advises: String,
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             ExposureColumn(
-                title =  stringResource(Res.string.recommended_exposures_title),
+                title = stringResource(Res.string.recommended_exposures_title),
                 exposures = exposures
             )
             ExposureColumn(
-                title =  stringResource(Res.string.current_exposures_title),
+                title = stringResource(Res.string.current_exposures_title),
                 exposures = listOf(currentExposure)
             )
             HardinessView(
@@ -382,7 +382,9 @@ fun ExposureRow(exposures: List<String>) {
         icons?.let {
             Icon(
                 painter = icons,
-                contentDescription = contentDescription,
+                contentDescription = contentDescription?.let { description ->
+                    stringResource(description)
+                },
                 modifier = Modifier.size(32.dp),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -395,7 +397,7 @@ fun HardinessView(value: Float) {
     Column(
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
-        Title(text =  stringResource(Res.string.hardiness_title))
+        Title(text = stringResource(Res.string.hardiness_title))
         Row(
             modifier = Modifier
                 .clip(RoundedCornerShape(16.dp))
@@ -405,10 +407,10 @@ fun HardinessView(value: Float) {
         ) {
             Icon(
                 painter = painterResource(Res.drawable.device_thermostat_24dp),
-                contentDescription =  stringResource(Res.string.temperature_title)
+                contentDescription = stringResource(Res.string.temperature_title)
             )
             Column {
-                TextView( stringResource(Res.string.until_label))
+                TextView(stringResource(Res.string.until_label))
                 TextView("$value °C")
             }
         }
@@ -418,7 +420,7 @@ fun HardinessView(value: Float) {
 @Composable
 fun SoilMoistureView(value: String) {
     Container {
-        Title(text =  stringResource(Res.string.soil_moisture_title))
+        Title(text = stringResource(Res.string.soil_moisture_title))
         TextView(text = value)
     }
 }

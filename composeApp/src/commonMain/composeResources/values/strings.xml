@@ -40,7 +40,15 @@
     <string name="permission_dialog_message">To use this feature, please allow the permission</string>">
     <string name="permission_dialog_positive_button">Settings</string>">
     <string name="permission_dialog_negative_button">Cancel</string>">
-
-
-
+    <string name="error_message_plant_not_found">Plant not found</string>
+    <string name="error_message_fetching_plant_details">An error occurred while fetching plant details</string>
+    <string name="delete_plant_dialog_title">Delete the plant</string>
+    <string name="delete_plant_dialog_positive_button">Yes</string>
+    <string name="delete_plant_dialog_negative_button">No</string>
+    <string name="exposure_sun_description">My plant is in full sun situation</string>
+    <string name="exposure_shade_description">My plant is in shade situation</string>
+    <string name="exposure_partial_shade_description">My plant is in partial shade situation</string>
+    <string name="exposure_sun">Sun</string>
+    <string name="exposure_shade">Shade</string>
+    <string name="exposure_partial_shade">Partial shade</string>
 </resources>

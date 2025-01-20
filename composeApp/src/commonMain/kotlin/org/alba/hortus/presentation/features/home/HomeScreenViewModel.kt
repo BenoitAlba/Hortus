@@ -11,6 +11,7 @@ import org.alba.hortus.domain.model.RequestState
 import org.alba.hortus.presentation.features.home.usecases.GetForeCastUseCase
 import org.alba.hortus.presentation.features.home.usecases.GetPlantsUseCase
 import org.alba.hortus.presentation.features.usecases.DeletePlantUseCase
+import org.jetbrains.compose.resources.StringResource
 
 class HomeScreenViewModel(
     private val getPlantsUseCase: GetPlantsUseCase,
@@ -65,7 +66,7 @@ class HomeScreenViewModel(
     }
 
     sealed class PlantUIState {
-        object Loading : PlantUIState()
+        data object Loading : PlantUIState()
         data class Success(val plants: List<PlantDatabaseModel>) : PlantUIState()
         data class Error(val message: String) : PlantUIState()
     }

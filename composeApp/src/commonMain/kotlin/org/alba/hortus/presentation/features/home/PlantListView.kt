@@ -23,6 +23,9 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import hortus.composeapp.generated.resources.Res
+import hortus.composeapp.generated.resources.delete_plant_dialog_negative_button
+import hortus.composeapp.generated.resources.delete_plant_dialog_positive_button
+import hortus.composeapp.generated.resources.delete_plant_dialog_title
 import io.github.alexzhirkevich.compottie.LottieCompositionSpec
 import io.github.alexzhirkevich.compottie.animateLottieCompositionAsState
 import io.github.alexzhirkevich.compottie.rememberLottieComposition
@@ -33,6 +36,7 @@ import org.alba.hortus.presentation.components.ErrorView
 import org.alba.hortus.presentation.components.PlantCard
 import org.alba.hortus.presentation.features.details.PlantDetailsScreen
 import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun PlantListView(
@@ -45,7 +49,7 @@ fun PlantListView(
 
     when (val state = uiState.value) {
         is HomeScreenViewModel.PlantUIState.Error -> {
-            ErrorView(state.message) {
+            ErrorView(errorMessage = state.message) {
             }
         }
 
@@ -70,10 +74,10 @@ fun PlantListView(
                 onNoPlants(false)
                 if (showDeleteDialog != null) {
                     AlertMessageDialog(
-                        title = "Delete the plant",
+                        title = stringResource(Res.string.delete_plant_dialog_title),
                         message = "${showDeleteDialog?.commonName} ?",
-                        positiveButtonText = "Yes",
-                        negativeButtonText = "No",
+                        positiveButtonText = stringResource(Res.string.delete_plant_dialog_positive_button),
+                        negativeButtonText = stringResource(Res.string.delete_plant_dialog_negative_button),
                         onPositiveClick = {
                             viewModel.sendEvent(
                                 HomeScreenViewModel.HomeUIEvent.DeletePlantClicked(
@@ -128,7 +132,7 @@ private fun BoxScope.Empty() {
             composition = composition,
             progress = { progress },
         ),
-        contentDescription = "Lottie animation"
+        contentDescription = ""
     )
 }
 
