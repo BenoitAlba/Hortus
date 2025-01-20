@@ -131,4 +131,8 @@
     <string name="weather_sleet">Grésil</string>
     <string name="weather_hail_showers">Averses de grêle</string>
 
+    <string name="image_source_dialog_message">Sélectionnez une source d'image</string>
+    <string name="image_source_dialog_camera">Appareil photo</string>
+    <string name="image_source_dialog_gallery">Galerie</string>
+
 </resources>

@@ -143,4 +143,8 @@
     <string name="weather_sleet_232">Sleet</string>
     <string name="weather_hail_showers">Hail Showers</string>
 
+    <string name="image_source_dialog_message">Select an Image Source</string>
+    <string name="image_source_dialog_camera">Camera</string>
+    <string name="image_source_dialog_gallery">Gallery</string>
+
 </resources>

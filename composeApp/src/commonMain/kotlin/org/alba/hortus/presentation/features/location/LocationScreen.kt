@@ -43,7 +43,6 @@ import hortus.composeapp.generated.resources.baseline_search_24
 import hortus.composeapp.generated.resources.clear_button_content_description
 import hortus.composeapp.generated.resources.close_button_content_description
 import hortus.composeapp.generated.resources.home2
-import hortus.composeapp.generated.resources.location_button
 import hortus.composeapp.generated.resources.location_icon_content_description
 import hortus.composeapp.generated.resources.no_results_found
 import hortus.composeapp.generated.resources.search_for_location_title
@@ -239,8 +238,6 @@ private fun LocationView(viewModel: LocationScreenViewModel, location: LocationR
                     textAlign = TextAlign.Center,
                 )
             }
-
         }
-
     }
 }

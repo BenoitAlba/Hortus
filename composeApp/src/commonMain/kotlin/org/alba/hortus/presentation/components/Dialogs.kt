@@ -31,7 +31,11 @@ import hortus.composeapp.generated.resources.Res
 import hortus.composeapp.generated.resources.download
 import hortus.composeapp.generated.resources.ic_camera
 import hortus.composeapp.generated.resources.ic_images
+import hortus.composeapp.generated.resources.image_source_dialog_camera
+import hortus.composeapp.generated.resources.image_source_dialog_gallery
+import hortus.composeapp.generated.resources.image_source_dialog_message
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ImageSourceOptionDialog(
@@ -49,7 +53,7 @@ fun ImageSourceOptionDialog(
                     .padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Select an Image Source",
+                    text = stringResource(Res.string.image_source_dialog_message),
                     style = MaterialTheme.typography.titleMedium
                 )
                 Spacer(modifier = Modifier.height(10.dp))
@@ -65,7 +69,7 @@ fun ImageSourceOptionDialog(
                         painter = painterResource(Res.drawable.ic_camera),
                         contentDescription = null
                     )
-                    Text(text = "Camera")
+                    Text(text = stringResource(Res.string.image_source_dialog_camera))
                 }
                 Row(
                     modifier = Modifier.fillMaxWidth().padding(vertical = 15.dp).clickable {
@@ -79,11 +83,10 @@ fun ImageSourceOptionDialog(
                         painter = painterResource(Res.drawable.ic_images),
                         contentDescription = null
                     )
-                    Text(text = "Gallery")
+                    Text(text = stringResource(Res.string.image_source_dialog_gallery))
                 }
             }
         }
-
     }
 }
 
