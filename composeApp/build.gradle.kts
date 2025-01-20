@@ -83,14 +83,19 @@ kotlin {
             // Geolocation
             implementation(libs.compass.geolocation)
             implementation(libs.compass.geolocation.mobile)
+            implementation(libs.compass.autocomplete.mobile)
+            implementation(libs.compass.autocomplete)
 
             implementation(libs.compose.shimmer)
-
-            //implementation(libs.kottie)
 
             implementation(libs.compottie)
             implementation(libs.compottie.dot)
             implementation(libs.compottie.resources)
+
+            implementation(libs.kotlinx.datetime)
+
+            implementation(libs.multiplatform.settings.no.arg)
+            implementation(libs.multiplatform.settings.coroutines)
         }
 
         iosMain.dependencies {

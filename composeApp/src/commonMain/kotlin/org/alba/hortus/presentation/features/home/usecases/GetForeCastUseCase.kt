@@ -3,46 +3,46 @@ package org.alba.hortus.presentation.features.home.usecases
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import org.alba.hortus.data.LocationRepository
-import org.alba.hortus.data.remote.ForecastApiService
+import org.alba.hortus.data.remote.ForecastRepository
 import org.alba.hortus.domain.model.Forecast
 import org.alba.hortus.domain.model.LocationResult
 import org.alba.hortus.domain.model.RequestState
-import org.alba.hortus.presentation.features.home.transformers.ForecastTransformer
 
 class GetForeCastUseCase(
     private val locationRepository: LocationRepository,
-    private val forecastApiService: ForecastApiService,
-    private val transformer: ForecastTransformer,
+    private val forecastRepository: ForecastRepository,
 ) {
-    suspend operator fun invoke(): RequestState<Forecast> = with(Dispatchers.IO) {
-        when (val location = locationRepository()) {
-            is LocationResult.Error -> {
-                RequestState.Error(location.message)
-            }
+    suspend operator fun invoke(forceRefresh: Boolean = false): RequestState<Forecast> =
+        with(Dispatchers.IO) {
+            when (val location = locationRepository.getLocation()) {
+                is LocationResult.Error -> {
+                    RequestState.Error(location.message)
+                }
 
-            is LocationResult.Location -> {
-                if (AVAILABLE_COUNTRIES.contains(location.country.toString())) {
-                    val response =
-                        forecastApiService.getForecast(location.latitude, location.longitude)
-                    when (response) {
-                        is RequestState.Error -> {
-                            RequestState.Error(response.message)
+                is LocationResult.Location -> {
+                    if (AVAILABLE_COUNTRIES.contains(location.country.toString())) {
+                        forecastRepository.getForecast(location, forceRefresh)
+                    } else {
+                        RequestState.Error("The forecast API is only available in France, Belgium and Luxembourg")
+                    }
+                }
+
+                null ->
+                    when (val geoLocation = locationRepository.getGeoLocationAndUpdateLocation()) {
+                        is LocationResult.Error -> {
+                            RequestState.Error(geoLocation.message)
                         }
 
-                        RequestState.Loading -> {
-                            RequestState.Loading
-                        }
-
-                        is RequestState.Success -> {
-                            RequestState.Success(transformer(location, response.data))
+                        is LocationResult.Location -> {
+                            if (AVAILABLE_COUNTRIES.contains(geoLocation.country.toString())) {
+                                forecastRepository.getForecast(geoLocation, forceRefresh)
+                            } else {
+                                RequestState.Error("The forecast API is only available in France, Belgium and Luxembourg")
+                            }
                         }
                     }
-                } else {
-                    RequestState.Error("The forecast API is only available in France, Belgium and Luxembourg")
-                }
             }
         }
-    }
 }
 
 const val AVAILABLE_COUNTRIES = "France, Belgium, Luxembourg, Belgique"

@@ -277,29 +277,34 @@ fun Exposures(exposures: List<String>, currentExposure: String, advises: String,
             )
         }
 
-        val isExposureCorrect = exposures.contains(currentExposure)
-        Box(
-            Modifier
-                .padding(top = 24.dp)
-                .clip(RoundedCornerShape(8.dp))
-                .then(
-                    if (isExposureCorrect) {
-                        Modifier.background(MaterialTheme.colorScheme.surfaceVariant)
+        if (advises.isNotBlank()) {
+            val isExposureCorrect = exposures.contains(currentExposure)
+            Box(
+                Modifier
+                    .padding(top = 24.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .then(
+                        if (isExposureCorrect) {
+                            Modifier.background(MaterialTheme.colorScheme.surfaceVariant)
+                        } else {
+                            Modifier.background(MaterialTheme.colorScheme.errorContainer)
+                        }
+                    )
+                    .padding(8.dp)
+            ) {
+                TextView(
+                    color = if (isExposureCorrect) {
+                        MaterialTheme.colorScheme.onSurfaceVariant
                     } else {
-                        Modifier.background(MaterialTheme.colorScheme.errorContainer)
-                    }
+                        MaterialTheme.colorScheme.onErrorContainer
+                    },
+                    text = advises
                 )
-                .padding(8.dp)
-        ) {
-            TextView(
-                color = if (isExposureCorrect) {
-                    MaterialTheme.colorScheme.onSurfaceVariant
-                } else {
-                    MaterialTheme.colorScheme.onErrorContainer
-                },
-                text = advises
-            )
+            }
+        } else {
+            Spacer(Modifier.weight(1f))
         }
+
     }
 }
 

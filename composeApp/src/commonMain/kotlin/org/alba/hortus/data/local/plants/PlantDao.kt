@@ -1,4 +1,4 @@
-package org.alba.hortus.data.local
+package org.alba.hortus.data.local.plants
 
 import androidx.room.Dao
 import androidx.room.Insert

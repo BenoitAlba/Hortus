@@ -27,7 +27,7 @@ class HomeScreenViewModel(
     val forecastUiState: StateFlow<RequestState<Forecast>> = _forecastUiState
 
     fun initScreen() {
-        getForecast()
+        getForecast(false)
         getPlants()
     }
 
@@ -41,17 +41,17 @@ class HomeScreenViewModel(
         }
     }
 
-    private fun getForecast() {
+    private fun getForecast(forceRefresh: Boolean) {
         _forecastUiState.value = RequestState.Loading
         screenModelScope.launch {
-            _forecastUiState.value = getForeCastUseCase()
+            _forecastUiState.value = getForeCastUseCase(forceRefresh)
         }
     }
 
     fun sendEvent(event: HomeUIEvent) {
         when (event) {
             is HomeUIEvent.DeletePlantClicked -> deletePlant(event.id, event.fileName)
-            HomeUIEvent.RetryForecast -> getForecast()
+            HomeUIEvent.RetryForecast -> getForecast(true)
         }
     }
 

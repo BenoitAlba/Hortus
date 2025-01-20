@@ -1,5 +1,6 @@
 package org.alba.hortus.presentation.features.home.transformers
 
+import kotlinx.datetime.Clock
 import org.alba.hortus.domain.model.Forecast
 import org.alba.hortus.domain.model.ForecastItem
 import org.alba.hortus.domain.model.LocationResult
@@ -7,8 +8,12 @@ import org.alba.hortus.domain.model.WeatherCode
 
 class ForecastTransformer {
     operator fun invoke(
-        locationResult: LocationResult.Location, forecast: ForecastItem
+        locationResult: LocationResult.Location,
+        forecast: ForecastItem,
+        id: Long = 0L,
+        now: Long? = null
     ): Forecast = Forecast(
+        id = id,
         country = locationResult.country ?: "Unknown",
         locality = locationResult.locality ?: "Unknown",
         temperatureMax = forecast.tmax,
@@ -16,6 +21,7 @@ class ForecastTransformer {
         weather = WeatherCode.fromCode(forecast.weather),
         windSpeed = forecast.wind10m,
         windDirection = degreesToCardinalDirection(forecast.dirwind10m),
+        updatedAt = now ?: Clock.System.now().epochSeconds,
     )
 }
 

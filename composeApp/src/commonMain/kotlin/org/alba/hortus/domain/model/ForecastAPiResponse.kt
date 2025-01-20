@@ -14,38 +14,42 @@ import org.jetbrains.compose.resources.DrawableResource
 
 @Serializable
 data class City(
-    val country: Int,
-    val city: String,
-    val name: String,
-    val latitude: Double,
-    val longitude: Double,
-    val altitude: Int
+    val country: Int = 0,
+    val city: String = "",
+    val insee: Int = 0,
+    val cp: Int = 0,
+    val name: String = "",
+    val latitude: Double = 0.0,
+    val longitude: Double = 0.0,
+    val altitude: Int = 0
 )
 
 @Serializable
 data class ForecastItem(
-    val country: Int,
-    val city: String,
-    val latitude: Double,
-    val longitude: Double,
-    val day: Int,
-    val datetime: String,
-    val wind10m: Int,
-    val gust10m: Int,
-    val dirwind10m: Int,
-    val rr10: Double,
-    val rr1: Double,
-    val probarain: Int,
-    val weather: Int,
-    val tmin: Int,
-    val tmax: Int,
-    val sun_hours: Int,
-    val etp: Int,
-    val probafrost: Int,
-    val probafog: Int,
-    val probawind70: Int,
-    val probawind100: Int,
-    val gustx: Int
+    val country: Int = 0,
+    val cp: Int = 0,
+    val insee: Int = 0,
+    val city: String = "",
+    val latitude: Double = 0.0,
+    val longitude: Double = 0.0,
+    val day: Int = 0,
+    val datetime: String = "",
+    val wind10m: Int = 0,
+    val gust10m: Int = 0,
+    val dirwind10m: Int = 0,
+    val rr10: Double = 0.0,
+    val rr1: Double = 0.0,
+    val probarain: Int = 0,
+    val weather: Int = 0,
+    val tmin: Int = 0,
+    val tmax: Int = 0,
+    val sun_hours: Int = 0,
+    val etp: Int = 0,
+    val probafrost: Int = 0,
+    val probafog: Int = 0,
+    val probawind70: Int = 0,
+    val probawind100: Int = 0,
+    val gustx: Int = 0
 )
 
 @Serializable

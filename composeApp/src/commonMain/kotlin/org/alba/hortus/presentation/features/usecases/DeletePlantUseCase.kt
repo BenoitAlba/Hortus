@@ -2,7 +2,7 @@ package org.alba.hortus.presentation.features.usecases
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
-import org.alba.hortus.data.local.PlantLocalDataSource
+import org.alba.hortus.data.local.plants.PlantLocalDataSource
 import org.alba.hortus.presentation.managers.images.deleteFile
 
 class DeletePlantUseCase(
