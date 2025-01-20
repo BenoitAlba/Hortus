@@ -30,7 +30,6 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -50,7 +49,21 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.preat.peekaboo.image.picker.toImageBitmap
 import hortus.composeapp.generated.resources.Res
+import hortus.composeapp.generated.resources.add_a_plant_title
+import hortus.composeapp.generated.resources.add_button
+import hortus.composeapp.generated.resources.add_plant_info
 import hortus.composeapp.generated.resources.baseline_arrow_back_ios_24
+import hortus.composeapp.generated.resources.clear_button
+import hortus.composeapp.generated.resources.close_button_content_description
+import hortus.composeapp.generated.resources.description_label
+import hortus.composeapp.generated.resources.exposure_bottom_sheet_title
+import hortus.composeapp.generated.resources.exposure_label
+import hortus.composeapp.generated.resources.loading_button
+import hortus.composeapp.generated.resources.loading_content_description
+import hortus.composeapp.generated.resources.plant_label
+import hortus.composeapp.generated.resources.plant_name_label
+import hortus.composeapp.generated.resources.recognized_plant_bottom_sheet_title
+import hortus.composeapp.generated.resources.search_button
 import io.github.alexzhirkevich.compottie.LottieCompositionSpec
 import io.github.alexzhirkevich.compottie.animateLottieCompositionAsState
 import io.github.alexzhirkevich.compottie.rememberLottieComposition
@@ -69,6 +82,7 @@ import org.alba.hortus.presentation.features.home.HomeScreen
 import org.alba.hortus.presentation.utils.safeNavigate
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 class AddPlantScreen : Screen {
 
@@ -128,7 +142,7 @@ class AddPlantScreen : Screen {
                         title = {
                             Text(
                                 modifier = Modifier.fillMaxWidth(),
-                                text = "Add a Plant",
+                                text = stringResource(Res.string.add_a_plant_title),
                                 style = MaterialTheme.typography.headlineMedium,
                                 textAlign = TextAlign.Center,
                             )
@@ -141,7 +155,7 @@ class AddPlantScreen : Screen {
                                         navigator.pop()
                                     },
                                 painter = painterResource(Res.drawable.baseline_arrow_back_ios_24),
-                                contentDescription = "close"
+                                contentDescription = stringResource(Res.string.close_button_content_description)
                             )
                         },
                     )
@@ -242,7 +256,7 @@ class AddPlantScreen : Screen {
                                         )
                                     },
                                 ) {
-                                    Text("Clear")
+                                    Text(stringResource(Res.string.clear_button))
                                 }
                             }
                             Button(
@@ -269,15 +283,15 @@ class AddPlantScreen : Screen {
                                 Text(
                                     when {
                                         showLoading -> {
-                                            "Loading..."
+                                            stringResource(Res.string.loading_button)
                                         }
 
                                         isSearchMode -> {
-                                            "Search"
+                                            stringResource(Res.string.search_button)
                                         }
 
                                         else -> {
-                                            "Add"
+                                            stringResource(Res.string.add_button)
                                         }
                                     }
                                 )
@@ -313,15 +327,14 @@ private fun SearchView(
         ) {
             Text(
                 style = MaterialTheme.typography.labelMedium,
-                text = "'plant name' is required. \n" +
-                        "The description may help the AI to find the right plants."
+                text = stringResource(Res.string.add_plant_info)
             )
         }
 
         OutlinedTextField(
             value = plantName,
             onValueChange = { onPlantNameChanged(it) },
-            label = { Text("Plant name") },
+            label = { Text(stringResource(Res.string.plant_name_label)) },
             modifier = Modifier.fillMaxWidth(),
         )
 
@@ -329,12 +342,11 @@ private fun SearchView(
             modifier = Modifier.height(200.dp).fillMaxWidth(),
             value = description,
             onValueChange = { onDescriptionChanged(it) },
-            label = { Text("Description") },
+            label = { Text(stringResource(Res.string.description_label)) },
         )
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AddView(
     exposure: String,
@@ -352,7 +364,7 @@ private fun AddView(
 
         ReadOnlyTextField(
             value = plantName,
-            label = "Plant",
+            label = stringResource(Res.string.plant_label),
             onClick = {
                 showPlantsSelectionBottomSheet = true
             }
@@ -360,7 +372,7 @@ private fun AddView(
 
         ReadOnlyTextField(
             value = Exposure.getEnumForName(exposure)?.value ?: "",
-            label = "Exposure",
+            label = stringResource(Res.string.exposure_label),
             onClick = {
                 showExposureBottomSheet = true
             }
@@ -394,7 +406,7 @@ private fun AddView(
 @Composable
 private fun ExposureBottomSheet(onExposureChanged: (String) -> Unit, onDismiss: () -> Unit) {
     ValuesBottomSheet(
-        title = "Exposure: ",
+        title = stringResource(Res.string.exposure_bottom_sheet_title),
         values = listOf(
             BottomSheetValue(
                 label = Exposure.SUN.value,
@@ -433,7 +445,7 @@ private fun PlantsBottomSheet(
     ValuesBottomSheet(
         isCard = true,
         skipPartiallyExpanded = true,
-        title = "Recognized plants:",
+        title = stringResource(Res.string.recognized_plant_bottom_sheet_title),
         values = plants.map {
             BottomSheetValue(
                 label = it.scientificName ?: "",
@@ -469,7 +481,7 @@ private fun BoxScope.Loading() {
             composition = composition,
             progress = { progress },
         ),
-        contentDescription = "Lottie animation"
+        contentDescription = stringResource(Res.string.loading_content_description)
     )
 }
 

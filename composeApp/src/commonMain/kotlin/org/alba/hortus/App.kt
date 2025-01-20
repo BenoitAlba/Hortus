@@ -5,6 +5,11 @@ import cafe.adriel.voyager.core.annotation.ExperimentalVoyagerApi
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.NavigatorDisposeBehavior
 import cafe.adriel.voyager.transitions.SlideTransition
+import hortus.composeapp.generated.resources.Res
+import hortus.composeapp.generated.resources.permission_dialog_message
+import hortus.composeapp.generated.resources.permission_dialog_negative_button
+import hortus.composeapp.generated.resources.permission_dialog_positive_button
+import hortus.composeapp.generated.resources.permission_dialog_title
 import org.alba.hortus.presentation.components.AlertMessageDialog
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.alba.hortus.presentation.features.home.HomeScreen
@@ -13,6 +18,7 @@ import org.alba.hortus.presentation.managers.permissions.PermissionStatus
 import org.alba.hortus.presentation.managers.permissions.PermissionType
 import org.alba.hortus.presentation.managers.permissions.createPermissionsManager
 import org.alba.hortus.ui.theme.AppTheme
+import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalVoyagerApi::class)
 @Composable
@@ -44,17 +50,15 @@ private fun StartupAuthorisations() {
     var permissionRationalDialog by remember { mutableStateOf(false) }
     var launchSetting by remember { mutableStateOf(false) }
 
-
     if (permissionRationalDialog) {
         AlertMessageDialog(
-            title = "Permission Required",
-            message = "To use this feature, please allow the permission",
-            positiveButtonText = "Settings",
-            negativeButtonText = "Cancel",
+            title = stringResource(Res.string.permission_dialog_title),
+            message = stringResource(Res.string.permission_dialog_message),
+            positiveButtonText = stringResource(Res.string.permission_dialog_positive_button),
+            negativeButtonText = stringResource(Res.string.permission_dialog_negative_button),
             onPositiveClick = {
                 permissionRationalDialog = false
                 launchSetting = true
-
             },
             onNegativeClick = {
                 permissionRationalDialog = false

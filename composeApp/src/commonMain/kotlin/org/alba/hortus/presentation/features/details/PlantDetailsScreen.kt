@@ -40,13 +40,31 @@ import hortus.composeapp.generated.resources.Res
 import hortus.composeapp.generated.resources.arrow_range_24dp
 import hortus.composeapp.generated.resources.baseline_arrow_back_ios_24
 import hortus.composeapp.generated.resources.baseline_height_24
+import hortus.composeapp.generated.resources.close_button_content_description
+import hortus.composeapp.generated.resources.cm_label
+import hortus.composeapp.generated.resources.common_name_title
+import hortus.composeapp.generated.resources.current_exposures_title
 import hortus.composeapp.generated.resources.default_plant
+import hortus.composeapp.generated.resources.description_title
 import hortus.composeapp.generated.resources.device_thermostat_24dp
+import hortus.composeapp.generated.resources.flowering_months_title
+import hortus.composeapp.generated.resources.fruiting_months_title
+import hortus.composeapp.generated.resources.hardiness_title
+import hortus.composeapp.generated.resources.height_title
+import hortus.composeapp.generated.resources.plant_details_screen_title
+import hortus.composeapp.generated.resources.pollination_title
+import hortus.composeapp.generated.resources.recommended_exposures_title
+import hortus.composeapp.generated.resources.scientific_name_title
+import hortus.composeapp.generated.resources.soil_moisture_title
+import hortus.composeapp.generated.resources.temperature_title
+import hortus.composeapp.generated.resources.until_label
+import hortus.composeapp.generated.resources.width_title
 import org.alba.hortus.domain.model.Exposure
 import org.alba.hortus.domain.model.PlantDatabaseModel
 import org.alba.hortus.presentation.components.ErrorView
 import org.alba.hortus.presentation.components.MonthsView
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 class PlantDetailsScreen(
@@ -65,7 +83,7 @@ class PlantDetailsScreen(
                     title = {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
-                            text = "Plant Details",
+                            text = stringResource(Res.string.plant_details_screen_title),
                         )
                     },
                     navigationIcon = {
@@ -76,7 +94,7 @@ class PlantDetailsScreen(
                                     navigator.pop()
                                 },
                             painter = painterResource(Res.drawable.baseline_arrow_back_ios_24),
-                            contentDescription = "close"
+                            contentDescription = stringResource(Res.string.close_button_content_description)
                         )
                     }
                 )
@@ -113,7 +131,7 @@ class PlantDetailsScreen(
                                 placeholder = painterResource(Res.drawable.default_plant),
                                 error = painterResource(Res.drawable.default_plant),
                                 fallback = painterResource(Res.drawable.default_plant),
-                                contentDescription = "Image de la plante",
+                                contentDescription = "",
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier.clip(CircleShape).size(200.dp)
                             )
@@ -125,14 +143,20 @@ class PlantDetailsScreen(
 
                         state.plant.floweringMonths?.let {
                             item {
-                                MonthsView(title = "Flowering Months:", months = it)
+                                MonthsView(
+                                    title = stringResource(Res.string.flowering_months_title),
+                                    months = it
+                                )
                             }
                         }
 
                         if (state.plant.isAFruitPlant == true) {
                             state.plant.fruitingMonths?.let {
                                 item {
-                                    MonthsView(title = "Fruiting Months:", months = it)
+                                    MonthsView(
+                                        title = stringResource(Res.string.fruiting_months_title),
+                                        months = it
+                                    )
                                 }
                             }
                         }
@@ -168,17 +192,23 @@ class PlantDetailsScreen(
 @Composable
 fun PlantDescription(plant: PlantDatabaseModel) {
     Container {
-        TextRow(title = "Common Name:", value = plant.commonName)
+        TextRow(
+            title = stringResource(Res.string.common_name_title),
+            value = plant.commonName
+        )
 
         plant.scientificName?.let {
-            TextRow(title = "Scientific Name:", value = it)
+            TextRow(
+                title = stringResource(Res.string.scientific_name_title),
+                value = it
+            )
         }
 
         plant.description?.let {
             Column(
                 verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
-                Title(text = "Description:")
+                Title(text = stringResource(Res.string.description_title))
                 TextView(text = it)
             }
         }
@@ -188,7 +218,7 @@ fun PlantDescription(plant: PlantDatabaseModel) {
         }
 
         plant.pollination?.let {
-            TextRow(title = "Pollination:", value = it)
+            TextRow(title = stringResource(Res.string.pollination_title), value = it)
         }
     }
 }
@@ -244,19 +274,19 @@ fun Size(maxHeight: Int, maxWidth: Int) {
     ) {
         Icon(
             painter = painterResource(Res.drawable.baseline_height_24),
-            contentDescription = "Height"
+            contentDescription =  stringResource(Res.string.height_title)
         )
         Text(
             modifier = Modifier.padding(end = 8.dp),
-            text = "$maxHeight cm",
+            text = "$maxHeight ${stringResource(Res.string.cm_label)}",
         )
 
         Icon(
             painter = painterResource(Res.drawable.arrow_range_24dp),
-            contentDescription = "Width"
+            contentDescription =  stringResource(Res.string.width_title)
         )
         Text(
-            text = "$maxWidth cm",
+            text = "$maxWidth ${stringResource(Res.string.cm_label)}",
         )
     }
 }
@@ -270,8 +300,14 @@ fun Exposures(exposures: List<String>, currentExposure: String, advises: String,
         Column(
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
-            ExposureColumn(title = "Recommended Exposures:", exposures = exposures)
-            ExposureColumn(title = "Current Exposures:", exposures = listOf(currentExposure))
+            ExposureColumn(
+                title =  stringResource(Res.string.recommended_exposures_title),
+                exposures = exposures
+            )
+            ExposureColumn(
+                title =  stringResource(Res.string.current_exposures_title),
+                exposures = listOf(currentExposure)
+            )
             HardinessView(
                 hardiness
             )
@@ -359,7 +395,7 @@ fun HardinessView(value: Float) {
     Column(
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
-        Title(text = "Hardiness:")
+        Title(text =  stringResource(Res.string.hardiness_title))
         Row(
             modifier = Modifier
                 .clip(RoundedCornerShape(16.dp))
@@ -369,10 +405,10 @@ fun HardinessView(value: Float) {
         ) {
             Icon(
                 painter = painterResource(Res.drawable.device_thermostat_24dp),
-                contentDescription = "Température"
+                contentDescription =  stringResource(Res.string.temperature_title)
             )
             Column {
-                TextView("util")
+                TextView( stringResource(Res.string.until_label))
                 TextView("$value °C")
             }
         }
@@ -382,7 +418,7 @@ fun HardinessView(value: Float) {
 @Composable
 fun SoilMoistureView(value: String) {
     Container {
-        Title(text = "Soil Moisture:")
+        Title(text =  stringResource(Res.string.soil_moisture_title))
         TextView(text = value)
     }
 }

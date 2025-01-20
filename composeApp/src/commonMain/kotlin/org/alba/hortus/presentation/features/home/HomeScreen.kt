@@ -43,14 +43,18 @@ import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import hortus.composeapp.generated.resources.Res
+import hortus.composeapp.generated.resources.add_plant_floating_button_content_description
 import hortus.composeapp.generated.resources.baseline_location_pin_24
 import hortus.composeapp.generated.resources.baseline_menu_24
 import hortus.composeapp.generated.resources.hortus2
+import hortus.composeapp.generated.resources.location_button
+import hortus.composeapp.generated.resources.menu_icon_content_description
 import kotlinx.coroutines.launch
 import org.alba.hortus.presentation.features.location.LocationScreen
 import org.alba.hortus.presentation.features.new.AddPlantScreen
 import org.alba.hortus.presentation.utils.safeNavigate
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 class HomeScreen : Screen {
     @OptIn(ExperimentalMaterial3Api::class)
@@ -92,7 +96,7 @@ class HomeScreen : Screen {
                                     painterResource(Res.drawable.baseline_location_pin_24),
                                     contentDescription = null
                                 )
-                                Text(text = "Location")
+                                Text(text = stringResource(Res.string.location_button))
                             }
                         },
                         selected = false,
@@ -115,7 +119,10 @@ class HomeScreen : Screen {
                             navigator.safeNavigate(coroutineScope, AddPlantScreen())
                         },
                     ) {
-                        Icon(Icons.Filled.Add, "Adding plant")
+                        Icon(
+                            Icons.Filled.Add,
+                            stringResource(Res.string.add_plant_floating_button_content_description)
+                        )
                     }
                 },
                 snackbarHost = {
@@ -137,7 +144,7 @@ class HomeScreen : Screen {
                             ) {
                                 Icon(
                                     painter = painterResource(Res.drawable.baseline_menu_24),
-                                    contentDescription = "Localized description"
+                                    contentDescription = stringResource(Res.string.menu_icon_content_description)
                                 )
                             }
                         }

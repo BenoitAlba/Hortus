@@ -1,0 +1,46 @@
+<resources>
+    <string name="location_button">Location</string>
+    <string name="add_plant_floating_button_content_description">Adding plant</string>
+    <string name="menu_icon_content_description">Menu</string>
+    <string name="plant_details_screen_title">Plant Details</string>
+    <string name="close_button_content_description">Close</string>
+    <string name="flowering_months_title">Flowering Months:</string>
+    <string name="fruiting_months_title">Fruiting Months:</string>
+    <string name="common_name_title">Common Name:</string>
+    <string name="scientific_name_title">Scientific Name:</string>">
+    <string name="description_title">Description:</string>
+    <string name="pollination_title">Pollination:</string>
+    <string name="height_title">Height:</string>
+    <string name="width_title">Width:</string>
+    <string name="recommended_exposures_title">Recommended Exposures:</string>
+    <string name="current_exposures_title">Current Exposures:</string>
+    <string name="hardiness_title">Hardiness:</string>
+    <string name="temperature_title">Temperature:</string>"
+    <string name="until_label">until</string>
+    <string name="soil_moisture_title">Soil Moisture:</string>
+    <string name="cm_label">cm</string>
+    <string name="location_icon_content_description">GPS location</string>
+    <string name="search_for_location_title">Search for a location</string>
+    <string name="clear_button_content_description">Clear</string>
+    <string name="no_results_found">No results found</string>
+    <string name="add_a_plant_title">Add a plant</string>
+    <string name="clear_button">Clear</string>
+    <string name="loading_button">Loading...</string>
+    <string name="search_button">Search</string>
+    <string name="add_button">Add</string>
+    <string name="add_plant_info">'plant name' is required. \n The description may help the AI to find the right plants.</string>
+    <string name="plant_name_label">Plant name</string>
+    <string name="description_label">Description</string>
+    <string name="plant_label">Plant</string>
+    <string name="exposure_label">Exposure</string>
+    <string name="exposure_bottom_sheet_title">Exposure:</string>
+    <string name="recognized_plant_bottom_sheet_title">Recognized plant:</string>
+    <string name="loading_content_description">Loading"</string>
+    <string name="permission_dialog_title">Permission Required</string>">
+    <string name="permission_dialog_message">To use this feature, please allow the permission</string>">
+    <string name="permission_dialog_positive_button">Settings</string>">
+    <string name="permission_dialog_negative_button">Cancel</string>">
+
+
+
+</resources>

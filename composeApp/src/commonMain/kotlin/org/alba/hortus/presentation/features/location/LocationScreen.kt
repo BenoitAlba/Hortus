@@ -40,11 +40,18 @@ import hortus.composeapp.generated.resources.Res
 import hortus.composeapp.generated.resources.baseline_close_24
 import hortus.composeapp.generated.resources.baseline_location_pin_24
 import hortus.composeapp.generated.resources.baseline_search_24
+import hortus.composeapp.generated.resources.clear_button_content_description
+import hortus.composeapp.generated.resources.close_button_content_description
 import hortus.composeapp.generated.resources.home2
+import hortus.composeapp.generated.resources.location_button
+import hortus.composeapp.generated.resources.location_icon_content_description
+import hortus.composeapp.generated.resources.no_results_found
+import hortus.composeapp.generated.resources.search_for_location_title
 import org.alba.hortus.domain.model.LocationResult
 import org.alba.hortus.presentation.features.location.component.LocationCard
 import org.alba.hortus.presentation.features.location.component.SearchInputField
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 class LocationScreen : Screen {
     @OptIn(ExperimentalMaterial3Api::class)
@@ -66,7 +73,7 @@ class LocationScreen : Screen {
                         IconButton(onClick = { navigator.pop() }) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Localized description"
+                                contentDescription = stringResource(Res.string.close_button_content_description)
                             )
                         }
                     },
@@ -129,7 +136,7 @@ private fun SearchView(
                 content = {
                     Icon(
                         painter = painterResource(Res.drawable.baseline_location_pin_24),
-                        contentDescription = "Localized description"
+                        contentDescription = stringResource(Res.string.location_icon_content_description)
                     )
                 }
             )
@@ -161,7 +168,7 @@ private fun SearchView(
             }
 
             LocationScreenViewModel.LocationScreenUIState.NoResults -> {
-                Text("No Results")
+                Text(stringResource(Res.string.no_results_found))
             }
 
             LocationScreenViewModel.LocationScreenUIState.IdleScreen -> {
@@ -175,7 +182,7 @@ private fun SearchView(
                         painter = painterResource(Res.drawable.baseline_search_24),
                         contentDescription = null
                     )
-                    Text("Search for a location", style = MaterialTheme.typography.titleMedium)
+                    Text(stringResource(Res.string.search_for_location_title), style = MaterialTheme.typography.titleMedium)
 
                 }
             }
@@ -211,7 +218,7 @@ private fun LocationView(viewModel: LocationScreenViewModel, location: LocationR
                 }) {
                     Icon(
                         painter = painterResource(Res.drawable.baseline_close_24),
-                        contentDescription = "Clear"
+                        contentDescription = stringResource(Res.string.clear_button_content_description)
                     )
                 }
             }
