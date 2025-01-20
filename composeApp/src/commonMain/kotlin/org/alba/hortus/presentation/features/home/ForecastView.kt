@@ -42,7 +42,7 @@ fun ForecastView(viewModel: HomeScreenViewModel) {
     ) {
         when (val state = uiState.value) {
             is RequestState.Error -> {
-                ForecastError(state.message) {
+                ForecastError(state.getErrorMessage()) {
                     retry(viewModel)
                 }
             }

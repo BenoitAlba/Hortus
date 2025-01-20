@@ -147,4 +147,14 @@
     <string name="image_source_dialog_camera">Camera</string>
     <string name="image_source_dialog_gallery">Gallery</string>
 
+    <string name="forecast_location_error">The forecast API is only available in France, Belgium and Luxembourg</string>
+    <string name="geolocation_not_supported">Geolocation not supported</string>
+    <string name="geolocation_not_found">Geolocation not found</string>
+    <string name="geolocation_permission_error">Geolocation permission error</string>
+    <string name="geolocation_failed">Geolocation failed</string>
+    <string name="geolocation_failed_with_message">Geolocation failed: %s</string>
+    <string name="remote_forecast_error">No remote forecast found</string>
+    <string name="forecast_error">No forecast found</string>
+
+    <string name="unknown">Unknown</string>
 </resources>

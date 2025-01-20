@@ -135,4 +135,15 @@
     <string name="image_source_dialog_camera">Appareil photo</string>
     <string name="image_source_dialog_gallery">Galerie</string>
 
+    <string name="forecast_location_error">L\'API de prévision n\'est disponible qu\'en France, en Belgique et au Luxembourg</string>
+    <string name="geolocation_not_supported">La géolocalisation n\'est pas prise en charge</string>
+    <string name="geolocation_not_found">Impossible de trouver la position</string>
+    <string name="geolocation_permission_error">Erreur d\'autorisation de géolocalisation</string>
+    <string name="geolocation_failed">Échec de la géolocalisation</string>
+    <string name="geolocation_failed_with_message">Échec de la géolocalisation: %s</string>
+    <string name="remote_forecast_error">Aucune prévision à distance trouvée</string>
+    <string name="forecast_error">Aucune prévision trouvée</string>
+
+    <string name="unknown">Inconnu</string>
+
 </resources>

@@ -12,6 +12,12 @@ import dev.jordond.compass.geocoder.placeOrNull
 import dev.jordond.compass.geolocation.Geolocator
 import dev.jordond.compass.geolocation.GeolocatorResult
 import dev.jordond.compass.geolocation.mobile
+import hortus.composeapp.generated.resources.Res
+import hortus.composeapp.generated.resources.geolocation_failed
+import hortus.composeapp.generated.resources.geolocation_failed_with_message
+import hortus.composeapp.generated.resources.geolocation_not_found
+import hortus.composeapp.generated.resources.geolocation_not_supported
+import hortus.composeapp.generated.resources.geolocation_permission_error
 import org.alba.hortus.domain.model.LocationResult
 
 @OptIn(ExperimentalSettingsApi::class)
@@ -88,23 +94,23 @@ class LocationRepository {
 
             is GeolocatorResult.Error -> when (result) {
                 is GeolocatorResult.NotSupported -> {
-                    LocationResult.Error("---> Geolocation not supported")
+                    LocationResult.Error(Res.string.geolocation_not_supported)
                 }
 
                 is GeolocatorResult.NotFound -> {
-                    LocationResult.Error("---> Geolocation not found")
+                    LocationResult.Error(Res.string.geolocation_not_found)
                 }
 
                 is GeolocatorResult.PermissionError -> {
-                    LocationResult.Error("---> Geolocation permission error")
+                    LocationResult.Error(Res.string.geolocation_permission_error)
                 }
 
                 is GeolocatorResult.GeolocationFailed -> {
-                    LocationResult.Error("---> Geolocation failed")
+                    LocationResult.Error(Res.string.geolocation_failed)
                 }
 
                 else -> {
-                    LocationResult.Error("Geolocation failed ${result.message}\"")
+                    LocationResult.Error(Res.string.geolocation_failed_with_message, result.message)
                 }
             }
         }

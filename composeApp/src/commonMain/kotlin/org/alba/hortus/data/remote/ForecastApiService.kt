@@ -36,7 +36,7 @@ class ForecastApiService {
                 RequestState.Error(message = "HTTP Error Code: ${response.status} $response")
             }
         } catch (e: Exception) {
-            RequestState.Error(e.message ?: "Something went wrong")
+            RequestState.Error(message = e.message ?: "Something went wrong")
         }
     }
 

@@ -1,5 +1,7 @@
 package org.alba.hortus.presentation.features.home.usecases
 
+import hortus.composeapp.generated.resources.Res
+import hortus.composeapp.generated.resources.add_plant_info
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import org.alba.hortus.data.LocationRepository
@@ -16,28 +18,28 @@ class GetForeCastUseCase(
         with(Dispatchers.IO) {
             when (val location = locationRepository.getLocation()) {
                 is LocationResult.Error -> {
-                    RequestState.Error(location.message)
+                    RequestState.Error(location.messageResource)
                 }
 
                 is LocationResult.Location -> {
                     if (AVAILABLE_COUNTRIES.contains(location.country.toString())) {
                         forecastRepository.getForecast(location, forceRefresh)
                     } else {
-                        RequestState.Error("The forecast API is only available in France, Belgium and Luxembourg")
+                        RequestState.Error(Res.string.add_plant_info)
                     }
                 }
 
                 null ->
                     when (val geoLocation = locationRepository.getGeoLocationAndUpdateLocation()) {
                         is LocationResult.Error -> {
-                            RequestState.Error(geoLocation.message)
+                            RequestState.Error(messageResource = geoLocation.messageResource)
                         }
 
                         is LocationResult.Location -> {
                             if (AVAILABLE_COUNTRIES.contains(geoLocation.country.toString())) {
                                 forecastRepository.getForecast(geoLocation, forceRefresh)
                             } else {
-                                RequestState.Error("The forecast API is only available in France, Belgium and Luxembourg")
+                                RequestState.Error(Res.string.add_plant_info)
                             }
                         }
                     }

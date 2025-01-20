@@ -1,5 +1,8 @@
 package org.alba.hortus.data.remote
 
+import hortus.composeapp.generated.resources.Res
+import hortus.composeapp.generated.resources.forecast_error
+import hortus.composeapp.generated.resources.remote_forecast_error
 import kotlinx.datetime.Clock
 import org.alba.hortus.data.local.forecast.ForecastLocalDataSource
 import org.alba.hortus.domain.model.Forecast
@@ -45,12 +48,12 @@ class ForecastRepository(
                     )
                     forecastLocalDataSource.updateForecast(forecast)
                 } else {
-                    RequestState.Error("No remote forecast found")
+                    RequestState.Error(messageResource = Res.string.remote_forecast_error)
                 }
             }
         }
         return if (forecast == null) {
-            RequestState.Error("No forecast found")
+            RequestState.Error(messageResource = Res.string.forecast_error)
         } else {
             RequestState.Success(forecast)
         }
