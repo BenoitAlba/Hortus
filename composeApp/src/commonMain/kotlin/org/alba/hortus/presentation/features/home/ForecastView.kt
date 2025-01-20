@@ -30,6 +30,7 @@ import hortus.composeapp.generated.resources.unavailableweater
 import org.alba.hortus.domain.model.Forecast
 import org.alba.hortus.domain.model.RequestState
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ForecastView(viewModel: HomeScreenViewModel) {
@@ -92,7 +93,9 @@ fun SuccessView(data: Forecast, onRetry: (() -> Unit)) {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     style = MaterialTheme.typography.headlineSmall,
-                    text = data.weather?.description ?: "",
+                    text = data.weather?.description?.let {
+                        stringResource(it)
+                    } ?: "",
                     textAlign = TextAlign.Center,
                 )
                 Text(
