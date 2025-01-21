@@ -50,6 +50,7 @@ import hortus.composeapp.generated.resources.hortus2
 import hortus.composeapp.generated.resources.location_button
 import hortus.composeapp.generated.resources.menu_icon_content_description
 import kotlinx.coroutines.launch
+import org.alba.hortus.presentation.components.ObserveAsEvents
 import org.alba.hortus.presentation.features.location.LocationScreen
 import org.alba.hortus.presentation.features.new.AddPlantScreen
 import org.alba.hortus.presentation.utils.safeNavigate
@@ -60,10 +61,21 @@ class HomeScreen : Screen {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
+
         val navigator = LocalNavigator.currentOrThrow
         val viewModel = koinScreenModel<HomeScreenViewModel>()
-        var shouldInit by remember { mutableStateOf(true) }
+        val uiEffect = viewModel.uiEffect
+        val coroutineScope = rememberCoroutineScope()
 
+        ObserveAsEvents(uiEffect) { event ->
+            when (event) {
+                HomeScreenViewModel.HomeScreenUIEffect.NavigateToLocationScreen -> {
+                    navigator.safeNavigate(coroutineScope, LocationScreen())
+                }
+            }
+        }
+
+        var shouldInit by remember { mutableStateOf(true) }
         // instead of using the init of the VM because of Voyager issue
         if (shouldInit) {
             viewModel.initScreen()
@@ -71,10 +83,8 @@ class HomeScreen : Screen {
         }
 
         val snackBarHostState = remember { SnackbarHostState() }
-        val coroutineScope = rememberCoroutineScope()
 
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-        val scope = rememberCoroutineScope()
         ModalNavigationDrawer(
             drawerState = drawerState,
             drawerContent = {
@@ -101,12 +111,12 @@ class HomeScreen : Screen {
                         },
                         selected = false,
                         onClick = {
-                            scope.launch {
+                            coroutineScope.launch {
                                 drawerState.apply {
                                     if (isClosed) open() else close()
                                 }
                             }
-                            navigator.safeNavigate(coroutineScope, LocationScreen())
+                            viewModel.sendEvent(HomeScreenViewModel.HomeUIEvent.OpenLocationScreen)
                         }
                     )
                 }
@@ -135,7 +145,7 @@ class HomeScreen : Screen {
                         navigationIcon = {
                             IconButton(
                                 onClick = {
-                                    scope.launch {
+                                    coroutineScope.launch {
                                         drawerState.apply {
                                             if (isClosed) open() else close()
                                         }

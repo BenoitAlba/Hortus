@@ -30,7 +30,7 @@ import io.github.alexzhirkevich.compottie.LottieCompositionSpec
 import io.github.alexzhirkevich.compottie.animateLottieCompositionAsState
 import io.github.alexzhirkevich.compottie.rememberLottieComposition
 import io.github.alexzhirkevich.compottie.rememberLottiePainter
-import org.alba.hortus.domain.model.PlantDatabaseModel
+import org.alba.hortus.domain.model.PlantListDataModel
 import org.alba.hortus.presentation.components.AlertMessageDialog
 import org.alba.hortus.presentation.components.ErrorView
 import org.alba.hortus.presentation.components.PlantCard
@@ -44,7 +44,7 @@ fun PlantListView(
     onNoPlants: (Boolean) -> Unit,
 ) {
     val navigator = LocalNavigator.currentOrThrow
-    var showDeleteDialog by remember { mutableStateOf<PlantDatabaseModel?>(null) }
+    var showDeleteDialog by remember { mutableStateOf<PlantListDataModel?>(null) }
     val uiState = viewModel.plantUiState.collectAsState()
 
     when (val state = uiState.value) {

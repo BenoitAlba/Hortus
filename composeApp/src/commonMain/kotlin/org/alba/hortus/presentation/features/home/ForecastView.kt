@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.valentinilk.shimmer.shimmer
 import hortus.composeapp.generated.resources.Res
 import hortus.composeapp.generated.resources.download
-import hortus.composeapp.generated.resources.replay_24dp
+import hortus.composeapp.generated.resources.forecast_view_tap_message
 import hortus.composeapp.generated.resources.unavailableweater
 import org.alba.hortus.domain.model.Forecast
 import org.alba.hortus.domain.model.RequestState
@@ -43,7 +42,7 @@ fun ForecastView(viewModel: HomeScreenViewModel) {
         when (val state = uiState.value) {
             is RequestState.Error -> {
                 ForecastError(state.getErrorMessage()) {
-                    retry(viewModel)
+                    openLocationScreen(viewModel)
                 }
             }
 
@@ -155,14 +154,11 @@ private fun ForecastError(
                     ),
                 ) {
                     Text(
-                        style = MaterialTheme.typography.headlineSmall,
-                        text = "Retry",
+                        style = MaterialTheme.typography.labelLarge,
+                        text = stringResource(Res.string.forecast_view_tap_message),
                         textAlign = TextAlign.Center,
                     )
-                    Icon(
-                        painter = painterResource(Res.drawable.replay_24dp),
-                        contentDescription = null
-                    )
+
                 }
             }
         }
@@ -190,3 +186,6 @@ private fun LoadingView() {
 
 private fun retry(viewModel: HomeScreenViewModel) =
     viewModel.sendEvent(HomeScreenViewModel.HomeUIEvent.RetryForecast)
+
+private fun openLocationScreen(viewModel: HomeScreenViewModel) =
+    viewModel.sendEvent(HomeScreenViewModel.HomeUIEvent.OpenLocationScreen)

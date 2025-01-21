@@ -14,7 +14,9 @@ import org.alba.hortus.presentation.features.usecases.DeletePlantUseCase
 import org.alba.hortus.presentation.features.details.PlantDetailsScreenViewModel
 import org.alba.hortus.presentation.features.details.GetPlantUseCase
 import org.alba.hortus.presentation.features.home.transformers.ForecastTransformer
+import org.alba.hortus.presentation.features.home.transformers.PlantListTransformer
 import org.alba.hortus.presentation.features.home.usecases.GetForeCastUseCase
+import org.alba.hortus.presentation.features.home.usecases.UpdatePlantListForTemperatureUseCase
 import org.alba.hortus.presentation.features.location.LocationScreenViewModel
 import org.alba.hortus.data.LocationRepository
 import org.koin.core.context.startKoin
@@ -38,7 +40,9 @@ val appModule = module {
     factoryOf(::GetPlantsUseCase)
     factoryOf(::DeletePlantUseCase)
     factoryOf(::GetForeCastUseCase)
+    factoryOf(::UpdatePlantListForTemperatureUseCase)
     factoryOf(::ForecastTransformer)
+    factoryOf(::PlantListTransformer)
 
     // feature add
     factoryOf(::AddPlantScreenViewModel)

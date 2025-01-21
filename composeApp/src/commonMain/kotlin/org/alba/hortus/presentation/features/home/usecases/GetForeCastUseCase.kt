@@ -1,7 +1,7 @@
 package org.alba.hortus.presentation.features.home.usecases
 
 import hortus.composeapp.generated.resources.Res
-import hortus.composeapp.generated.resources.add_plant_info
+import hortus.composeapp.generated.resources.forecast_location_error
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import org.alba.hortus.data.LocationRepository
@@ -25,7 +25,7 @@ class GetForeCastUseCase(
                     if (AVAILABLE_COUNTRIES.contains(location.country.toString())) {
                         forecastRepository.getForecast(location, forceRefresh)
                     } else {
-                        RequestState.Error(Res.string.add_plant_info)
+                        RequestState.Error(Res.string.forecast_location_error)
                     }
                 }
 
@@ -39,7 +39,7 @@ class GetForeCastUseCase(
                             if (AVAILABLE_COUNTRIES.contains(geoLocation.country.toString())) {
                                 forecastRepository.getForecast(geoLocation, forceRefresh)
                             } else {
-                                RequestState.Error(Res.string.add_plant_info)
+                                RequestState.Error(Res.string.forecast_location_error)
                             }
                         }
                     }
