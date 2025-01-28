@@ -149,6 +149,7 @@
     <string name="plant_card_temperature_too_low">Temperature trop basse</string>
 
     <string name="forecast_view_tap_message">Appuyer pour choisir une autre localité</string>
+    <string name="ok_button">Ok</string>
 
 
 </resources>

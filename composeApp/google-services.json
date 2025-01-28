@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "877338506353",
+    "project_id": "hortus-66b7d",
+    "storage_bucket": "hortus-66b7d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:877338506353:android:362a12ed0671dcce9b97d0",
+        "android_client_info": {
+          "package_name": "org.alba.hortus"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPRy8AyHYWNaEhZdslt-62Lhd-Ia6IQ9Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

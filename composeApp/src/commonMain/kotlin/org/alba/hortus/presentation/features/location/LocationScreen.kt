@@ -2,6 +2,7 @@ package org.alba.hortus.presentation.features.location
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,6 +14,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -45,6 +47,7 @@ import hortus.composeapp.generated.resources.close_button_content_description
 import hortus.composeapp.generated.resources.home2
 import hortus.composeapp.generated.resources.location_icon_content_description
 import hortus.composeapp.generated.resources.no_results_found
+import hortus.composeapp.generated.resources.ok_button
 import hortus.composeapp.generated.resources.search_for_location_title
 import org.alba.hortus.domain.model.LocationResult
 import org.alba.hortus.presentation.features.location.component.LocationCard
@@ -94,16 +97,30 @@ class LocationScreen : Screen {
                     contentDescription = null,
                     contentScale = ContentScale.Crop
                 )
-                when (val uiState = viewModel.uiState.collectAsState().value) {
-                    is LocationScreenViewModel.LocationScreenUIState.LocationSelected -> {
-                        LocationView(viewModel, uiState.location as LocationResult.Location)
-                    }
+                Box(
+                    modifier = Modifier.weight(1f)
+                ) {
+                    when (val uiState = viewModel.uiState.collectAsState().value) {
+                        is LocationScreenViewModel.LocationScreenUIState.LocationSelected -> {
+                            LocationView(viewModel, uiState.location as LocationResult.Location)
+                        }
 
-                    else -> {
-                        SearchView(viewModel, uiState)
+                        else -> {
+                            SearchView(viewModel, uiState)
+                        }
                     }
                 }
 
+                Button(
+                    modifier = Modifier
+                        .padding(bottom = 8.dp, top = 4.dp, start = 16.dp, end = 16.dp)
+                        .fillMaxWidth(),
+                    onClick = {
+                        navigator.pop()
+                    }
+                ) {
+                    Text(stringResource(Res.string.ok_button))
+                }
             }
         }
     }
@@ -181,8 +198,10 @@ private fun SearchView(
                         painter = painterResource(Res.drawable.baseline_search_24),
                         contentDescription = null
                     )
-                    Text(stringResource(Res.string.search_for_location_title), style = MaterialTheme.typography.titleMedium)
-
+                    Text(
+                        stringResource(Res.string.search_for_location_title),
+                        style = MaterialTheme.typography.titleMedium
+                    )
                 }
             }
 
@@ -204,9 +223,8 @@ private fun LocationView(viewModel: LocationScreenViewModel, location: LocationR
     Card(
         modifier = Modifier.padding(16.dp),
     ) {
-        Column(
+        Box (
             modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(2.dp),
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -222,7 +240,7 @@ private fun LocationView(viewModel: LocationScreenViewModel, location: LocationR
                 }
             }
             Column(
-                modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 24.dp)
             ) {
                 Text(
                     modifier = Modifier.fillMaxWidth(),

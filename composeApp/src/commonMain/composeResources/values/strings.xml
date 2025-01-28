@@ -161,5 +161,6 @@
     <string name="plant_card_temperature_too_low">Temperature too low</string>
 
     <string name="forecast_view_tap_message">o choose another location</string>
+    <string name="ok_button">Ok</string>
 
 </resources>
