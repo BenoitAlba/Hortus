@@ -2,7 +2,7 @@
 ![badge-ios](http://img.shields.io/badge/platform-ios-CDCDCD.svg?style=flat)
 
 <h1 align="center">
-    <img height="150" src="https://github.com/BenoitAlba/Hortus/blob/main/composeApp/src/commonMain/composeResources/drawable/hortus3-removebg.png"/>
+    <img height="200" src="https://github.com/BenoitAlba/Hortus/blob/main/composeApp/src/commonMain/composeResources/drawable/hortus3-removebg.png"/>
     <br>
     Hortus - Experimental application developed with KMP/CMP to explore its capabilities.
 </h1>
@@ -38,3 +38,12 @@ Hortus can inform you about local weather conditions and alert you if your plant
 
 * `/iosApp` contains iOS applications. Even if you’re sharing your UI with Compose Multiplatform,
   you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+
+## Screenshots
+
+![Home screen](https://imgur.com/a/uPzWXqU)
+![Add a plant](https://imgur.com/a/3H4QJiw)
+![Search a plant](https://imgur.com/a/QMrBvib)
+![Add a plant - chose exposure](https://imgur.com/a/F9RAI59)
+![details screen](https://imgur.com/a/vUDwaud)
+![details screen 2](https://imgur.com/a/fP3d2u3)
