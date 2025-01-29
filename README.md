@@ -40,9 +40,17 @@ Hortus can inform you about local weather conditions and alert you if your plant
   you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
 
 ## Screenshots
-<img src="https://i.imgur.com/t7hPskH.png" alt="Home screen" height="500">
-<img src="https://i.imgur.com/xiqv4ly.png" alt="Add a plant" height="500">
-<img src="https://i.imgur.com/p2h2opD.png" alt="Search a plant" height="500">
-<img src="https://i.imgur.com/j2ZpV8B.png" alt="Add a plant - chose exposure" height="500">
-<img src="https://i.imgur.com/dSMEone.png" alt="details screen 1" height="500">
-<img src="https://i.imgur.com/PGtITRr.png" alt="details screen 2" height="500">
+
+<table>
+  <tr>
+    <td><img src="https://i.imgur.com/t7hPskH.png" alt="Home screen" height="500"></td>
+    <td><img src="https://i.imgur.com/xiqv4ly.png" alt="Add a plant" height="500"></td>
+    <td><img src="https://i.imgur.com/p2h2opD.png" alt="Search a plant" height="500"></td>
+  </tr>
+  <tr>
+    <td><img src="https://i.imgur.com/j2ZpV8B.png" alt="Add a plant - chose exposure" height="500"></td>
+    <td><img src="https://i.imgur.com/dSMEone.png" alt="details screen 1" height="500"></td>
+    <td><img src="https://i.imgur.com/PGtITRr.png" alt="details screen 2" height="500"></td>
+  </tr>
+
+</table>
