@@ -41,7 +41,7 @@ Hortus can inform you about local weather conditions and alert you if your plant
 
 ## Screenshots
 
-![Home screen](https://imgur.com/a/uPzWXqU)
+![Home screen](https://i.imgur.com/t7hPskH.png)
 ![Add a plant](https://imgur.com/a/3H4QJiw)
 ![Search a plant](https://imgur.com/a/QMrBvib)
 ![Add a plant - chose exposure](https://imgur.com/a/F9RAI59)
