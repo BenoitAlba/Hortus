@@ -5,8 +5,6 @@ import com.russhwolf.settings.ObservableSettings
 import com.russhwolf.settings.Settings
 import com.russhwolf.settings.coroutines.FlowSettings
 import com.russhwolf.settings.coroutines.toFlowSettings
-import dev.jordond.compass.autocomplete.Autocomplete
-import dev.jordond.compass.autocomplete.mobile
 import dev.jordond.compass.geocoder.Geocoder
 import dev.jordond.compass.geocoder.placeOrNull
 import dev.jordond.compass.geolocation.Geolocator
@@ -28,18 +26,6 @@ class LocationRepository {
 
     @OptIn(ExperimentalSettingsApi::class)
     private val flowSettings: FlowSettings = (settings as ObservableSettings).toFlowSettings()
-
-    suspend fun getLocationForName(query: String): List<LocationResult> {
-        val autocomplete = Autocomplete.mobile()
-        return autocomplete.search(query).getOrNull()?.map { place ->
-            LocationResult.Location(
-                latitude = place.coordinates.latitude,
-                longitude = place.coordinates.longitude,
-                country = place.country,
-                locality = place.locality
-            )
-        }.orEmpty()
-    }
 
     suspend fun updateLocation(location: LocationResult.Location) {
         flowSettings.putDouble(LOCATION_LATITUDE_KEY, location.latitude)

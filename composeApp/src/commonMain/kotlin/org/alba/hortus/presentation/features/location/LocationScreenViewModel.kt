@@ -11,10 +11,12 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.alba.hortus.data.LocationRepository
 import org.alba.hortus.domain.model.LocationResult
+import org.alba.hortus.presentation.features.location.usecases.GetLocationsForNameUseCase
 
 @OptIn(FlowPreview::class)
 class LocationScreenViewModel(
-    private val locationRepository: LocationRepository
+    private val locationRepository: LocationRepository,
+    private val getLocationsForNameUseCase: GetLocationsForNameUseCase
 ) : ScreenModel {
 
     private val _uiState: MutableStateFlow<LocationScreenUIState> =
@@ -44,7 +46,7 @@ class LocationScreenViewModel(
                             return@collectLatest
                         }
 
-                        val result = locationRepository.getLocationForName(input)
+                        val result = getLocationsForNameUseCase(input)
                         if (result.isEmpty()) {
                             _uiState.update { LocationScreenUIState.NoResults }
                         } else {

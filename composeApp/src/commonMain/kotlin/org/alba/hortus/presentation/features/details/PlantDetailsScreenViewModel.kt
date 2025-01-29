@@ -28,7 +28,6 @@ class PlantDetailsScreenViewModel(
                 }
             } catch (e: Exception) {
                 _uiState.value = PlantDetailsUIState.Error(Res.string.add_plant_info)
-
             }
         }
     }
