@@ -7,5 +7,5 @@ import org.alba.hortus.data.local.plants.PlantLocalDataSource
 class GetPlantUseCase(
     private val plantLocalDataSource: PlantLocalDataSource,
 ) {
-    suspend fun invoke(id: Long) = with(Dispatchers.IO) { plantLocalDataSource.getPlantById(id) }
+    suspend operator fun invoke(id: Long) = with(Dispatchers.IO) { plantLocalDataSource.getPlantById(id) }
 }

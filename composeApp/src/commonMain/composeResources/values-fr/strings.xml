@@ -151,5 +151,9 @@
     <string name="forecast_view_tap_message">Appuyer pour choisir une autre localité</string>
     <string name="ok_button">Ok</string>
 
-
+    <string name="edit_screen_title">Edition</string>
+    <string name="max_height_title">Hauteur max</string>
+    <string name="max_width_title">Largeur max</string>
+    <string name="is_a_fruit_plant_label">Plante à fruit</string>
+    <string name="exposure_advise_title">Conseil d'exposition</string>
 </resources>

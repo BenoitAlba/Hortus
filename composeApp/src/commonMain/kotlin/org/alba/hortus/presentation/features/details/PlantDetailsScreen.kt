@@ -18,12 +18,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -40,6 +42,7 @@ import hortus.composeapp.generated.resources.Res
 import hortus.composeapp.generated.resources.arrow_range_24dp
 import hortus.composeapp.generated.resources.baseline_arrow_back_ios_24
 import hortus.composeapp.generated.resources.baseline_height_24
+import hortus.composeapp.generated.resources.baseline_mode_edit_24
 import hortus.composeapp.generated.resources.close_button_content_description
 import hortus.composeapp.generated.resources.cm_label
 import hortus.composeapp.generated.resources.common_name_title
@@ -47,6 +50,7 @@ import hortus.composeapp.generated.resources.current_exposures_title
 import hortus.composeapp.generated.resources.default_plant
 import hortus.composeapp.generated.resources.description_title
 import hortus.composeapp.generated.resources.device_thermostat_24dp
+import hortus.composeapp.generated.resources.edit_screen_title
 import hortus.composeapp.generated.resources.flowering_months_title
 import hortus.composeapp.generated.resources.fruiting_months_title
 import hortus.composeapp.generated.resources.hardiness_title
@@ -63,6 +67,8 @@ import org.alba.hortus.domain.model.Exposure
 import org.alba.hortus.domain.model.PlantDatabaseModel
 import org.alba.hortus.presentation.components.ErrorView
 import org.alba.hortus.presentation.components.MonthsView
+import org.alba.hortus.presentation.features.edit.EditScreen
+import org.alba.hortus.presentation.utils.safeNavigate
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -81,10 +87,23 @@ class PlantDetailsScreen(
             topBar = {
                 TopAppBar(
                     title = {
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = stringResource(Res.string.plant_details_screen_title),
-                        )
+                        Row(
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(
+                                text = stringResource(Res.string.plant_details_screen_title),
+                            )
+                            IconButton(onClick = {
+                                navigator.push(EditScreen(id = id))
+                            }) {
+                                Icon(
+                                    painter = painterResource(Res.drawable.baseline_mode_edit_24),
+                                    contentDescription = stringResource(Res.string.close_button_content_description)
+                                )
+                            }
+                        }
                     },
                     navigationIcon = {
                         Icon(

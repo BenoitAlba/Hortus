@@ -19,6 +19,8 @@ import org.alba.hortus.presentation.features.home.usecases.GetForeCastUseCase
 import org.alba.hortus.presentation.features.home.usecases.UpdatePlantListForTemperatureUseCase
 import org.alba.hortus.presentation.features.location.LocationScreenViewModel
 import org.alba.hortus.presentation.features.location.usecases.GetLocationsForNameUseCase
+import org.alba.hortus.presentation.features.edit.EditScreenViewModel
+import org.alba.hortus.presentation.features.edit.usecases.EditPlantUseCase
 import org.alba.hortus.data.LocationRepository
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
@@ -58,6 +60,10 @@ val appModule = module {
     // feature location
     factoryOf(::LocationScreenViewModel)
     factoryOf(::GetLocationsForNameUseCase)
+
+    //feature edit
+    factoryOf(::EditScreenViewModel)
+    factoryOf(::EditPlantUseCase)
 }
 
 fun initKoin(config: KoinAppDeclaration? = null) =

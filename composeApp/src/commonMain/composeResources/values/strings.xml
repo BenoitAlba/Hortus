@@ -163,4 +163,10 @@
     <string name="forecast_view_tap_message">o choose another location</string>
     <string name="ok_button">Ok</string>
 
+    <string name="edit_screen_title">Edition</string>
+    <string name="max_height_title">Max height</string>
+    <string name="max_width_title">Max width</string>
+    <string name="is_a_fruit_plant_label">Fruit plant</string>
+    <string name="exposure_advise_title">Exposure advise</string>
+
 </resources>

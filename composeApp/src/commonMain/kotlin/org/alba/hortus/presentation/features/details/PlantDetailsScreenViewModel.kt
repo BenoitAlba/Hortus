@@ -21,7 +21,7 @@ class PlantDetailsScreenViewModel(
     fun getPlantDetails(plantId: Long) {
         screenModelScope.launch {
             try {
-                getPlantDetailsUseCase.invoke(plantId)?.let {
+                getPlantDetailsUseCase(plantId)?.let {
                     _uiState.value = PlantDetailsUIState.Success(it)
                 } ?: run {
                     _uiState.value = PlantDetailsUIState.Error(Res.string.add_plant_info)
@@ -33,7 +33,7 @@ class PlantDetailsScreenViewModel(
     }
 
     sealed class PlantDetailsUIState {
-        object Loading : PlantDetailsUIState()
+        data object Loading : PlantDetailsUIState()
         data class Success(val plant: PlantDatabaseModel) : PlantDetailsUIState()
         data class Error(val message: StringResource) : PlantDetailsUIState()
     }
