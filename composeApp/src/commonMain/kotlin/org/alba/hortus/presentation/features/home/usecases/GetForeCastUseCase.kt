@@ -4,6 +4,7 @@ import hortus.composeapp.generated.resources.Res
 import hortus.composeapp.generated.resources.forecast_location_error
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
+import kotlinx.coroutines.withContext
 import org.alba.hortus.data.LocationRepository
 import org.alba.hortus.data.remote.ForecastRepository
 import org.alba.hortus.domain.model.Forecast
@@ -15,7 +16,7 @@ class GetForeCastUseCase(
     private val forecastRepository: ForecastRepository,
 ) {
     suspend operator fun invoke(forceRefresh: Boolean = false): RequestState<Forecast> =
-        with(Dispatchers.IO) {
+        withContext(Dispatchers.IO) {
             when (val location = locationRepository.getLocation()) {
                 is LocationResult.Error -> {
                     RequestState.Error(location.messageResource)

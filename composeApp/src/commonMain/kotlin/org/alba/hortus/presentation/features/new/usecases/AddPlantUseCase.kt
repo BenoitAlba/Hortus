@@ -2,6 +2,7 @@ package org.alba.hortus.presentation.features.new.usecases
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
+import kotlinx.coroutines.withContext
 import org.alba.hortus.data.local.plants.PlantLocalDataSource
 import org.alba.hortus.data.remote.GenerativeModel
 import org.alba.hortus.domain.model.PlantDatabaseModel
@@ -15,7 +16,7 @@ class AddPlantUseCase(
         exposure: String,
         fileName: String?
     ) {
-        with(Dispatchers.IO) {
+        withContext(Dispatchers.IO) {
             var exposureAdvise: String? = null
             try {
                 exposureAdvise =
