@@ -2,7 +2,9 @@ package org.alba.hortus.presentation.features.login.signin
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
+import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.FirebaseAuthInvalidCredentialsException
+import dev.gitlive.firebase.auth.auth
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -38,6 +40,12 @@ class SignInScreenViewModel(
                     }
                 }
             )
+        }
+    }
+
+    fun resetPassword(email: String) {
+        screenModelScope.launch {
+            Firebase.auth.sendPasswordResetEmail(email)
         }
     }
 }
