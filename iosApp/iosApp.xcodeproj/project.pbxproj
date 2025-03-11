@@ -17,6 +17,8 @@
 		1451B1B32D06F7290088BE60 /* FirebaseAppDistribution-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = 1451B1B22D06F7290088BE60 /* FirebaseAppDistribution-Beta */; };
 		145D630A2D06F94700786E5C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 145D63092D06F94700786E5C /* GoogleService-Info.plist */; };
 		145D630D2D07090A00786E5C /* GenerativeModelIOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145D630C2D07090A00786E5C /* GenerativeModelIOS.swift */; };
+		14DD34182D72378200802C02 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 14DD34172D72378200802C02 /* FirebaseAuth */; };
+		14DD341A2D72378200802C02 /* FirebaseAuthCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 14DD34192D72378200802C02 /* FirebaseAuthCombine-Community */; };
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
 		7555FF83242A565900829871 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* ContentView.swift */; };
 /* End PBXBuildFile section */
@@ -43,7 +45,9 @@
 				1451B1AB2D06F6DB0088BE60 /* FirebaseVertexAI in Frameworks */,
 				1451B1AD2D06F7290088BE60 /* FirebaseAnalytics in Frameworks */,
 				1451B1AF2D06F7290088BE60 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */,
+				14DD34182D72378200802C02 /* FirebaseAuth in Frameworks */,
 				1451B1B32D06F7290088BE60 /* FirebaseAppDistribution-Beta in Frameworks */,
+				14DD341A2D72378200802C02 /* FirebaseAuthCombine-Community in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -137,6 +141,8 @@
 				1451B1AE2D06F7290088BE60 /* FirebaseAnalyticsOnDeviceConversion */,
 				1451B1B02D06F7290088BE60 /* FirebaseAnalyticsWithoutAdIdSupport */,
 				1451B1B22D06F7290088BE60 /* FirebaseAppDistribution-Beta */,
+				14DD34172D72378200802C02 /* FirebaseAuth */,
+				14DD34192D72378200802C02 /* FirebaseAuthCombine-Community */,
 			);
 			productName = iosApp;
 			productReference = 7555FF7B242A565900829871 /* Hortus.app */;
@@ -465,6 +471,14 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 1451B1A72D06F2FC0088BE60 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = "FirebaseAppDistribution-Beta";
+		};
+		14DD34172D72378200802C02 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FirebaseAuth;
+		};
+		14DD34192D72378200802C02 /* FirebaseAuthCombine-Community */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = "FirebaseAuthCombine-Community";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -12,7 +12,7 @@ import hortus.composeapp.generated.resources.permission_dialog_positive_button
 import hortus.composeapp.generated.resources.permission_dialog_title
 import org.alba.hortus.presentation.components.AlertMessageDialog
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import org.alba.hortus.presentation.features.home.HomeScreen
+import org.alba.hortus.presentation.features.splash.SplashScreen
 import org.alba.hortus.presentation.managers.permissions.PermissionCallback
 import org.alba.hortus.presentation.managers.permissions.PermissionStatus
 import org.alba.hortus.presentation.managers.permissions.PermissionType
@@ -35,7 +35,7 @@ fun App(
         StartupAuthorisations()
         Navigator(
             disposeBehavior = NavigatorDisposeBehavior(disposeSteps = false),
-            screen = HomeScreen()
+            screen = SplashScreen()
         ) {
             SlideTransition(
                 navigator = it,

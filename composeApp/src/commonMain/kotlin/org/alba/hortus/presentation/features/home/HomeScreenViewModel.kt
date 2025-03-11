@@ -2,6 +2,8 @@ package org.alba.hortus.presentation.features.home
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
+import dev.gitlive.firebase.Firebase
+import dev.gitlive.firebase.auth.auth
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,6 +25,7 @@ class HomeScreenViewModel(
     private val updatePlantListForTemperatureUseCase: UpdatePlantListForTemperatureUseCase
 
 ) : ScreenModel {
+    private val auth = Firebase.auth
 
     // channel for one-time events
     private var _uiEffect = Channel<HomeScreenUIEffect>()
@@ -81,6 +84,13 @@ class HomeScreenViewModel(
                     _uiEffect.send(HomeScreenUIEffect.NavigateToLocationScreen)
                 }
             }
+
+            HomeUIEvent.Disconnect -> {
+                screenModelScope.launch {
+                    auth.signOut()
+                    _uiEffect.send(HomeScreenUIEffect.NavigateToLoginScreen)
+                }
+            }
         }
     }
 
@@ -105,9 +115,12 @@ class HomeScreenViewModel(
 
         data object RetryForecast : HomeUIEvent()
         data object OpenLocationScreen : HomeUIEvent()
+        data object Disconnect:  HomeUIEvent()
     }
 
     sealed class HomeScreenUIEffect {
         data object NavigateToLocationScreen : HomeScreenUIEffect()
+        data object NavigateToLoginScreen : HomeScreenUIEffect()
+
     }
 }

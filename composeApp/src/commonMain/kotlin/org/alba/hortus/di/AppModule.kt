@@ -20,8 +20,12 @@ import org.alba.hortus.presentation.features.home.usecases.UpdatePlantListForTem
 import org.alba.hortus.presentation.features.location.LocationScreenViewModel
 import org.alba.hortus.presentation.features.location.usecases.GetLocationsForNameUseCase
 import org.alba.hortus.presentation.features.edit.EditScreenViewModel
+import org.alba.hortus.presentation.features.login.signup.SignUpScreenViewModel
 import org.alba.hortus.presentation.features.edit.usecases.EditPlantUseCase
 import org.alba.hortus.data.LocationRepository
+import org.alba.hortus.presentation.features.login.signin.SignInScreenViewModel
+import org.alba.hortus.presentation.features.login.usecase.SignInUseCase
+import org.alba.hortus.presentation.features.splash.SplashScreenViewModel
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.factoryOf
@@ -37,6 +41,14 @@ val appModule = module {
     singleOf(::ForecastRepository)
     singleOf(::PlantLocalDataSource)
     singleOf(::LocationRepository)
+
+    // feature splash screen
+    factoryOf(::SplashScreenViewModel)
+
+    // feature login
+    factoryOf(::SignInUseCase)
+    factoryOf(::SignUpScreenViewModel)
+    factoryOf(::SignInScreenViewModel)
 
     // feature home
     factoryOf(::HomeScreenViewModel)

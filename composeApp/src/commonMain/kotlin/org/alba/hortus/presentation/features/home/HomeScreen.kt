@@ -11,6 +11,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -46,12 +48,14 @@ import hortus.composeapp.generated.resources.Res
 import hortus.composeapp.generated.resources.add_plant_floating_button_content_description
 import hortus.composeapp.generated.resources.baseline_location_pin_24
 import hortus.composeapp.generated.resources.baseline_menu_24
+import hortus.composeapp.generated.resources.disconnect_label
 import hortus.composeapp.generated.resources.hortus2
 import hortus.composeapp.generated.resources.location_button
 import hortus.composeapp.generated.resources.menu_icon_content_description
 import kotlinx.coroutines.launch
 import org.alba.hortus.presentation.components.ObserveAsEvents
 import org.alba.hortus.presentation.features.location.LocationScreen
+import org.alba.hortus.presentation.features.login.choice.LoginOrSignUpScreen
 import org.alba.hortus.presentation.features.new.AddPlantScreen
 import org.alba.hortus.presentation.utils.safeNavigate
 import org.jetbrains.compose.resources.painterResource
@@ -71,6 +75,10 @@ class HomeScreen : Screen {
             when (event) {
                 HomeScreenViewModel.HomeScreenUIEffect.NavigateToLocationScreen -> {
                     navigator.safeNavigate(coroutineScope, LocationScreen())
+                }
+
+                HomeScreenViewModel.HomeScreenUIEffect.NavigateToLoginScreen -> {
+                    navigator.replaceAll(LoginOrSignUpScreen())
                 }
             }
         }
@@ -117,6 +125,29 @@ class HomeScreen : Screen {
                                 }
                             }
                             viewModel.sendEvent(HomeScreenViewModel.HomeUIEvent.OpenLocationScreen)
+                        }
+                    )
+
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    NavigationDrawerItem(
+                        modifier = Modifier.padding(top = 4.dp),
+                        label = {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.Center
+                            ) {
+                                Text(text = stringResource(Res.string.disconnect_label))
+                            }
+                        },
+                        selected = false,
+                        onClick = {
+                            coroutineScope.launch {
+                                drawerState.apply {
+                                    if (isClosed) open() else close()
+                                }
+                            }
+                            viewModel.sendEvent(HomeScreenViewModel.HomeUIEvent.Disconnect)
                         }
                     )
                 }

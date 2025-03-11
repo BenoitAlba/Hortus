@@ -156,4 +156,14 @@
     <string name="max_width_title">Largeur max</string>
     <string name="is_a_fruit_plant_label">Plante à fruit</string>
     <string name="exposure_advise_title">Conseil d'exposition</string>
+
+    <string name="new_user_button_label">Nouvel utilisateur</string>
+    <string name="sign_in_button_label">Se connecter</string>
+    <string name="username_label">Nom d'utilisateur</string>
+    <string name="password_label">Mot de passe</string>
+    <string name="repeat_password_label">Repeat password</string>
+    <string name="create_user">Créer l'utilisateur</string>
+    <string name="user_already_exist">L'utilisateur existe déjà</string>
+    <string name="bad_cred_message">Mauvais mot de passe ou nom d'utilisateur</string>">
+    <string name="disconnect_label">Déconnexion</string>
 </resources>

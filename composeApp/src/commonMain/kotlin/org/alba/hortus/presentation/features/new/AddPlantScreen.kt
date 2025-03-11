@@ -4,7 +4,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,7 +16,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -39,7 +37,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -75,6 +72,7 @@ import org.alba.hortus.presentation.components.BottomSheetValue
 import org.alba.hortus.presentation.components.BottomSheetVisibility
 import org.alba.hortus.presentation.components.CameraView
 import org.alba.hortus.presentation.components.ImagePicker
+import org.alba.hortus.presentation.components.InformationBox
 import org.alba.hortus.presentation.components.ObserveAsEvents
 import org.alba.hortus.presentation.components.ReadOnlyTextField
 import org.alba.hortus.presentation.components.ValuesBottomSheet
@@ -92,7 +90,6 @@ class AddPlantScreen : Screen {
         val navigator = LocalNavigator.currentOrThrow
         val viewModel = koinScreenModel<AddPlantScreenViewModel>()
         val snackBarHostState = remember { SnackbarHostState() }
-        val scope = rememberCoroutineScope()
 
         val uiEffect = viewModel.uiEffect
         var showLoading by remember { mutableStateOf(false) }
@@ -107,7 +104,7 @@ class AddPlantScreen : Screen {
                 }
 
                 is AddPlantScreenUIEffect.ShowToast -> {
-                    scope.launch {
+                    coroutineScope.launch {
                         showLoading = false
                         snackBarHostState.showSnackbar(message = event.message)
                     }
@@ -318,13 +315,7 @@ private fun SearchView(
     Column(
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(8.dp))
-                .background(MaterialTheme.colorScheme.surfaceVariant)
-                .padding(16.dp)
-        ) {
+        InformationBox {
             Text(
                 style = MaterialTheme.typography.labelMedium,
                 text = stringResource(Res.string.add_plant_info)

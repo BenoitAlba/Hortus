@@ -96,6 +96,9 @@ kotlin {
 
             implementation(libs.multiplatform.settings.no.arg)
             implementation(libs.multiplatform.settings.coroutines)
+
+            implementation(libs.firebase.auth)
+
         }
 
         iosMain.dependencies {
@@ -139,6 +142,7 @@ room {
 }
 
 dependencies {
+    implementation(libs.androidx.material3.android)
     debugImplementation(compose.uiTooling)
     ksp(libs.room.compiler)
 }
