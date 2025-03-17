@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -133,12 +132,7 @@ class HomeScreen : Screen {
                     NavigationDrawerItem(
                         modifier = Modifier.padding(top = 4.dp),
                         label = {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.Center
-                            ) {
-                                Text(text = stringResource(Res.string.disconnect_label))
-                            }
+                            Text(text = stringResource(Res.string.disconnect_label))
                         },
                         selected = false,
                         onClick = {

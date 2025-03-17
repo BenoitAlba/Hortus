@@ -158,6 +158,7 @@
     <string name="exposure_advise_title">Conseil d'exposition</string>
 
     <string name="login_screen_title">Connexion</string>
+    <string name="new_user_screen_title">Nouvel utilisateur</string>
     <string name="new_user_button_label">Nouvel utilisateur</string>
     <string name="sign_in_button_label">Se connecter</string>
     <string name="username_label">Nom d'utilisateur</string>

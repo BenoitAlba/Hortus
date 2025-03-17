@@ -38,7 +38,7 @@ import hortus.composeapp.generated.resources.close_button_content_description
 import hortus.composeapp.generated.resources.email_password_required
 import hortus.composeapp.generated.resources.email_required
 import hortus.composeapp.generated.resources.email_sent_message
-import hortus.composeapp.generated.resources.loading_button
+import hortus.composeapp.generated.resources.login_screen_title
 import hortus.composeapp.generated.resources.password_label
 import hortus.composeapp.generated.resources.reset_password_label
 import hortus.composeapp.generated.resources.sign_in_button_label
@@ -77,7 +77,7 @@ class SignInScreen : Screen {
                     title = {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
-                            text = stringResource(Res.string.loading_button),
+                            text = stringResource(Res.string.login_screen_title),
                             style = MaterialTheme.typography.headlineMedium,
                             textAlign = TextAlign.Center,
                         )
@@ -100,7 +100,6 @@ class SignInScreen : Screen {
             },
         ) {
             Column(
-
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(
